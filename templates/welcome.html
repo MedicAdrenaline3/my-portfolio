@@ -1,0 +1,222 @@
+{% extends "base.html" %}
+
+{% block title %}WELCOME{% endblock %}
+
+{% block content %}
+<style>
+  .welcome-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1.5rem;
+    margin-top: 1rem;
+    text-align: center;
+    position: relative;
+    min-height: 100vh;
+    box-sizing: border-box;
+  }
+
+  .header-container img {
+    position: absolute;
+    top: -8%;
+    left: -8%;
+    max-width: 200px;
+    height: auto;
+    margin-bottom: 1rem;
+  }
+
+  #welcome-text-container {
+    font-size: 1.6rem;
+    position: absolute;
+    top: 13%;
+    font-style: italic;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-weight: bolder;
+    color: black;
+    min-height: 60px;
+    margin: 1rem 0;
+    width: 85%;
+    max-width: 700px;
+  }
+
+  .cursor {
+    display: inline-block;
+    color: black;
+    font-weight: bolder;
+    animation: blink 0.7s steps(2, start) infinite;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+
+  .auth-buttons {
+    display: flex;
+    gap: 1rem;
+    margin-top: auto;
+    margin-bottom: 2.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .auth-buttons a {
+    background-color: black;
+    color: white;
+    font-weight: bold;
+    padding: 0.4rem 0.8rem;
+    font-size: 1.0rem;
+    border-radius: 8px;
+    text-decoration: none;
+  }
+
+  .info-links {
+    position: absolute;
+    top: 220px;
+    left: -15px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    align-items: flex-start;
+    z-index: 100;
+  }
+
+  .info-links a {
+    color: white;
+    font-size: 1rem;
+    font-weight: bolder;
+    text-decoration: underline;
+    background-color: rgba(0, 0, 0, 0.753);
+    padding: 4px 8px;
+    border-radius: 5px;
+  }
+
+  @media (min-width: 768px) {
+    #welcome-text-container {
+      font-size: 2rem;
+    }
+
+    .auth-buttons a {
+      font-size: 1.5rem;
+    }
+
+    .info-links a {
+      font-size: 1.1rem;
+    }
+  }
+
+  #countdown-container {
+    position: absolute;
+    top: 3%;
+    right: 1%;
+    margin-top: 50px;
+    margin-bottom: 30px;
+    color: black;
+  }
+
+  #countdown {
+    position: absolute;
+    top: 82%;
+    right: 15%;
+    background-color: #f0f0f0;
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 10px;
+    color: #333;
+  }
+</style>
+<!-- Countdown Section -->
+<div id="countdown-container" class="text-center">
+  <h2 style="color: red; font-weight: bold; font-size: 1.3rem; font-style: italic;">⏳ PUTME Countdown:</h2>
+  <div id="countdown" style="font-size: 1.0rem; font-weight: bold;"></div>
+</div>
+
+<div class="welcome-container">
+  <div class="header-container">
+    <img src="{{ url_for('static', filename='images/ui_logo.png') }}" alt="Logo">
+  </div>
+
+  <div id="welcome-text-container">
+    <span id="welcome-text" class="welcome-text"></span><span class="cursor">|</span>
+  </div>
+  <div class="auth-buttons">
+    <a href="{{ url_for('register') }}">Register</a>
+    <a href="{{ url_for('login') }}">Login</a>
+  </div>
+
+  <div class="info-links">
+    <a href="/app-instructions">App Info (Read me)</a>
+    <a href="/postutme-instructions">UI PUTME Instructions</a>
+    <a href="/courses-cutoff">Courses & Cut-off</a>
+    <a href="{{ url_for('ui_aggregate_calculator') }}">Aggregate Calculator</a>
+    <a href="/adrena-ai">Adrena AI</a>
+    <a href="/updates">Admission Updates</a>
+    <a href="/donate_pq">Donate PQ</a>
+    <a href="https://wa.me/2348135047400" target="_blank">Any issue? Contact Admin</a></strong>
+</div>
+
+<audio id="typing-sound" src="{{ url_for('static', filename='sounds/tyng.mp3') }}"></audio>
+<script>
+  const messages = [
+  "Dear UI Aspirant 🤗, welcome to Adrena Exam Volta!",
+  "I'm Adrena AI — feel free to ask me anything 🤔.",
+  "No questions yet?",
+  "Wait... let me ask you — did you crush UTME? 🤔",
+  "Really? 😮 Wow, you're ahead of the game!",
+  "Next up is PUTME... PUTME... PUTME...",
+  "But do you know how to score 95% with ease?",
+  "No worries — Adrena has you covered!",
+  "Please read the UI PUTME instructions above, and check the app info for a smooth experience.",
+  "Use the aggregate calculator to input your JAMB and PUTME scores — it will compute your final aggregate.",
+  "✅ Now dive in Practice real-time PUTME questions---Get instant grading and explanations",
+  "Access exam updates and study material, donate PQ for awards, Progress. Excel. Learn smart and at your own pace!"
+];
+  const textElement = document.getElementById("welcome-text");
+  const typingSound = document.getElementById("typing-sound");
+  let msgIndex = 0;
+
+  function typeMessage(text, charIndex = 0) {
+    if (charIndex < text.length) {
+      textElement.textContent += text.charAt(charIndex);
+      typingSound.currentTime = 0;
+      typingSound.play();
+      setTimeout(() => typeMessage(text, charIndex + 1), 150);
+    } else {
+      setTimeout(() => {
+        textElement.style.opacity = 0;
+        setTimeout(() => {
+          textElement.textContent = "";
+          textElement.style.opacity = 1;
+          msgIndex = (msgIndex + 1) % messages.length;
+          typeMessage(messages[msgIndex]);
+        }, 500);
+      }, 2000);
+    }
+  }
+
+  typeMessage(messages[msgIndex]);
+  // Countdown Timer
+  const countdownTarget = new Date("2025-09-15T09:00:00").getTime(); // Set PUTME date here
+
+  function updateCountdown() {
+    const now = new Date().getTime();
+    const distance = countdownTarget - now;
+
+    if (distance < 0) {
+      document.getElementById("countdown").innerHTML = "🎯 Exam Day is Here! Best of Luck!";
+      return;
+    }
+
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    document.getElementById("countdown").innerHTML =
+      `${days}d ${hours}h ${minutes}m ${seconds}s`;
+  }
+
+  updateCountdown();
+  setInterval(updateCountdown, 1000); // Update every second
+</script>
+{% endblock %}

@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<div class="form-container" style="color: blue; font-size: x-large; font-weight: bolder;">
+    <h2>LOGIN</h2>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="flash-messages" style="color: black; font-size: x-large; font-weight: bolder;">
+          {% for message in messages %}
+            <p>{{ message }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <form method="POST">
+        <div class="form-group">
+            <label for="username_or_email" style="color: black;">Username or Email</label>
+            <input mode="text" id="username_or_email" name="username_or_email" required required placeholder="Enter Username or Email Address">
+        </div>
+
+        <div class="form-group">
+            <label for="password" style="color: black;">Password</label>
+            <div class="input-container">
+            <input mode="password" id="password" name="password" required required placeholder="Enter Password">
+            <span class="toggle-icon" onclick="toggleVisibility(this)">👁</span>
+        </div>
+        </div>
+
+        <button mode="submit" class="btn">Login</button>
+    </form>
+
+    <p class="switch-link" style="color: darkblue; font-weight: bold; font-size: large;">
+        Don't have an account? <a href="{{ url_for('register') }}" style="color: black; font-size: large;
+         font-weight: bolder; text-decoration: underline;">Register here</a>
+    </p>
+
+    <p class="switch-link-2" style="color: darkblue; font-weight: bold; font-size: large;">
+        Forgot Password?<a href="{{ url_for('forgot_password') }}" style="color: black; font-size: large; 
+        font-weight: bolder;">Reset Password</a>
+    </p>
+
+    
+    {% if session.get('registration_success') %}
+        <div class="flash-info mt-3">
+            <p>Registration successful! Please log in with your credentials after OTP verification.</p>
+        </div>
+    {% endif %}
+
+    {% if session.get('pending_user_id') %}
+        <p>Your account is not verified yet. Please check your email for the OTP and verify your account.</p>
+    {% endif %}
+</div>
+
+<script>
+    // JavaScript to check if passwords match before submitting the form
+    document.querySelector("form").addEventListener("submit", function(e) {
+        var usernameOrEmail = document.getElementById("username_or_email").value;
+        var password = document.getElementById("password").value;
+        if (!usernameOrEmail || !password) {
+            e.preventDefault();
+            alert("Please fill out both fields.");
+        }
+    });
+</script>
+{% endblock %}
