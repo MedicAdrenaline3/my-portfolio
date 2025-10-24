@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <title>UI POSTUTME</title>
+    <title>UTME CBT</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
     <style>
         /* Light/Dark Theme Transitions */
@@ -141,15 +141,15 @@ button[type="submit"]:hover {
 </head>
 <body>
     <div class="container">
-        <div class="timer" id="timer">90:00</div>
-        <h3>POSTUTME | {{ username }}</h3>
+        <div class="timer" id="timer">2:00:00</div>
+        <h3>UTME | {{ username }}</h3>
         <div class="subject-nav mb-3">
             {% for subject in subjects %}
             <button type="button" class="btn btn-outline-primary subject-btn" data-subject="{{ subject }}">{{ subject }}</button>
             {% endfor %}
         </div>
 
-        <form id="examForm" action="{{ url_for('submit_postutme_exam') }}" method="POST" autocomplete="off">
+        <form id="examForm" action="{{ url_for('submit_jamb_exam') }}" method="POST" autocomplete="off">
             {% for subject, subject_questions in questions.items() %}
             <div class="subject-section" data-subject="{{ subject }}" style="display: none;">
                 <h4 class="mb-3">{{ subject }}</h4>
@@ -206,7 +206,7 @@ button[type="submit"]:hover {
     const form = document.getElementById("examForm");
     const submitBtn = document.getElementById("submitBtn");
 
-    let lastQuestionIndexPerSubject = JSON.parse(localStorage.getItem('postutmeLastQuestionIndexPerSubject')) || {};
+    let lastQuestionIndexPerSubject = JSON.parse(localStorage.getItem('jambLastQuestionIndexPerSubject')) || {};
     let currentSubject = null;
     let currentQuestionIndex = 0;
     let formSubmitting = false;
@@ -217,21 +217,21 @@ button[type="submit"]:hover {
         for (const [key, value] of formData.entries()) {
             answersObj[key] = value;
         }
-        localStorage.setItem('postutmeAnswers', JSON.stringify(answersObj));
-        localStorage.setItem('postutmeTimeLeft', timeLeft);
-        localStorage.setItem('postutmeCurrentSubject', currentSubject);
-        localStorage.setItem('postutmeLastQuestionIndexPerSubject', JSON.stringify(lastQuestionIndexPerSubject));
+        localStorage.setItem('jambAnswers', JSON.stringify(answersObj));
+        localStorage.setItem('jambTimeLeft', timeLeft);
+        localStorage.setItem('jambCurrentSubject', currentSubject);
+        localStorage.setItem('jambLastQuestionIndexPerSubject', JSON.stringify(lastQuestionIndexPerSubject));
     }
 
     function restoreFromLocalStorage() {
-        const savedAnswers = JSON.parse(localStorage.getItem('postutmeAnswers')) || {};
+        const savedAnswers = JSON.parse(localStorage.getItem('jambAnswers')) || {};
         for (const [name, value] of Object.entries(savedAnswers)) {
             const radio = document.querySelector(`input[name="${name}"][value="${value}"]`);
             if (radio) radio.checked = true;
         }
-        const savedSubject = localStorage.getItem('postutmeCurrentSubject');
+        const savedSubject = localStorage.getItem('jambCurrentSubject');
         if (savedSubject) currentSubject = savedSubject;
-        lastQuestionIndexPerSubject = JSON.parse(localStorage.getItem('postutmeLastQuestionIndexPerSubject')) || {};
+        lastQuestionIndexPerSubject = JSON.parse(localStorage.getItem('jambLastQuestionIndexPerSubject')) || {};
     }
 
     function updateButtonStates() {
@@ -322,7 +322,7 @@ button[type="submit"]:hover {
         })
     );
     // Timer countdown
-    let timeLeft = parseInt(localStorage.getItem('postutmeTimeLeft')) || 90 * 60;
+    let timeLeft = parseInt(localStorage.getItem('jambTimeLeft')) || 2 * 60 * 60;
 
     function updateTimer() {
         const hrs = String(Math.floor(timeLeft / 3600)).padStart(2, '0');
@@ -351,21 +351,21 @@ button[type="submit"]:hover {
     updateButtonStates();
     updateTimer();
 
-    if (localStorage.getItem('postutmeStarted') !== 'true') {
-        localStorage.removeItem('postutmeAnswers');
-        localStorage.removeItem('postutmeTimeLeft');
-        localStorage.removeItem('postutmeCurrentSubject');
-        localStorage.removeItem('postutmeLastQuestionIndexPerSubject');
-        localStorage.setItem('postutmeStarted', 'true');
+    if (localStorage.getItem('jambStarted') !== 'true') {
+        localStorage.removeItem('jambAnswers');
+        localStorage.removeItem('jambTimeLeft');
+        localStorage.removeItem('jambCurrentSubject');
+        localStorage.removeItem('jambLastQuestionIndexPerSubject');
+        localStorage.setItem('jambStarted', 'true');
     }
 
     // Form submit
     form.addEventListener("submit", () => {
-        localStorage.removeItem('postutmeAnswers');
-        localStorage.removeItem('postutmeTimeLeft');
-        localStorage.removeItem('postutmeCurrentSubject');
-        localStorage.removeItem('postutmeLastQuestionIndexPerSubject');
-        localStorage.removeItem('postutmeStarted');
+        localStorage.removeItem('jambAnswers');
+        localStorage.removeItem('jambTimeLeft');
+        localStorage.removeItem('jambCurrentSubject');
+        localStorage.removeItem('jambLastQuestionIndexPerSubject');
+        localStorage.removeItem('jambStarted');
     });
 
     // Prevent backspace from leaving the page
@@ -420,8 +420,8 @@ window.onload = () => {
 <div class="toggle-container text-end p-3">
   <button onclick="toggleMode()">🌙 Toggle Dark Mode</button>
 </div>
-<footer>
-    <p class="footer-text" style="font-size: larger; font-weight: bolder; text-align: center;">Developed by Medic Adrenaline</p>
-  </footer>
+ <div class="footer" style="text-align: center; font-style: italic; font-size: small;">
+  &copy; 2025 <strong>Developed by Medic Adrenaline</strong> — All rights reserved.
+</div>
 </body>
 </html>

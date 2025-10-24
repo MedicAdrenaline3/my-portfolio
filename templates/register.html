@@ -3,7 +3,7 @@
 {% block title %}Register{% endblock %}
 
 {% block content %}
-<div class="form-container" style="color: blue; font-size: x-large; font-weight: bolder;">
+<div class="form-container" style="color: black; font-size: x-large; font-weight: bolder;">
     <h2>CREATE AN ACCOUNT</h2>
 
     {% with messages = get_flashed_messages() %}
@@ -47,7 +47,7 @@
         <button mode="submit" class="btn">Register</button>
     </form>
 
-    <p class="switch-link" style="color: darkblue; font-size: large; font-weight: bold;">
+    <p class="switch-link" style="color: darkblue; font-size: large; font-weight: bolder;">
         Already have an account? <a href="{{ url_for('login') }}" style="color: black; font-size:
         large; text-decoration: underline; font-weight: bolder;">Login here</a>
     </p>

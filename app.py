@@ -263,39 +263,19 @@ def ping():
 def app_instructions():
     return render_template('app_instructions.html')
 
-@app.route('/postutme-instructions' , methods=['GET', 'POST'])
-def postutme_instructions():
-    return render_template('postutme_instructions.html')
+@app.route('/jamb-instructions' , methods=['GET', 'POST'])
+def jamb_instructions():
+    return render_template('jamb_instructions.html')
 
-@app.route('/courses-cutoff' , methods=['GET', 'POST'])
-def courses_cutoff():
-    return render_template('courses_cutoff.html')
-
-@app.route('/ui-aggregate-calcuator', methods=['GET', 'POST'])
-def ui_aggregate_calculator():
-    aggregate = None
-    error = None
-    if request.method == 'POST':
-        try:
-            jamb = int(request.form['jamb'])
-            postutme = int(request.form['postutme'])
-            if not (0 <= jamb <= 400 and 0 <= postutme <= 100):
-                error = "Invalid JAMB or Post-UTME score range."
-            else:
-                # UI aggregate calculation: 50% JAMB + 50% Post-UTME
-                jamb_contrib = jamb / 8       # scales to 50
-                putme_contrib = postutme / 2  # scales to 50
-                aggregate = round(jamb_contrib + putme_contrib, 2)
-        except ValueError:
-            error = "Please enter valid numeric scores."
-    return render_template('ui_aggregate_calculator.html', aggregate=aggregate, error=error)
+@app.route('/courses-subject' , methods=['GET', 'POST'])
+def courses_subject():
+    return render_template('courses_subject.html')
 
 @app.route('/donate_pq', methods=['GET', 'POST'])
 def donate_pq():
     device_id = request.cookies.get('device_id')
     if not device_id:
         device_id = str(uuid.uuid4())
-
     if request.method == 'POST':
         title = request.form['title']
         name = request.form['name']
@@ -303,12 +283,10 @@ def donate_pq():
         exam_type = request.form['exam_type']
         description = request.form.get('description', '')
         file = request.files['file']
-
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             save_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             file.save(save_path)
-
             # Save to DB
             new_pq = DonatedPQ(
                 title=title,
@@ -318,18 +296,15 @@ def donate_pq():
                 filename=filename,
                 description=description,
                 upload_date=datetime.utcnow(),
-                device_id=device_id
-            )
+                device_id=device_id)
             db.session.add(new_pq)
             db.session.commit()
-
             flash("Past Question uploaded successfully!", "success")
             resp = make_response(redirect(url_for('donate_pq')))
             resp.set_cookie('device_id', device_id, max_age=60 * 60 * 24 * 365 * 2)  # 2 years
             return resp
         else:
             flash("Only PDF files are allowed.", "danger")
-
     # Show donated PQs
     donated_pqs = DonatedPQ.query.order_by(DonatedPQ.id.desc()).all()
     resp = make_response(render_template('donate_pq.html', pqs=donated_pqs, user_device=device_id))
@@ -419,33 +394,25 @@ def resend_otp():
         flash("New OTP sent.")
     return redirect(url_for('verify_otp'))
 
-
-from schools import SCHOOL_NAME
-
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         username_or_email = request.form.get('username_or_email')
         password = request.form.get('password')
-
         if not username_or_email or not password:
             flash('Please fill out both fields.', 'error')
             return redirect(url_for('login'))
-
         # Only fetch users that match the current school
         user = User.query.filter(
             ((User.username == username_or_email) | (User.email == username_or_email)) &
             (User.school == SCHOOL_NAME)
         ).first()
-
         if user and check_password_hash(user.password, password):
             session['user_id'] = user.id
             flash('Login successful!', 'success')
             return redirect(url_for('dashboard'))
-
         flash('Invalid login details.', 'error')
         return redirect(url_for('login'))
-
     return render_template('login.html')
 
 # Function to generate a random OTP
@@ -559,8 +526,8 @@ def initiate_paystack_payment(email, amount, reference):
         "email": email,
         "amount": amount * 100,  # Paystack expects amount in kobo
         "reference": reference,
-        "callback_url": "https://adrena-ui-postutme-cbt.onrender.com/payment_callback"  # ✅ update this when deployed
-    }
+        "callback_url": "https://adrena-jamb-cbt.onrender.com/payment_callback"  # ✅ update this when deployed
+        }
 
     response = requests.post("https://api.paystack.co/transaction/initialize", json=data, headers=headers)
     print("Paystack Response:", response.json())  # ✅ helpful for debugging
@@ -570,8 +537,7 @@ def initiate_paystack_payment(email, amount, reference):
 def verify_paystack_transaction(reference):
     secret_key = os.getenv('PAYSTACK_SECRET_KEY')
     headers = {
-        "Authorization": f"Bearer {secret_key}"
-    }
+        "Authorization": f"Bearer {secret_key}"}
     response = requests.get(f"https://api.paystack.co/transaction/verify/{reference}", headers=headers)
     return response.json()
 
@@ -581,38 +547,30 @@ def generate_pin():
     if 'user_id' not in session:
         flash("Login first.")
         return redirect(url_for('login'))
-
     user = User.query.get(session['user_id'])
-
     if request.method == 'POST':
         selected_modes = request.form.getlist('exam_mode')
         payment_method = request.form['payment_method']
         email = user.email
-
         if not selected_modes:
             flash('Select the checkbox below to proceed.', 'error')
             return redirect(url_for('generate_pin'))
-
         amount = calculate_amount(selected_modes)
         session['selected_modes'] = selected_modes
         session['payment_method'] = payment_method
         session['expected_amount'] = amount
-
         if payment_method == 'paystack':
             reference = str(uuid.uuid4())
             session['payment_reference'] = reference
-
             payment_response = initiate_paystack_payment(email, amount, reference)
             if payment_response.get('status'):
                 return redirect(payment_response['data']['authorization_url'])
             else:
                 flash('Payment initiation failed. Try again.', 'error')
                 return redirect(url_for('generate_pin'))
-
         elif payment_method in ['whatsapp_proof', 'whatsapp_chat']:
             flash('Please contact admin via WhatsApp with payment proof for PIN activation.', 'info')
             return redirect(url_for('generate_pin'))
-
     return render_template('generate_pin.html')
 
 # Payment callback route
@@ -622,16 +580,12 @@ def payment_callback():
     if not reference:
         flash("Missing payment reference.")
         return redirect(url_for('dashboard'))
-
     user_id = session.get('user_id')
     selected_modes = session.get('selected_modes')
-
     if not user_id or not selected_modes:
         flash("Session expired or invalid.")
         return redirect(url_for('dashboard'))
-
     verification = verify_paystack_transaction(reference)
-
     if verification.get("data", {}).get("status") == "success":
         user = User.query.get(user_id)
         generated_pins = []
@@ -639,19 +593,15 @@ def payment_callback():
             new_pin = Pin(
                 user_id=user.id,
                 pin_code=generate_unique_pin(),
-                exam_mode=mode
-            )
+                exam_mode=mode)
             db.session.add(new_pin)
             db.session.commit()
             generated_pins.append(f"{mode.upper()}: {new_pin.pin_code}")
-
         send_exam_pins_email(user.email, generated_pins)
         flash("Payment successful. PIN(s) sent to your email.")
     else:
         flash("Payment verification failed.")
-
     return redirect(url_for('dashboard'))
-
 
 @app.route('/dashboard')
 def dashboard():
@@ -685,21 +635,18 @@ def is_blocked_for_exam(user, exam_mode):
         return True, blocked_until
     return False, None
 
-@app.route('/exam/postutme', methods=['GET', 'POST'])
-def postutme_exam():
+@app.route('/exam/jamb', methods=['GET', 'POST'])
+def jamb_exam():
     user = db.session.get(User, session.get('user_id'))
     if not user:
         flash("Session expired. Please log in again.", "danger")
         return redirect(url_for('login'))
-
-    blocked, blocked_until = is_blocked_for_exam(user, 'postutme')
-    
-    return render_template(
-        'postutme.html',
+    blocked, blocked_until = is_blocked_for_exam(user, 'jamb')
+    return render_template('jamb.html',
         blocked=blocked,
         blocked_until=blocked_until,
         current_time=datetime.utcnow()  # ✅ This line fixes the Jinja2 error
-    )
+        )
 
 # =========================== #
 # PIN Verification Function   #
@@ -713,10 +660,8 @@ def verify_pin(pin, device_id, exam_mode, user):
     if blocked_until and blocked_until > datetime.utcnow():
         flash(f"You are blocked from accessing {exam_mode.upper()} until {blocked_until}.", "error")
         return False
-
     pin_entry = Pin.query.filter_by(pin_code=pin, exam_mode=exam_mode).first()
     attempts = user.pin_attempts.get(exam_mode, 0)
-
     if not pin_entry or pin_entry.school != SCHOOL_NAME:
         attempts += 1
         user.pin_attempts[exam_mode] = attempts
@@ -728,21 +673,17 @@ def verify_pin(pin, device_id, exam_mode, user):
             flash(f"Invalid PIN. Attempts left: {5 - attempts}", "error")
         db.session.commit()
         return False
-
     user.pin_attempts[exam_mode] = 0
     user.blocked_modes[exam_mode] = False
-
     if not pin_entry.device_id:
         pin_entry.device_id = device_id
         pin_entry.is_used = True
         db.session.commit()
         flash("PIN verified and locked to your device.", "success")
         return True
-
     if pin_entry.device_id == device_id:
         flash("PIN verified.", "success")
         return True
-
     flash("PIN already used on another device.", "error")
     return False
 
@@ -750,64 +691,65 @@ def verify_pin(pin, device_id, exam_mode, user):
 # =====================
 # PIN Verification Routes
 # =====================
-@app.route('/verify_postutme_pin', methods=['POST'])
-def verify_postutme_pin_route():
+@app.route('/verify_jamb_pin', methods=['POST'])
+def verify_jamb_pin_route():
     pin = request.form.get('pin')
     device_id = request.form.get('device_id')
     user = User.query.get(session.get('user_id'))
-    if user and verify_pin(pin, device_id, 'postutme', user):
-        flash("PIN verified successfully! Welcome to your POSTUTME dashboard.", "success")
-        return redirect(url_for('postutme_dashboard'))
+    if user and verify_pin(pin, device_id, 'jamb', user):
+        flash("PIN verified successfully! Welcome to your UTME dashboard.", "success")
+        return redirect(url_for('jamb_dashboard'))
     flash("Invalid or already used PIN. Please try again.", "error")
-    return redirect(url_for('postutme_exam'))
+    return redirect(url_for('jamb_exam'))
 
-
-############
-#POST UTME #
-############
-@app.route('/postutme_dashboard', methods=['GET', 'POST'])
-def postutme_dashboard():
+########
+# UTME #
+########
+@app.route('/jamb_dashboard', methods=['GET', 'POST'])
+def jamb_dashboard():
     user = db.session.get(User, session.get('user_id'))
     if not user:
         flash("Session expired. Please log in again.", "danger")
         return redirect(url_for('login'))
-
     if request.method == 'POST':
         selected_subjects = request.form.getlist('subjects')
-
+        # Ensure English is automatically included and not duplicated
         if 'English' in selected_subjects:
-            selected_subjects.remove('English')  # Prevent duplicate if manually checked
-
+            selected_subjects.remove('English')
         if len(selected_subjects) != 3:
             flash("You must select exactly 3 subjects. English is compulsory and automatically added.", "danger")
-            return redirect(url_for('postutme_dashboard'))
-        selected_subjects_full = ['English'] + selected_subjects  # Ensure English is always first
+            return redirect(url_for('jamb_dashboard'))
+        # English always comes first
+        selected_subjects_full = ['English'] + selected_subjects
         retake = request.form.get('retake') == 'true'
-        session['postutme_subjects'] = selected_subjects_full
+        session['jamb_subjects'] = selected_subjects_full
         session['current_subject'] = 'English'
-        session.pop('postutme_answers', None)
+        session.pop('jamb_answers', None)
         if not retake:
-            # Expire previous attempt
+            # Expire any ongoing attempt
             previous_attempt = ExamAttempt.query.filter_by(
-                user_id=user.id, exam_mode='POSTUTME', status='ongoing', school=SCHOOL_NAME
+                user_id=user.id,
+                exam_mode='JAMB',
+                status='ongoing',
+                school=SCHOOL_NAME
             ).first()
             if previous_attempt:
                 previous_attempt.status = 'expired'
                 db.session.commit()
             questions_per_subject = {}
             for subject in selected_subjects_full:
-                num_questions = 25
-                # Get all questions for subject, school, exam_mode
+                # 🧠 JAMB pattern: English 60, others 40
+                num_questions = 60 if subject.lower() == 'english' else 40
+                # Fetch all questions for this subject
                 all_qs = Question.query.filter(
                     func.lower(Question.subject) == subject.lower(),
-                    Question.exam_mode == 'POSTUTME',
+                    Question.exam_mode == 'JAMB',
                     Question.school == SCHOOL_NAME
                 ).all()
-
-                # Get previously used question IDs
+                # Collect all used question IDs
                 used_qs_records = ExamAttempt.query.with_entities(ExamAttempt.questions_json).filter(
                     ExamAttempt.user_id == user.id,
-                    ExamAttempt.exam_mode == 'POSTUTME'
+                    ExamAttempt.exam_mode == 'JAMB'
                 ).all()
                 used_ids = set()
                 for record in used_qs_records:
@@ -817,88 +759,104 @@ def postutme_dashboard():
                         used_ids.update(ids)
                 # Filter unseen questions
                 unseen_qs = [q for q in all_qs if q.id not in used_ids]
-                # Use unseen if enough, else reset pool
                 final_pool = unseen_qs if len(unseen_qs) >= num_questions else all_qs
                 if len(final_pool) < num_questions:
                     flash(f"Not enough questions for {subject} in {SCHOOL_NAME}. Try again later.", "danger")
-                    return redirect(url_for('postutme_dashboard'))
+                    return redirect(url_for('jamb_dashboard'))
                 random.shuffle(final_pool)
                 selected_ids = [q.id for q in final_pool[:num_questions]]
                 questions_per_subject[subject] = selected_ids
+            # Create a new attempt
             new_attempt = ExamAttempt(
                 user_id=user.id,
-                exam_mode='POSTUTME',
+                exam_mode='JAMB',
                 status='ongoing',
                 subjects=json.dumps(selected_subjects_full),
                 questions_json=json.dumps(questions_per_subject),
                 started_at=datetime.utcnow(),
-                school=SCHOOL_NAME
-            )
+                school=SCHOOL_NAME)
             db.session.add(new_attempt)
             db.session.commit()
-            session['postutme_attempt_id'] = new_attempt.id
+            session['jamb_attempt_id'] = new_attempt.id
         flash("Start New Exam or Retake Last Exam Below", "success")
-        return redirect(url_for('postutme_exam_page'))
-    # For GET
+        return redirect(url_for('jamb_exam_page'))
+    # For GET requests
     last_result = ExamResult.query.filter_by(
         user_id=user.id,
-        exam_mode='POSTUTME'
+        exam_mode='JAMB'
     ).order_by(ExamResult.id.desc()).first()
+    if session.get('show_jamb_flash'):
+        flash("PIN verified successfully! Welcome to your UTME dashboard.", "success")
+        session.pop('show_jamb_flash', None)
+    return render_template('jamb_dashboard.html', result=last_result, user=user)
 
-    if session.get('show_postutme_flash'):
-        flash("PIN verified successfully! Welcome to your POSTUTME dashboard.", "success")
-        session.pop('show_postutme_flash', None)
-    return render_template('postutme_dashboard.html', result=last_result, user=user)
 
-
-@app.route('/postutme_exam_page', methods=['GET'])
-def postutme_exam_page():
-    user = db.session.get(User, session.get('user_id'))
-    if not user:
+@app.route('/jamb_exam_page', methods=['GET'])
+def jamb_exam_page():
+    user_id = session.get('user_id')
+    if not user_id:
         flash("Session expired. Please log in again.", "danger")
         return redirect(url_for('login'))
-    user = User.query.get(session['user_id'])
-    attempt_id = session.get('postutme_attempt_id')
+
+    user = db.session.get(User, user_id)
+    attempt_id = session.get('jamb_attempt_id')
+
     if not attempt_id:
         flash("No active exam session found. Please restart from dashboard.", "danger")
-        return redirect(url_for('postutme_dashboard'))
+        return redirect(url_for('jamb_dashboard'))
+
     attempt = db.session.get(ExamAttempt, attempt_id)
     if not attempt or attempt.status != 'ongoing':
         flash("Invalid or expired attempt. Please restart from dashboard.", "danger")
-        return redirect(url_for('postutme_dashboard'))
-    selected_subjects = json.loads(attempt.subjects)
-    questions_json = json.loads(attempt.questions_json)
+        return redirect(url_for('jamb_dashboard'))
+
+    try:
+        selected_subjects = json.loads(attempt.subjects)
+        questions_json = json.loads(attempt.questions_json)
+    except (TypeError, json.JSONDecodeError):
+        flash("Error loading your exam data. Please start again.", "danger")
+        return redirect(url_for('jamb_dashboard'))
+
     questions = {}
+
     for subject in selected_subjects:
         q_ids = questions_json.get(subject, [])
         if not q_ids:
-            flash(f"No questions found for {subject}.", "danger")
-            return redirect(url_for('postutme_dashboard'))
+            flash(f"No questions found for {subject}. Please restart your exam.", "danger")
+            return redirect(url_for('jamb_dashboard'))
 
-        # Fetch only questions belonging to current school
-        q_list = Question.query.filter(
-            Question.id.in_(q_ids),
-            Question.school == SCHOOL_NAME
-        ).all()
-
-        # Maintain order of question IDs
-        q_list_sorted = sorted(
-            [q for q in q_list if q.id in q_ids],
-            key=lambda q: q_ids.index(q.id)
+        # Fetch questions efficiently in one query per subject
+        q_list = (
+            Question.query
+            .filter(Question.id.in_(q_ids), Question.school == SCHOOL_NAME)
+            .all()
         )
 
-        questions[subject] = [{
-            'id': q.id,
-            'question_text': q.question_text,
-            'question_image': q.question_image,
-            'option_a': q.option_a,
-            'option_b': q.option_b,
-            'option_c': q.option_c,
-            'option_d': q.option_d
-        } for q in q_list_sorted]
+        # Maintain question order
+        q_map = {q.id: q for q in q_list}
+        ordered_questions = []
+        for qid in q_ids:
+            q = q_map.get(qid)
+            if q:
+                ordered_questions.append({
+                    'id': q.id,
+                    'question_text': q.question_text,
+                    'question_image': q.question_image,
+                    'option_a': q.option_a,
+                    'option_b': q.option_b,
+                    'option_c': q.option_c,
+                    'option_d': q.option_d
+                })
+
+        # Fallback: prevent empty subject data
+        if not ordered_questions:
+            flash(f"Unable to load questions for {subject}.", "danger")
+            return redirect(url_for('jamb_dashboard'))
+
+        questions[subject] = ordered_questions
 
     return render_template(
-        'postutme_exam_page.html',
+        'jamb_exam_page.html',
         questions=questions,
         subjects=selected_subjects,
         user=user,
@@ -906,35 +864,42 @@ def postutme_exam_page():
         username=user.username
     )
 
-@app.route('/submit_postutme_exam', methods=['POST'])
-def submit_postutme_exam():
+@app.route('/submit_jamb_exam', methods=['POST'])
+def submit_jamb_exam():
     try:
-        app.logger.info("➡️ SUBMIT_POSTUTME_EXAM CALLED")
+        app.logger.info("➡️ SUBMIT_JAMB_EXAM CALLED")
         user = db.session.get(User, session.get('user_id'))
         if not user:
             flash("Session expired. Please log in again.", "danger")
             return redirect(url_for('login'))
 
-        attempt_id = session.get('postutme_attempt_id')
+        attempt_id = session.get('jamb_attempt_id')
         if not attempt_id:
             flash("No active exam session found.", "danger")
-            return redirect(url_for('postutme_dashboard'))
+            return redirect(url_for('jamb_dashboard'))
 
         attempt = db.session.get(ExamAttempt, attempt_id)
         if not attempt or attempt.status != 'ongoing':
             flash("Exam already submitted or not found.", "warning")
-            return redirect(url_for('postutme_dashboard'))
+            return redirect(url_for('jamb_dashboard'))
 
         selected_subjects = json.loads(attempt.subjects)
         questions_by_subject = json.loads(attempt.questions_json)
-
         if not selected_subjects:
             flash("Invalid subject selection.", "danger")
-            return redirect(url_for('postutme_dashboard'))
+            return redirect(url_for('jamb_dashboard'))
 
-        scores = {sub.lower(): {'correct': 0, 'total': 25} for sub in selected_subjects}
+        # Determine total questions per subject
+        scores = {}
+        for sub in selected_subjects:
+            if sub.lower() == 'english':
+                scores[sub.lower()] = {'correct': 0, 'total': 60}
+            else:
+                scores[sub.lower()] = {'correct': 0, 'total': 40}
+
         answers_dict = {}
 
+        # Grade each question
         for key, selected_option in request.form.items():
             if key.startswith('answers[') and key.endswith(']'):
                 try:
@@ -950,27 +915,30 @@ def submit_postutme_exam():
                     app.logger.warning(f"Error grading {key}: {e}")
                     continue
 
-        total_correct = 0
+        # Compute each subject score (over 100)
+        total_score = 0
         for subj, data in scores.items():
             correct = data['correct']
             total = data['total']
             over_100 = round((correct / total) * 100, 2)
             scores[subj]['over_100'] = over_100
-            total_correct += correct
+            total_score += over_100
 
-        total_possible = 100
-        percentage = round((total_correct / 100) * 100, 2)
+        # Compute overall percentage
+        percentage = round((total_score / 400) * 100, 2)
 
+        # Update attempt
         attempt.status = 'submitted'
         attempt.answers_json = json.dumps(answers_dict)
         attempt.submitted_at = datetime.utcnow()
         db.session.add(attempt)
 
+        # Save result
         result = ExamResult(
             user_id=user.id,
-            exam_mode='POSTUTME',
-            score=total_correct,
-            total=total_possible,
+            exam_mode='JAMB',
+            score=total_score,
+            total=400,
             percentage=percentage,
             subject_scores=json.dumps(scores),
             selected_subjects=json.dumps(selected_subjects),
@@ -979,33 +947,35 @@ def submit_postutme_exam():
         db.session.add(result)
         db.session.commit()
 
-        session.pop('postutme_subjects', None)
-        session.pop('postutme_answers', None)
-        session.pop('postutme_attempt_id', None)
+        # Clear session
+        session.pop('jamb_subjects', None)
+        session.pop('jamb_answers', None)
+        session.pop('jamb_attempt_id', None)
 
-        flash("Exam submitted successfully.", "success")
-        return redirect(url_for('postutme_result', result_id=result.id))
+        flash("JAMB exam submitted successfully.", "success")
+        return redirect(url_for('jamb_result', result_id=result.id))
 
     except Exception as e:
-        app.logger.error(f"Exception in submit_postutme_exam: {e}")
+        app.logger.error(f"Exception in submit_jamb_exam: {e}")
         flash(f"Error during submission: {e}", "danger")
-        return redirect(url_for('postutme_exam_page'))
+        return redirect(url_for('jamb_exam_page'))
 
-@app.route('/retake_postutme_exam', methods=['POST'])
-def retake_postutme_exam():
+
+@app.route('/retake_jamb_exam', methods=['POST'])
+def retake_jamb_exam():
     user = db.session.get(User, session.get('user_id'))
     if not user:
         flash("Session expired. Please log in again.", "danger")
         return redirect(url_for('login'))
 
-    # Get the latest submitted POSTUTME attempt
+    # Get the latest submitted JAMB attempt
     previous_attempt = ExamAttempt.query.filter_by(
-        user_id=user.id, exam_mode='POSTUTME', status='submitted'
+        user_id=user.id, exam_mode='JAMB', status='submitted'
     ).order_by(ExamAttempt.id.desc()).first()
 
     if not previous_attempt:
-        flash("No previous POSTUTME exam found to retake.", "danger")
-        return redirect(url_for('postutme_dashboard'))
+        flash("No previous attempt found to retake.", "danger")
+        return redirect(url_for('jamb_dashboard'))
 
     try:
         previous_subjects = json.loads(previous_attempt.subjects)
@@ -1022,61 +992,59 @@ def retake_postutme_exam():
 
     except (ValueError, TypeError, json.JSONDecodeError) as e:
         app.logger.error(f"❌ Error decoding previous attempt: {e}")
-        flash("Previous POSTUTME exam data is corrupted or incomplete.", "danger")
-        return redirect(url_for('postutme_dashboard'))
+        flash("Previous UTME exam data is corrupted or incomplete.", "danger")
+        return redirect(url_for('jamb_dashboard'))
 
-    # Expire any ongoing POSTUTME attempt
+    # Expire any ongoing JAMB attempt
     ongoing = ExamAttempt.query.filter_by(
-        user_id=user.id, exam_mode='POSTUTME', status='ongoing'
+        user_id=user.id, exam_mode='JAMB', status='ongoing'
     ).first()
     if ongoing:
         ongoing.status = 'expired'
         db.session.commit()
 
     # Use constant for duration (in seconds)
-    POSTUTME_DURATION = 5400
+    JAMB_DURATION = 7200
 
     # Create a new retake attempt
     new_attempt = ExamAttempt(
         user_id=user.id,
-        exam_mode='POSTUTME',
+        exam_mode='JAMB',
         status='ongoing',
         is_retake=True,
         subjects=json.dumps(previous_subjects),
         questions_json=json.dumps(previous_qids),
         started_at=datetime.utcnow(),
-        time_remaining=POSTUTME_DURATION
+        time_remaining=JAMB_DURATION
     )
     db.session.add(new_attempt)
     db.session.commit()
 
     # Prepare session
-    session['postutme_subjects'] = previous_subjects
-    session['postutme_attempt_id'] = new_attempt.id
-    session.pop('postutme_answers', None)
-    session.pop('postutme_time_left', None)  # Optional cleanup
+    session['jamb_subjects'] = previous_subjects
+    session['jamb_attempt_id'] = new_attempt.id
+    session.pop('jamb_answers', None)
+    session.pop('jamb_time_left', None)  # Optional cleanup
 
     flash("Start New Exam or Retake Last Exam Below. Good luck!", "success")
-    return redirect(url_for('postutme_exam_page'))  # Rename if needed
+    return redirect(url_for('jamb_exam_page'))  # Rename if needed
 
-@app.route('/postutme_result/<int:result_id>')
-def postutme_result(result_id):
+@app.route('/jamb_result/<int:result_id>')
+def jamb_result(result_id):
     result = ExamResult.query.get_or_404(result_id)
     user = User.query.get(result.user_id)
     username = user.username if user else "Anonymous"
 
-    # Get related exam attempt
+    # Get latest submitted attempt for this user
     attempt = ExamAttempt.query.filter_by(
         user_id=result.user_id,
-        exam_mode='POSTUTME',
+        exam_mode='JAMB',
         status='submitted'
     ).order_by(ExamAttempt.id.desc()).first()
 
     if attempt and attempt.started_at and attempt.submitted_at:
         duration = attempt.submitted_at - attempt.started_at
         exam_duration = str(duration).split('.')[0]
-
-        # ✅ Format the exam date here
         exam_date = attempt.started_at.strftime('%d %B %Y')
     else:
         exam_duration = "N/A"
@@ -1092,6 +1060,7 @@ def postutme_result(result_id):
         questions_by_subject = json.loads(attempt.questions_json or '{}')
         answers = json.loads(attempt.answers_json or '{}')
 
+        # Fetch all questions used in attempt
         all_qids = [qid for qlist in questions_by_subject.values() for qid in qlist]
         questions = Question.query.filter(Question.id.in_(all_qids)).all()
         questions_dict = {q.id: q for q in questions}
@@ -1100,6 +1069,7 @@ def postutme_result(result_id):
             subject_cap = subject.capitalize()
             qids = questions_by_subject.get(subject, [])
             correct_count = 0
+            total_questions = 60 if subject.lower() == 'english' else 40
             questions_grouped[subject_cap] = []
 
             for idx, qid in enumerate(qids, start=1):
@@ -1128,27 +1098,31 @@ def postutme_result(result_id):
                     'explanation': q.explanation or "No explanation."
                 })
 
-            score_over_25 = correct_count
-            total_score += score_over_25
-            correct_answers += correct_count
-
+            # Score per subject
+            over_100 = round((correct_count / total_questions) * 100, 2)
             detailed_scores[subject_cap] = {
                 'correct': correct_count,
-                'total': 25,
-                'over_100': round((correct_count / 25) * 100, 2)
+                'total': total_questions,
+                'over_100': over_100
             }
-    percentage = round((total_score / 100) * 100, 2) if subject_order else 0
 
-    session.pop('postutme_subjects', None)
-    session.pop('postutme_question_ids', None)
-    session.pop('postutme_answers', None)
+            total_score += over_100
+            correct_answers += correct_count
+
+    # Compute overall percentage (400 max)
+    percentage = round((total_score / 400) * 100, 2) if subject_order else 0
+
+    # Clear session remnants
+    session.pop('jamb_subjects', None)
+    session.pop('jamb_question_ids', None)
+    session.pop('jamb_answers', None)
 
     return render_template(
-        "postutme_result.html",
+        "jamb_result.html",
         result=result,
         username=username,
         exam_duration=exam_duration,
-        exam_date=exam_date,  # ✅ Don't forget to pass this
+        exam_date=exam_date,
         correct_answers=correct_answers,
         detailed_scores=detailed_scores,
         total_score=total_score,
@@ -1156,29 +1130,33 @@ def postutme_result(result_id):
         grouped_questions=questions_grouped
     )
 
-@app.route('/postutme_leaderboard')
-def postutme_leaderboard():
+
+@app.route('/jamb_leaderboard')
+def jamb_leaderboard():
     user = db.session.get(User, session.get('user_id'))
     if not user:
         flash("Session expired. Please log in again.", "danger")
         return redirect(url_for('login'))
+
     print("🔍 Logged-in user school:", user.school)
 
+    # Fetch all JAMB results in user's school
     raw_leaderboard = db.session.query(
         ExamResult,
         User.username
     ).join(User, ExamResult.user_id == User.id).filter(
-        ExamResult.exam_mode == 'POSTUTME',
+        ExamResult.exam_mode == 'JAMB',
         ExamResult.school == user.school
-    ).order_by(ExamResult.percentage.desc(), ExamResult.created_at.asc()).all()
+    ).order_by(ExamResult.created_at.asc()).all()
 
     leaderboard = []
-    result = None  # 🔥 Fix: define result upfront
+    result = None
 
-    for idx, (res, username) in enumerate(raw_leaderboard, start=1):
+    for res, username in raw_leaderboard:
+        # Find matching attempt
         attempt = ExamAttempt.query.filter_by(
             user_id=res.user_id,
-            exam_mode='POSTUTME',
+            exam_mode='JAMB',
             status='submitted',
             subjects=res.selected_subjects
         ).filter(
@@ -1188,6 +1166,7 @@ def postutme_leaderboard():
         if not attempt or attempt.is_retake:
             continue
 
+        # Calculate exam duration
         if attempt.started_at and attempt.submitted_at:
             duration = attempt.submitted_at - attempt.started_at
             exam_duration = str(duration).split('.')[0]
@@ -1197,32 +1176,54 @@ def postutme_leaderboard():
             exam_duration = "N/A"
             exam_date = res.created_at.strftime('%Y-%m-%d %H:%M')
             duration_seconds = float('inf')
+
+        # Deserialize subject scores
         subject_scores = json.loads(res.subject_scores or '{}')
         if len(subject_scores) < 4:
-            continue
-        raw_correct = sum(s['correct'] for s in subject_scores.values())
-        total_possible = 100
-        percentage = round((raw_correct / total_possible) * 100, 2) if total_possible else 0
+            continue  # Skip incomplete results
+
+        # JAMB: English = 60 questions, others = 40
+        total_score = 0
+        total_possible = 400
+        for subj, data in subject_scores.items():
+            subj_lower = subj.lower()
+            correct = data.get('correct', 0)
+
+            if 'english' in subj_lower:
+                # English normalized to 100 marks from 60 questions
+                subj_score = (correct / 60) * 100
+            else:
+                # Others normalized to 100 marks from 40 questions
+                subj_score = (correct / 40) * 100
+
+            total_score += subj_score
+
+        percentage = round((total_score / total_possible) * 100, 2)
+
         leaderboard.append({
             'school_name': user.school,
             'name': username,
-            'score': f"{raw_correct}/{total_possible}",
+            'score': f"{round(total_score, 2)}/400",
             'percentage': percentage,
             'duration_seconds': duration_seconds,
             'exam_duration': exam_duration,
             'date': exam_date
         })
+
         if not result:
-            result = res  # just grab the first one to avoid error in render_template
+            result = res  # for template rendering safety
+
+    # Sort leaderboard (by % desc, then time asc)
     sorted_leaderboard = sorted(leaderboard, key=lambda x: (-x['percentage'], x['duration_seconds']))
 
-    # Assign ranks with tie-handling
+    # Assign rank with tie-handling
     top_20 = []
     rank = 1
     prev_entry = None
+
     for entry in sorted_leaderboard:
         if prev_entry and entry['percentage'] == prev_entry['percentage'] and entry['duration_seconds'] == prev_entry['duration_seconds']:
-            entry['rank'] = rank
+            entry['rank'] = rank  # same rank for ties
         else:
             entry['rank'] = len(top_20) + 1
             rank = entry['rank']
@@ -1230,63 +1231,89 @@ def postutme_leaderboard():
         if len(top_20) == 20:
             break
         prev_entry = entry
-    return render_template('postutme_leaderboard.html', leaderboard=top_20, result=result, school_name=user.school)
 
-@app.route('/postutme_past_results')
-def postutme_past_results():
+    return render_template('jamb_leaderboard.html', leaderboard=top_20, result=result, school_name=user.school)
+
+
+@app.route('/jamb_past_results')
+def jamb_past_results():
     user = db.session.get(User, session.get('user_id'))
     if not user:
         flash("Session expired. Please log in again.", "danger")
         return redirect(url_for('login'))
 
-    last_results = ExamResult.query.filter_by(user_id=user.id, exam_mode='POSTUTME')\
-                                   .order_by(ExamResult.created_at.desc()).all()
+    last_results = (
+        ExamResult.query.filter_by(user_id=user.id, exam_mode='JAMB')
+        .order_by(ExamResult.created_at.desc())
+        .all()
+    )
+
     result_data = []
+
     for result in last_results:
         scores = json.loads(result.subject_scores or '{}')
         subjects_with_scores = []
-        total_raw_score = 0
-        total_possible = 0
+        total_score_over_400 = 0  # JAMB total mark scale
+        total_subjects = 0
 
         for subject, data in scores.items():
             subject_name = subject.capitalize()
-            subject_score = round(data.get('correct', 0), 2)
-            score_over_100 = round(data.get('over_100', 0), 2)
-            subjects_with_scores.append(f"{subject_name} - {subject_score}/25")
-            total_raw_score += subject_score
-            total_possible += 25  # Each subject is over 10
+            correct = data.get('correct', 0)
+
+            # English has 60 questions; others 40 each
+            if subject_name.lower() == "english":
+                total_questions = 60
+            else:
+                total_questions = 40
+
+            # Convert to over 100 for uniform scoring
+            score_over_100 = round((correct / total_questions) * 100, 2)
+            subjects_with_scores.append(f"{subject_name} - {score_over_100}/100")
+
+            total_score_over_400 += score_over_100
+            total_subjects += 1
 
         subjects_display = ', '.join(subjects_with_scores) if subjects_with_scores else "No subjects"
 
-        # Calculate accurate percentage
-        percentage = round((total_raw_score / total_possible) * 100, 2) if total_possible else 0
+        # Calculate total JAMB percentage over 400
+        total_possible = total_subjects * 100
+        percentage = round((total_score_over_400 / total_possible) * 100, 2) if total_possible else 0
 
-        attempt = ExamAttempt.query.filter_by(
-            user_id=user.id,
-            exam_mode='POSTUTME',
-            status='submitted',
-            subjects=result.selected_subjects
-        ).filter(
-            ExamAttempt.submitted_at <= result.created_at
-        ).order_by(ExamAttempt.submitted_at.desc()).first()
+        # Match attempt timing for display
+        attempt = (
+            ExamAttempt.query.filter_by(
+                user_id=user.id,
+                exam_mode='JAMB',
+                status='submitted',
+                subjects=result.selected_subjects,
+            )
+            .filter(ExamAttempt.submitted_at <= result.created_at)
+            .order_by(ExamAttempt.submitted_at.desc())
+            .first()
+        )
 
         if attempt and attempt.started_at and attempt.submitted_at:
             duration = attempt.submitted_at - attempt.started_at
             exam_duration = str(duration).split('.')[0]
             exam_date = attempt.submitted_at.strftime('%d %B %Y')
         else:
-            exam_duration = str(duration).split('.')[0]
+            exam_duration = "N/A"
             exam_date = result.created_at.strftime('%d %B %Y')
 
         result_data.append({
             'subject': subjects_display,
-            'score': total_raw_score,
-            'total': total_possible,
+            'score': total_score_over_400,   # Total out of 400
+            'total': 400,
             'percentage': percentage,
             'date': exam_date,
             'time_spent': exam_duration
         })
-    return render_template('postutme_past_results.html', result_data=result_data, result=result if last_results else None)
+
+    return render_template(
+        'jamb_past_results.html',
+        result_data=result_data,
+        result=last_results[0] if last_results else None
+    )
 
 
 #  ADRENA AI ROUTE

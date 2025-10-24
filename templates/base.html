@@ -8,18 +8,33 @@
     {% block styles %}{% endblock %}
     <style>
         body {
-            font-family: 'Segoe UI', sans-serif;
-            background-image: url("{{ url_for('static', filename='images/ui_background.jpg') }}");
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            margin: 0;
-            padding: 0;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            overflow-x: hidden;
-        }
+  font-family: 'Segoe UI', sans-serif;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  position: relative;
+  z-index: 1;
+}
+
+/* Background overlay */
+body::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("{{ url_for('static', filename='images/jamb_background.jpg') }}");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.70;        /* faintness */
+  filter: blur(4px);    /* soft blur effect */
+  z-index: -1;          /* stays behind content */
+}
 
         .container {
             width: 100%;
@@ -32,7 +47,7 @@
         .header {
             text-align: center;
             padding: 5px 0;
-            background-color: rgba(0, 0, 0, 0.801);
+            background-color: rgba(0, 0, 0, 0.719);
             animation: fadeInDown 1s ease;
             font-size: 2rem;
             width: 100%;
@@ -44,7 +59,7 @@
             animation: slideRightToLeft 15s linear infinite;
             font-weight: bold;
             font-size: 24px;
-            color: #fff;
+            color: #fffffff1;
         }
 
         @keyframes slideRightToLeft {
@@ -58,7 +73,7 @@
             left: 0.5%;
             height: 22%;
             width: 14%;
-            background-color: rgba(255, 255, 255, 0.815);
+            background-color: rgb(255, 255, 255);
             animation: fadeInDown 1s ease;
             z-index: 1001;
         }
@@ -67,7 +82,7 @@
             background-color: #ffffff1e;
             padding: 30px;
             border-radius: 12px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.26);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.137);
             animation: fadeIn 0.8s ease;
             width: 100%;
         }
@@ -267,7 +282,7 @@
 
 <body>
     <header class="header">
-        <h1 class="moving-text">WELCOME TO UNI-IBADAN POST-UTME CBT PRACTICE</h1>
+        <h1 class="moving-text">WELCOME TO ADRENA JAMB SIMULATOR APP</h1>
         {% block subheader %}{% endblock %}
     </header>
 

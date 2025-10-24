@@ -116,6 +116,139 @@
                 padding: 1rem;
             }
         }
+        
+/* Floating Free PIN Box */
+.free-pin-popup {
+  position: absolute;
+  top: 90px; /* reduced top space */
+  right: 20px;
+  width: 150px; /* slightly smaller for a neat look */
+  background: rgb(255, 255, 255);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+  border-radius: 12px;
+  padding: 6px 4px; /* reduced inner padding */
+  z-index: 9999;
+  animation: fadeIn 1s ease-in-out;
+  text-align: center;
+}
+.free-pin-popup .close-btn:hover {
+  color: #000;
+}
+/* Gift Icon */
+.free-pin-popup .gift-icon {
+  width: 60px; /* smaller gift icon */
+  margin-top: 2px; /* tighten space from top */
+  margin-bottom: -30px;
+  animation: bounce 2s infinite;
+}
+/* Title */
+.free-pin-popup h3 {
+  color: #007a3dce;
+  font-size: 0.95rem;
+  margin: 20px 0 6px; /* compact spacing */
+}
+/* Description */
+.free-pin-popup p {
+  font-size: 0.8rem;
+  color: rgba(0, 128, 0, 0.774);
+  margin: 3px 0 6px; /* reduced gap between lines */
+}
+/* Button */
+.free-pin-popup .claim-btn {
+  background: #00b35ac2;
+  color: white;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: bold;
+  transition: 0.3s;
+}
+.free-pin-popup .claim-btn:hover {
+  background: #00994f;
+}
+/* Close Button (X) */
+.free-pin-popup .close-btn {
+  position: absolute;
+  top: 4px;
+  right: 8px;
+  font-size: 18px;
+  color: #007a3d;
+  font-weight: bold;
+  cursor: pointer;
+  z-index: 10000;
+  transition: 0.3s;
+}
+
+.free-pin-popup .close-btn:hover {
+  color: #000;
+  transform: scale(1.2);
+}
+
+/* Claim Modal */
+.claim-modal {
+  display: none;
+  position: fixed;
+  z-index: 10000;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  justify-content: center;
+  align-items: center;
+}
+.modal-content {
+  background: white;
+  width: 90%;
+  color: #00c853;
+  max-width: 400px;
+  border-radius: 15px;
+  padding: 20px;
+  text-align: center;
+  animation: popIn 0.5s ease;
+  box-shadow: 0 6px 25px rgba(0,0,0,0.3);
+}
+.close-btn {
+  float: right;
+  font-size: 24px;
+  color: #555;
+  cursor: pointer;
+}
+.close-btn:hover {
+  color: red;
+}
+/* Animations */
+@keyframes popIn {
+  from { transform: scale(0.8); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+/* Countdown timer display */
+.free-pin-popup .countdown {
+  margin-top: 6px;
+  font-size: 0.78rem;
+  color: #ff5722;
+  font-weight: 600;
+  background: rgba(255, 87, 34, 0.1);
+  border-radius: 6px;
+  padding: 3px 0;
+  transition: 0.3s ease;
+}
+
+/* When countdown hits 0, fade out the popup */
+.free-pin-popup.hide {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.8s ease, visibility 0.8s ease;
+}
+
     </style>
 </head>
 <body>
@@ -145,7 +278,7 @@
         <form method="POST" action="{{ url_for('generate_pin') }}">
             <div class="form-container">
                 <label>
-                    <input type="checkbox" name="exam_mode" value="postutme">
+                    <input type="checkbox" name="exam_mode" value="jamb">
                     <span style="font-style: italic; font-family: monospace; font-weight: bold; font-size: x-large;">Click the checkbox to proceed with Paystack (₦2000)</span>
                 </label>
             </div>
@@ -175,14 +308,42 @@
             <a href="{{ url_for('dashboard') }}" style="text-decoration: underline;">Back to Dashboard</a>
         </p>
     </div>
-    <footer>
-    <p class="footer-text" style="font-size: larger; font-weight: bolder; text-align: center;">Developed by Medic Adrenaline</p>
-  </footer>
+     <!-- Small Floating Free PIN Box -->
+<div id="freePinPopup" class="free-pin-popup">
+  <span class="close-btn" onclick="closePopup()">&times;</span>
+  <div class="popup-content">
+    <img src="{{ url_for('static', filename='images/gift_box.gif') }}" alt="Gift Box" class="gift-icon">
+    <h3>🎉 Early Access Offer!</h3>
+    <p>Get your <strong>FREE PIN</strong> now & start practicing before pins go on sale!</p>
+    <button class="claim-btn" onclick="openClaimModal()">Claim Now</button>
+  </div>
+</div>
+
+<!-- Modal for Claim Instructions -->
+<div id="claimModal" class="claim-modal">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeClaimModal()">&times;</span>
+    <h3>🎁 How to Get Your Free PIN</h3>
+    <ol style="text-align:left;">
+      <li>Share this CBT website link with friends and active jambite groups 👥</li>
+      <li>Take a <strong>screenshot</strong> showing your post 📸</li>
+      <li>Send the screenshot & your <strong>registered username</strong> to the admin below 👇 
+        for your pin (<strong>Note:</strong> Free pins are only valid for <strong>10days</strong>)</li>
+    </ol>
+    <a href="https://wa.me/2348135047400?text=Hello%20Admin!%20I%20have%20shared%20the%20CBT%20link%20and%20would%20like%20to%20claim%20my%20Free%20PIN." 
+       target="_blank" 
+       class="claim-btn" style="font-weight: bolder;">📩 Message Admin on WhatsApp</a>
+  </div>
+</div>
+
+<div class="footer" style="text-align: center; font-style: italic; font-size: small;">
+  &copy; 2025 <strong>Developed by Medic Adrenaline</strong> — All rights reserved.
+</div>
+
 
     <script>
         const bankDetails = document.getElementById('bank-details');
         const select = document.getElementById('payment_method');
-
         select.addEventListener('change', () => {
             if (select.value === 'whatsapp_proof') {
                 bankDetails.style.display = 'block';
@@ -190,7 +351,6 @@
                 bankDetails.style.display = 'none';
             }
         });
-
         function toggleTheme() {
             const html = document.documentElement;
             const current = html.getAttribute('data-theme');
@@ -198,13 +358,72 @@
             html.setAttribute('data-theme', next);
             localStorage.setItem('theme', next);
         }
-
         window.onload = () => {
             const savedTheme = localStorage.getItem('theme');
             if (savedTheme) {
                 document.documentElement.setAttribute('data-theme', savedTheme);
             }
         };
-    </script>
+
+// <<-- Free PIN with 15-day live countdown (days, hours, mins) -->>
+window.addEventListener("load", function () {
+  const popup = document.getElementById("freePinPopup");
+  const countdownEl = document.createElement("p");
+  countdownEl.id = "countdownTimer";
+  countdownEl.className = "countdown";
+  popup.querySelector(".popup-content").appendChild(countdownEl);
+  // Unique key per user
+  const userKey = "freePinStartDate_" + (window.username || "guest");
+  // Get or set start date
+  let startDate = localStorage.getItem(userKey);
+  if (!startDate) {
+    startDate = new Date().toISOString();
+    localStorage.setItem(userKey, startDate);
+  }
+  const start = new Date(startDate);
+  const totalDuration = 15 * 24 * 60 * 60 * 1000; // 15 days
+  // Update countdown continuously
+  function updateCountdown() {
+    const now = new Date();
+    const elapsed = now - start;
+    const remaining = totalDuration - elapsed;
+    if (remaining <= 0) {
+      // Offer expired
+      countdownEl.textContent = "🎁 Offer expired!";
+      popup.classList.add("hide");
+      setTimeout(() => (popup.style.display = "none"), 800);
+      localStorage.removeItem(userKey);
+      clearInterval(timer);
+      return;
+    }
+    // Calculate days, hours, minutes
+    const days = Math.floor(remaining / (1000 * 60 * 60 * 24));
+    const hrs = Math.floor((remaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const mins = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
+    countdownEl.textContent = `🎁 Offer expires in ${days}day${days !== 1 ? "s" : ""}:${hrs}hr${hrs !== 1 ? "s" : ""}:${mins}min${mins !== 1 ? "s" : ""}`;
+  }
+  // Initially hidden
+  popup.style.display = "none";
+  // Show after 2 seconds
+  setTimeout(() => {
+    popup.style.display = "block";
+    updateCountdown();
+  }, 2000);
+  // Update every 1 minute
+  const timer = setInterval(updateCountdown, 60 * 1000);
+});
+// Close popup
+function closePopup() {
+  document.getElementById("freePinPopup").style.display = "none";
+}
+// Open claim modal
+function openClaimModal() {
+  document.getElementById("claimModal").style.display = "flex";
+}
+// Close claim modal
+function closeClaimModal() {
+  document.getElementById("claimModal").style.display = "none";
+}
+ </script>
 </body>
 </html>

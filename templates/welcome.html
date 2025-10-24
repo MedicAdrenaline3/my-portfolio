@@ -1,8 +1,9 @@
 {% extends "base.html" %}
 
-{% block title %}WELCOME{% endblock %}
+{% block title %}JAMB CBT | Welcome{% endblock %}
 
 {% block content %}
+
 <style>
   .welcome-container {
     display: flex;
@@ -16,19 +17,57 @@
     box-sizing: border-box;
   }
 
+  body {
+  position: relative;
+  min-height: 100vh;
+  margin: 0;
+  background: linear-gradient(to right, #007a3d, #ffffff);
+  overflow-x: hidden;
+}
+
+/* Add a blurred centered logo overlay */
+body::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 600px; /* adjust size as needed */
+  height: 400px;
+  background: url("{{ url_for('static', filename='images/jamb_background.jpg') }}") no-repeat center center;
+  background-size: contain;
+  opacity: 0.30; /* faint */
+  filter: blur(4px); /* creates that soft blur */
+  transform: translate(-50%, -50%);
+  z-index: 0; /* behind all content */
+}
+
+/* Make sure all page content stays above the blurred logo */
+* {
+  position: relative;
+  z-index: 1;
+}
+
   .header-container img {
     position: absolute;
-    top: -8%;
-    left: -8%;
-    max-width: 200px;
     height: auto;
     margin-bottom: 1rem;
-  }
+    width: 100px;             /* adjust for size */
+    height: auto;            /* keep proportions */
+    border-radius: 10px;     /* optional — soft corners */
+    opacity: 2.0;            /* slightly subtle */
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    top: -25px;               /* space from the top */
+    right: 300px;             /* space from the right edge */
+}
+
+  .header-container img:hover {
+    transform: scale(1.05);
+    opacity: 1;}
 
   #welcome-text-container {
     font-size: 1.6rem;
     position: absolute;
-    top: 13%;
+    top: 15%;
     font-style: italic;
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
     font-weight: bolder;
@@ -41,7 +80,7 @@
 
   .cursor {
     display: inline-block;
-    color: black;
+    color: #004225;
     font-weight: bolder;
     animation: blink 0.7s steps(2, start) infinite;
   }
@@ -61,13 +100,18 @@
   }
 
   .auth-buttons a {
-    background-color: black;
+    background-color: #004225;
     color: white;
     font-weight: bold;
-    padding: 0.4rem 0.8rem;
-    font-size: 1.0rem;
+    padding: 0.6rem 1.2rem;
+    font-size: 1.1rem;
     border-radius: 8px;
     text-decoration: none;
+    transition: 0.3s ease-in-out;
+  }
+
+  .auth-buttons a:hover {
+    background-color: #007a3d;
   }
 
   .info-links {
@@ -97,7 +141,7 @@
     }
 
     .auth-buttons a {
-      font-size: 1.5rem;
+      font-size: 1.4rem;
     }
 
     .info-links a {
@@ -107,16 +151,16 @@
 
   #countdown-container {
     position: absolute;
-    top: 3%;
+    top: -5%;
     right: 1%;
     margin-top: 50px;
     margin-bottom: 30px;
-    color: black;
+    color: #004225;
   }
 
   #countdown {
     position: absolute;
-    top: 82%;
+    top: 80%;
     right: 15%;
     background-color: #f0f0f0;
     display: inline-block;
@@ -125,20 +169,22 @@
     color: #333;
   }
 </style>
+
 <!-- Countdown Section -->
 <div id="countdown-container" class="text-center">
-  <h2 style="color: red; font-weight: bold; font-size: 1.3rem; font-style: italic;">⏳ PUTME Countdown:</h2>
+  <h2 style="color: red; font-weight: bold; font-size: 1.3rem; font-style: italic;">⏳ JAMB CBT Countdown:</h2>
   <div id="countdown" style="font-size: 1.0rem; font-weight: bold;"></div>
 </div>
 
 <div class="welcome-container">
   <div class="header-container">
-    <img src="{{ url_for('static', filename='images/ui_logo.png') }}" alt="Logo">
+    <img src="{{ url_for('static', filename='images/adrena_logo.jpg') }}" alt="Adrena Logo">
   </div>
 
   <div id="welcome-text-container">
     <span id="welcome-text" class="welcome-text"></span><span class="cursor">|</span>
   </div>
+
   <div class="auth-buttons">
     <a href="{{ url_for('register') }}">Register</a>
     <a href="{{ url_for('login') }}">Login</a>
@@ -146,31 +192,32 @@
 
   <div class="info-links">
     <a href="/app-instructions">App Info (Read me)</a>
-    <a href="/postutme-instructions">UI PUTME Instructions</a>
-    <a href="/courses-cutoff">Courses & Cut-off</a>
-    <a href="{{ url_for('ui_aggregate_calculator') }}">Aggregate Calculator</a>
+    <a href="/jamb-instructions">JAMB Instructions</a>
+    <a href="/courses-subject">Courses & Subject-combination</a>
     <a href="/adrena-ai">Adrena AI</a>
     <a href="/updates">Admission Updates</a>
-    <a href="/donate_pq">Donate PQ</a>
+    <a href="/donate_pq">Donate/Download PQs</a>
     <a href="https://wa.me/2348135047400" target="_blank">Any issue? Contact Admin</a></strong>
 </div>
 
-<audio id="typing-sound" src="{{ url_for('static', filename='sounds/tyng.mp3') }}"></audio>
+  <audio id="typing-sound" src="{{ url_for('static', filename='sounds/typin.mp3') }}"></audio>
+</div>
+
 <script>
   const messages = [
-  "Dear UI Aspirant 🤗, welcome to Adrena Exam Volta!",
-  "I'm Adrena AI — feel free to ask me anything 🤔.",
-  "No questions yet?",
-  "Wait... let me ask you — did you crush UTME? 🤔",
-  "Really? 😮 Wow, you're ahead of the game!",
-  "Next up is PUTME... PUTME... PUTME...",
-  "But do you know how to score 95% with ease?",
-  "No worries — Adrena has you covered!",
-  "Please read the UI PUTME instructions above, and check the app info for a smooth experience.",
-  "Use the aggregate calculator to input your JAMB and PUTME scores — it will compute your final aggregate.",
-  "✅ Now dive in Practice real-time PUTME questions---Get instant grading and explanations",
-  "Access exam updates and study material, donate PQ for awards, Progress. Excel. Learn smart and at your own pace!"
-];
+    "Hello dear Jambites 👋, welcome to Adrena JAMB CBT!",
+    "I'm Adrena AI — your exam buddy and smart guide 🤖.",
+    "Ready to test your JAMB skills?",
+    "Be calm, focused, and confident — you've got this 💪.",
+    "Did you know? Practicing CBT-style questions boosts your real exam speed!",
+    "Every second counts — manage your time wisely ⏰.",
+    "Need help? Adrena AI is right here to assist you 🧠.",
+    "Please read the JAMB CBT instructions carefully before starting your test.",
+    "Access all four subjects — English and three of your choice 📚.",
+    "Get real-time grading, instant feedback, and performance tracking ✅.",
+    "Learn smart. Practice consistently. Excel in your JAMB CBT 🏆."
+  ];
+
   const textElement = document.getElementById("welcome-text");
   const typingSound = document.getElementById("typing-sound");
   let msgIndex = 0;
@@ -195,8 +242,9 @@
   }
 
   typeMessage(messages[msgIndex]);
+
   // Countdown Timer
-  const countdownTarget = new Date("2025-09-15T09:00:00").getTime(); // Set PUTME date here
+  const countdownTarget = new Date("2026-04-01T06:00:00").getTime(); // Set JAMB 2026 exam date here
 
   function updateCountdown() {
     const now = new Date().getTime();
@@ -215,8 +263,10 @@
     document.getElementById("countdown").innerHTML =
       `${days}d ${hours}h ${minutes}m ${seconds}s`;
   }
-
   updateCountdown();
-  setInterval(updateCountdown, 1000); // Update every second
+  setInterval(updateCountdown, 1000);
 </script>
+</body>
+</html>
+
 {% endblock %}

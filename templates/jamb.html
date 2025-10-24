@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Enter POST-UTME PIN</title>
+  <title>Enter JAMB PIN</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
   <style>
     body {
@@ -41,13 +41,32 @@
       font-size: 1rem;
       color: white;
     }
+
+/* Footer styling */
+.footer {
+  text-align: center;
+  padding: 10px 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  font-size: 0.8rem;
+  position: absolute; /* stays at bottom of content, not fixed */
+  bottom: 0;
+  font-style: italic;
+  width: 100%;
+}
+/* Optional: Fix it permanently at the bottom */
+.footer.fixed {
+  position: fixed;
+  bottom: 0;
+}
   </style>
 </head>
 <body>
   <button class="theme-toggle" onclick="toggleTheme()">🌓 Toggle Theme</button>
 
   <div class="container text-center">
-    <h3 class="mb-4">ENTER PIN</h3>
+    <h3 class="mb-4" style="font-weight: bolder; font-style: italic; font-family: 
+    'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">ENTER PIN</h3>
 
     <!-- Flash Messages -->
     {% with messages = get_flashed_messages(with_categories=true) %}
@@ -66,7 +85,7 @@
       <div class="alert alert-danger">You are blocked until {{ blocked_until }}.</div>
     {% endif %}
 
-    <form id="pinForm" method="POST" action="/verify_postutme_pin">
+    <form id="pinForm" method="POST" action="/verify_jamb_pin">
       <div class="mb-3 position-relative" style="max-width: 250px; left: 25%;">
         <input type="password" name="pin" class="form-control" id="pinInput" placeholder="Enter PIN" required
           {% if blocked_until and blocked_until > current_time %} disabled {% endif %}/>
@@ -83,9 +102,9 @@
 
     <a href="/dashboard" class="btn btn-secondary mt-4 w-100" style="max-width: 350px; left: 30%;">Back to Dashboard</a>
   </div>
-  <footer>
-    <p class="footer-text" style="font-size: larger; font-weight: bolder; text-align: center;">Developed by Medic Adrenaline</p>
-  </footer>
+  <div class="footer">
+  &copy; 2025 <strong>Developed by Medic Adrenaline</strong> — All rights reserved.
+</div>
 
   <script>
     // Set device ID
