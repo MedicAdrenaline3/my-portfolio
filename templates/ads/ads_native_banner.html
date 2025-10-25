@@ -10,10 +10,23 @@
   function showNativeAd() {
     const lastShown = localStorage.getItem(NATIVE_AD_KEY);
     if (!lastShown || Date.now() - lastShown > NATIVE_INTERVAL) {
-      document.getElementById("ad-native-banner").innerHTML = `
-        <script async="async" data-cfasync="false" src="//pl27920567.effectivegatecpm.com/5dd19c795872d55603885ecd7e3642a5/invoke.js"><\/script>
-        <div id="container-5dd19c795872d55603885ecd7e3642a5"></div>
-      `;
+      const adDiv = document.getElementById("ad-native-banner");
+
+      // Create the Adsterra script dynamically
+      const adScript = document.createElement("script");
+      adScript.async = true;
+      adScript.dataset.cfasync = "false";
+      adScript.src = "//pl27920567.effectivegatecpm.com/5dd19c795872d55603885ecd7e3642a5/invoke.js";
+
+      // Create the ad container
+      const adContainer = document.createElement("div");
+      adContainer.id = "container-5dd19c795872d55603885ecd7e3642a5";
+
+      // Append to the banner div
+      adDiv.innerHTML = "";
+      adDiv.appendChild(adScript);
+      adDiv.appendChild(adContainer);
+
       localStorage.setItem(NATIVE_AD_KEY, Date.now());
     }
   }
