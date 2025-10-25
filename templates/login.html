@@ -19,31 +19,31 @@
     <form method="POST">
         <div class="form-group">
             <label for="username_or_email" style="color: black;">Username or Email</label>
-            <input mode="text" id="username_or_email" name="username_or_email" required required placeholder="Enter Username or Email Address">
+            <input type="text" id="username_or_email" name="username_or_email" required placeholder="Enter Username or Email Address">
         </div>
 
         <div class="form-group">
             <label for="password" style="color: black;">Password</label>
-            <div class="input-container">
-            <input mode="password" id="password" name="password" required required placeholder="Enter Password">
-            <span class="toggle-icon" onclick="toggleVisibility(this)">👁</span>
-        </div>
+            <div class="input-container" style="position: relative;">
+                <input type="password" id="password" name="password" required placeholder="Enter Password" style="width: 100%; padding-right: 40px;">
+                <span class="toggle-icon" onclick="toggleVisibility(this)" 
+                      style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; font-size: 1.2rem; user-select: none;">👁</span>
+            </div>
         </div>
 
-        <button mode="submit" class="btn">Login</button>
+        <button type="submit" class="btn">Login</button>
     </form>
 
     <p class="switch-link" style="color: darkblue; font-weight: bold; font-size: large;">
-        Don't have an account? <a href="{{ url_for('register') }}" style="color: black; font-size: large;
-         font-weight: bolder; text-decoration: underline;">Register here</a>
+        Don't have an account? 
+        <a href="{{ url_for('register') }}" style="color: black; font-size: large; font-weight: bolder; text-decoration: underline;">Register here</a>
     </p>
 
     <p class="switch-link-2" style="color: darkblue; font-weight: bold; font-size: large;">
-        Forgot Password?<a href="{{ url_for('forgot_password') }}" style="color: black; font-size: large; 
-        font-weight: bolder;">Reset Password</a>
+        Forgot Password? 
+        <a href="{{ url_for('forgot_password') }}" style="color: black; font-size: large; font-weight: bolder;">Reset Password</a>
     </p>
 
-    
     {% if session.get('registration_success') %}
         <div class="flash-info mt-3">
             <p>Registration successful! Please log in with your credentials after OTP verification.</p>
@@ -56,10 +56,22 @@
 </div>
 
 <script>
-    // JavaScript to check if passwords match before submitting the form
+    // Ensure password visibility toggle works
+    function toggleVisibility(toggleBtn) {
+        const input = toggleBtn.previousElementSibling;
+        if (input.type === "password") {
+            input.type = "text";
+            toggleBtn.textContent = "🙈";
+        } else {
+            input.type = "password";
+            toggleBtn.textContent = "👁";
+        }
+    }
+
+    // Validate before submit
     document.querySelector("form").addEventListener("submit", function(e) {
-        var usernameOrEmail = document.getElementById("username_or_email").value;
-        var password = document.getElementById("password").value;
+        var usernameOrEmail = document.getElementById("username_or_email").value.trim();
+        var password = document.getElementById("password").value.trim();
         if (!usernameOrEmail || !password) {
             e.preventDefault();
             alert("Please fill out both fields.");

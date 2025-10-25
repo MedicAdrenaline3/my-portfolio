@@ -3,79 +3,128 @@
 {% block title %}JAMB CBT | Welcome{% endblock %}
 
 {% block content %}
-
 <style>
+  body {
+    position: relative;
+    min-height: 100vh;
+    margin: 0;
+    background: linear-gradient(to right, #007a3d, #ffffff);
+    overflow-x: hidden;
+  }
+
+  /* Blurred Background Logo */
+  body::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 85vw;
+    height: 45vh;
+    background: url("{{ url_for('static', filename='images/jamb_background.jpg') }}") no-repeat center center;
+    background-size: contain;
+    opacity: 0.25;
+    filter: blur(5px);
+    transform: translate(-50%, -50%);
+    z-index: 0;
+  }
+
+  * {
+    position: relative;
+    z-index: 1;
+  }
+
   .welcome-container {
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 1.5rem;
-    margin-top: 1rem;
     text-align: center;
-    position: relative;
-    min-height: 100vh;
+    padding: 1.5rem;
+    height: 100vh;
     box-sizing: border-box;
   }
 
-  body {
-  position: relative;
-  min-height: 100vh;
-  margin: 0;
-  background: linear-gradient(to right, #007a3d, #ffffff);
-  overflow-x: hidden;
-}
+  /* === Countdown (Top Right) === */
+  #countdown-container {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    color: #004225;
+    text-align: right;
+  }
 
-/* Add a blurred centered logo overlay */
-body::before {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 600px; /* adjust size as needed */
-  height: 400px;
-  background: url("{{ url_for('static', filename='images/jamb_background.jpg') }}") no-repeat center center;
-  background-size: contain;
-  opacity: 0.30; /* faint */
-  filter: blur(4px); /* creates that soft blur */
-  transform: translate(-50%, -50%);
-  z-index: 0; /* behind all content */
-}
+  #countdown-container h2 {
+    font-size: 1rem;
+    color: red;
+    font-weight: bold;
+    font-style: italic;
+    margin: 0;
+  }
 
-/* Make sure all page content stays above the blurred logo */
-* {
-  position: relative;
-  z-index: 1;
-}
+  #countdown {
+    background-color: #f0f0f0;
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 8px;
+    color: #333;
+    margin-top: 2px;
+    font-size: 0.9rem;
+    font-weight: bold;
+  }
+
+  /* === Logo (Top Left) === */
+  .header-container {
+    position: absolute;
+    top: 10px;
+    left: 3px;
+  }
 
   .header-container img {
-    position: absolute;
+    width: 110px;
     height: auto;
-    margin-bottom: 1rem;
-    width: 100px;             /* adjust for size */
-    height: auto;            /* keep proportions */
-    border-radius: 10px;     /* optional — soft corners */
-    opacity: 2.0;            /* slightly subtle */
-    transition: transform 0.3s ease, opacity 0.3s ease;
-    top: -25px;               /* space from the top */
-    right: 300px;             /* space from the right edge */
-}
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+  }
 
   .header-container img:hover {
     transform: scale(1.05);
-    opacity: 1;}
+  }
 
-  #welcome-text-container {
-    font-size: 1.6rem;
+  /* === Info Links (Below Logo) === */
+  .info-links {
     position: absolute;
-    top: 15%;
+    top: 180px;
+    left: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    align-items: flex-start;
+  }
+
+  .info-links a {
+    color: white;
+    font-size: 0.9rem;
+    font-weight: bolder;
+    text-decoration: underline;
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 4px 8px;
+    border-radius: 5px;
+    text-align: left;
+  }
+
+  /* === Typing Text (Center) === */
+  #welcome-text-container {
+    position: absolute;
+    top: 25%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    max-width: 700px;
+    font-size: 1.3rem;
     font-style: italic;
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
     font-weight: bolder;
     color: black;
-    min-height: 60px;
-    margin: 1rem 0;
-    width: 85%;
-    max-width: 700px;
   }
 
   .cursor {
@@ -90,11 +139,14 @@ body::before {
     50% { opacity: 0; }
   }
 
+  /* === Register/Login Buttons (Bottom Center) === */
   .auth-buttons {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
     display: flex;
     gap: 1rem;
-    margin-top: auto;
-    margin-bottom: 2.5rem;
     flex-wrap: wrap;
     justify-content: center;
   }
@@ -104,7 +156,7 @@ body::before {
     color: white;
     font-weight: bold;
     padding: 0.6rem 1.2rem;
-    font-size: 1.1rem;
+    font-size: 1rem;
     border-radius: 8px;
     text-decoration: none;
     transition: 0.3s ease-in-out;
@@ -114,82 +166,60 @@ body::before {
     background-color: #007a3d;
   }
 
-  .info-links {
-    position: absolute;
-    top: 220px;
-    left: -15px;
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
-    align-items: flex-start;
-    z-index: 100;
-  }
-
-  .info-links a {
-    color: white;
-    font-size: 1rem;
-    font-weight: bolder;
-    text-decoration: underline;
-    background-color: rgba(0, 0, 0, 0.753);
-    padding: 4px 8px;
-    border-radius: 5px;
-  }
-
-  @media (min-width: 768px) {
-    #welcome-text-container {
-      font-size: 2rem;
+  /* === Responsive Mobile Adjustments === */
+  @media (max-width: 768px) {
+    .header-container img {
+      width: 70px;
     }
 
-    .auth-buttons a {
-      font-size: 1.4rem;
+    .info-links {
+      top: 90px;
+      left: 10px;
     }
 
     .info-links a {
-      font-size: 1.1rem;
+      font-size: 0.8rem;
+      padding: 3px 6px;
     }
-  }
 
-  #countdown-container {
-    position: absolute;
-    top: -5%;
-    right: 1%;
-    margin-top: 50px;
-    margin-bottom: 30px;
-    color: #004225;
-  }
+    #welcome-text-container {
+      font-size: 1.2rem;
+      top: 45%;
+    }
 
-  #countdown {
-    position: absolute;
-    top: 80%;
-    right: 15%;
-    background-color: #f0f0f0;
-    display: inline-block;
-    padding: 5px 10px;
-    border-radius: 10px;
-    color: #333;
+    #countdown-container h2 {
+      font-size: 0.9rem;
+    }
+
+    #countdown {
+      font-size: 0.8rem;
+      padding: 3px 6px;
+    }
+
+    .auth-buttons {
+      bottom: 30px;
+    }
+
+    .auth-buttons a {
+      font-size: 0.9rem;
+      padding: 0.5rem 1rem;
+    }
   }
 </style>
 
-<!-- Countdown Section -->
-<div id="countdown-container" class="text-center">
-  <h2 style="color: red; font-weight: bold; font-size: 1.3rem; font-style: italic;">⏳ JAMB CBT Countdown:</h2>
-  <div id="countdown" style="font-size: 1.0rem; font-weight: bold;"></div>
+<!-- Countdown -->
+<div id="countdown-container">
+  <h2>⏳ JAMB CBT Countdown:</h2>
+  <div id="countdown"></div>
 </div>
 
 <div class="welcome-container">
+  <!-- Logo -->
   <div class="header-container">
     <img src="{{ url_for('static', filename='images/adrena_logo.jpg') }}" alt="Adrena Logo">
   </div>
 
-  <div id="welcome-text-container">
-    <span id="welcome-text" class="welcome-text"></span><span class="cursor">|</span>
-  </div>
-
-  <div class="auth-buttons">
-    <a href="{{ url_for('register') }}">Register</a>
-    <a href="{{ url_for('login') }}">Login</a>
-  </div>
-
+  <!-- Info Links -->
   <div class="info-links">
     <a href="/app-instructions">App Info (Read me)</a>
     <a href="/jamb-instructions">JAMB Instructions</a>
@@ -197,8 +227,19 @@ body::before {
     <a href="/adrena-ai">Adrena AI</a>
     <a href="/updates">Admission Updates</a>
     <a href="/donate_pq">Donate/Download PQs</a>
-    <a href="https://wa.me/2348135047400" target="_blank">Any issue? Contact Admin</a></strong>
-</div>
+    <a href="https://wa.me/2348135047400" target="_blank">Any issue? Contact Admin</a>
+  </div>
+
+  <!-- Typing Text -->
+  <div id="welcome-text-container">
+    <span id="welcome-text"></span><span class="cursor">|</span>
+  </div>
+
+  <!-- Buttons -->
+  <div class="auth-buttons">
+    <a href="{{ url_for('register') }}">Register</a>
+    <a href="{{ url_for('login') }}">Login</a>
+  </div>
 
   <audio id="typing-sound" src="{{ url_for('static', filename='sounds/typin.mp3') }}"></audio>
 </div>
@@ -222,12 +263,12 @@ body::before {
   const typingSound = document.getElementById("typing-sound");
   let msgIndex = 0;
 
-  function typeMessage(text, charIndex = 0) {
-    if (charIndex < text.length) {
-      textElement.textContent += text.charAt(charIndex);
+  function typeMessage(text, i = 0) {
+    if (i < text.length) {
+      textElement.textContent += text.charAt(i);
       typingSound.currentTime = 0;
       typingSound.play();
-      setTimeout(() => typeMessage(text, charIndex + 1), 150);
+      setTimeout(() => typeMessage(text, i + 1), 120);
     } else {
       setTimeout(() => {
         textElement.style.opacity = 0;
@@ -240,33 +281,23 @@ body::before {
       }, 2000);
     }
   }
-
   typeMessage(messages[msgIndex]);
 
-  // Countdown Timer
-  const countdownTarget = new Date("2026-04-01T06:00:00").getTime(); // Set JAMB 2026 exam date here
-
+  const countdownTarget = new Date("2026-04-01T06:00:00").getTime();
   function updateCountdown() {
     const now = new Date().getTime();
-    const distance = countdownTarget - now;
-
-    if (distance < 0) {
+    const diff = countdownTarget - now;
+    if (diff < 0) {
       document.getElementById("countdown").innerHTML = "🎯 Exam Day is Here! Best of Luck!";
       return;
     }
-
-    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-    document.getElementById("countdown").innerHTML =
-      `${days}d ${hours}h ${minutes}m ${seconds}s`;
+    const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const s = Math.floor((diff % (1000 * 60)) / 1000);
+    document.getElementById("countdown").innerHTML = `${d}d ${h}h ${m}m ${s}s`;
   }
   updateCountdown();
   setInterval(updateCountdown, 1000);
 </script>
-</body>
-</html>
-
 {% endblock %}

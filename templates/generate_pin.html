@@ -273,6 +273,8 @@
             Note: Pay the exact amount you selected
         </div>
 
+        {% include 'ads/ads_banner.html' %}
+
         <h2>GENERATE PIN HERE</h2>
 
         <form method="POST" action="{{ url_for('generate_pin') }}">
@@ -340,8 +342,7 @@
   &copy; 2025 <strong>Developed by Medic Adrenaline</strong> — All rights reserved.
 </div>
 
-
-    <script>
+  <script>
         const bankDetails = document.getElementById('bank-details');
         const select = document.getElementById('payment_method');
         select.addEventListener('change', () => {

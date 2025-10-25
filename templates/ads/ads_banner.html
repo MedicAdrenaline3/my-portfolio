@@ -1,0 +1,52 @@
+<!-- ✅ Adsterra Banner (2-hour limit, no countdown) -->
+<div class="ad-banner-container">
+  <div id="ad-banner-slot"></div>
+</div>
+
+<script>
+  const BANNER_AD_KEY = "banner_ad_last_shown";
+  const BANNER_INTERVAL = 2 * 60 * 60 * 1000; // 2 hours
+
+  function showBannerAd() {
+    const lastShown = localStorage.getItem(BANNER_AD_KEY);
+    if (!lastShown || Date.now() - lastShown > BANNER_INTERVAL) {
+      document.getElementById("ad-banner-slot").innerHTML = `
+        <script type="text/javascript">
+          atOptions = {
+            'key' : 'ebb6e721b6c7046c0b48f942f7b875e4',
+            'format' : 'iframe',
+            'height' : 300,
+            'width' : 160,
+            'params' : {}
+          };
+        <\/script>
+        <script type="text/javascript" src="//www.highperformanceformat.com/ebb6e721b6c7046c0b48f942f7b875e4/invoke.js"><\/script>
+      `;
+      localStorage.setItem(BANNER_AD_KEY, Date.now());
+    }
+  }
+
+  showBannerAd();
+</script>
+
+<style>
+  .ad-banner-container {
+    display: flex;
+    justify-content: center;
+    background: #f8f8f8;
+    border-radius: 8px;
+    padding: 8px;
+    margin: 15px 0;
+  }
+
+  .ad-banner-container iframe {
+    max-width: 100%;
+    height: auto;
+  }
+
+  @media (max-width: 768px) {
+    .ad-banner-container {
+      transform: scale(0.9);
+    }
+  }
+</style>

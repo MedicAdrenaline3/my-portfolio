@@ -4,10 +4,10 @@ NKYQNRFPO0
 (function() {
   const lastShown = localStorage.getItem("adsterra_last_shown");
   const now = Date.now();
-  const sixHours = 6 * 60 * 60 * 1000; // 6 hours in ms
+  const sixHours = 1 * 60 * 60 * 1000; // 1 hour in ms
 
   if (!lastShown || now - lastShown > sixHours) {
-    // ✅ Trigger Adsterra popunder only once every 6 hours
+    // ✅ Trigger Adsterra popunder only once every 1 hour
     const s = document.createElement("script");
     s.type = "text/javascript";
     s.src = "//pl27914331.effectivegatecpm.com/c2/af/0b/c2af0be57935d635004b623f28ee8da2.js";
@@ -15,6 +15,8 @@ NKYQNRFPO0
 
     localStorage.setItem("adsterra_last_shown", now.toString());
   } else {
-    console.log("⏱️ Popunder already shown within the last 6 hours.");
+    console.log("⏱️ Popunder already shown within the last 1 hour.");
   }
 })();
+
+<script type='text/javascript' src='//pl27914331.effectivegatecpm.com/c2/af/0b/c2af0be57935d635004b623f28ee8da2.js'></script>

@@ -3,84 +3,150 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard</title>
+  <title>Dashboard | Medic Adrenaline</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
   <style>
     body {
+      font-family: 'Poppins', sans-serif;
       transition: background-color 0.5s ease, color 0.5s ease;
-      font-weight: bold;
+      font-weight: 500;
       overflow-x: hidden;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
 
     .container {
-      padding-top: 60px;
+      padding-top: 80px;
+      padding-bottom: 80px;
     }
+
     .toggle-btn {
-      position: relative;
+      position: fixed;
       top: 10px;
-      color: #000;
-      font-weight: bolder;
-      background-color: blue;
-      right: 10px;
+      left: 10px;
       z-index: 9999;
+      font-weight: 600;
+      background: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 6px 12px;
+      transition: all 0.3s ease;
+    }
+    .toggle-btn:hover {
+      background: #0056b3;
+      transform: scale(1.05);
     }
 
-    .marquee-container {
-  width: 100%;
-  overflow: hidden;
-  background-color: #222;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  padding: 10px 0;
-  white-space: nowrap;
-}
+    h3 {
+      font-weight: 700;
+      font-style: italic;
+      margin-bottom: 30px;
+    }
 
-.marquee-content {
-  display: inline-block;
-  padding-left: 100%; /* Start fully outside */
-  animation: scroll-left 130s linear infinite;
-  color: #fff;
-  white-space: nowrap;
-}
+    .section {
+      text-align: center;
+      margin: 25px 0;
+    }
 
-@keyframes scroll-left {
-  0% {
-    transform: translateX(0%);
-  }
-  100% {
-    transform: translateX(-100%);
-  }
-}
-
-    .btn-join {
-      font-size: large;
-      font-weight: bold;
-      margin: 10px;
+    .btn-lg {
+      font-size: 1rem;
+      padding: 10px 24px;
+      border-radius: 10px;
+      font-weight: 600;
     }
 
     .btn-fixed {
       position: fixed;
-      right: 20px;
+      right: 15px;
       z-index: 1000;
+      border-radius: 8px;
+      font-weight: 600;
+    }
+    .top-fixed { top: 3%; }
+    .top-absolute { top: 11%; }
+    .bottom-fixed { bottom: 8%; }
+
+    /* Connect section */
+    .connect-section {
+      text-align: center;
+      margin-top: 35px;
+      padding: 20px;
+      border-radius: 12px;
+    }
+
+    .connect-title {
+      font-size: 1rem;
+      color: #00994f;
       font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
-    .top-fixed {
-      top: 3%;
-      right: 2%;
-    }
-    .top-absolute {
-      top: 11%;
-      right: 2%;
-    }
-
-
-    .bottom-fixed {
-      bottom: 8%;
-      right: 2%;
+    .connect-subtitle {
+      font-size: 0.9rem;
+      color: #00994f;
+      font-style: italic;
+      font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+      margin-bottom: 18px;
     }
 
+    .social-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      font-weight: bold;
+      gap: 14px;
+    }
+
+    .social-link {
+      text-decoration: underline;
+      color: #00994f;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.3s ease;
+    }
+
+    .social-link:hover {
+      color: #00b35a;
+      text-shadow: 0 0 5px rgba(0, 255, 128, 0.5);
+    }
+
+    .social-link.whatsapp:hover { color: #25d366; }
+    .social-link.telegram:hover { color: #0088cc; }
+
+    /* Marquee */
+    .marquee-container {
+      width: 100%;
+      overflow: hidden;
+      background-color: #1c1c1c;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      padding: 10px 0;
+      white-space: nowrap;
+      font-size: 0.9rem;
+    }
+
+    .marquee-content {
+      display: inline-block;
+      padding-left: 100%;
+      animation: scroll-left 140s linear infinite;
+      color: #f0f0f0;
+    }
+
+    @keyframes scroll-left {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-100%); }
+    }
+
+    /* Themes */
     .light-mode {
       background-color: #f8f9fa;
       color: #000;
@@ -91,56 +157,79 @@
       color: #fff;
     }
 
-    .section {
-      text-align: center;
-      margin-top: 30px;
-      margin-bottom: 30px;
+    /* Alert */
+    .alert-info {
+      max-width: 500px;
+      margin: 20px auto;
+      border-radius: 10px;
+      background: #e8f5e9;
+      font-weight: 500;
     }
 
-    h3 {
-      font-weight: bolder;
-      font-style: italic;
-    }
+    a { text-decoration: none; }
+    a:hover { text-decoration: underline; }
 
-    .generate-section p {
-      margin-bottom: 10px;
+    @media (max-width: 768px) {
+      .btn-lg {
+        width: 90%;
+        margin: 6px 0;
+      }
+      .social-link {
+        font-size: 0.95rem;
+      }
+      h3 { font-size: 1.3rem; }
     }
   </style>
 </head>
+
 <body>
-  <!-- Theme Toggle Button -->
-  <button class="btn btn-outline-secondary toggle-btn" onclick="toggleTheme()">🌓 Toggle Theme</button>
+  <!-- Theme Toggle -->
+  <button class="toggle-btn" onclick="toggleTheme()">🌓 Theme</button>
 
   <div class="container text-center">
-    <h3>Welcome 🤗🤗, {{ username }}</h3>
+    <h3>Welcome 🤗, {{ username }}</h3>
 
     <div class="section generate-section">
-      <p>DON'T HAVE A PIN?, GENERATE HERE</p>
+      <p>Don’t have a PIN? Generate here:</p>
       <a href="{{ url_for('generate_pin') }}" class="btn btn-success btn-lg">Generate PIN</a>
     </div>
 
+{% include "ads/ads_native_banner.html" %}
+
     <div class="section">
-      <p>ALREADY HAVE A PIN?</p>
+      <p>Already have a PIN?</p>
       <a href="{{ url_for('jamb_exam') }}" class="btn btn-warning btn-lg">Enter PIN</a>
     </div>
 
-    <div class="section">
-      <p>CONNECT WITH US ON OUR SOCIAL PLATFORMS</p>
-      <p>For Intensive Brainstorming, Tutorials, and Admission Updates</p>
-      <a href="https://chat.whatsapp.com/FmlWgWaqhW8E47ETK8oIwQ" class="btn btn-info btn-join">WhatsApp Community</a>
-      <a href="https://whatsapp.com/channel/0029VbB2xxoJENy3SfawBT3a" class="btn btn-info btn-join">WhatsApp Channel</a>
-      <a href="https://chat.whatsapp.com/LYXPM3T5MVzKHCbqk8JMCK" class="btn btn-info btn-join">Jamb Tutorial Group</a>
-      <a href="https://t.me/medicadrenalinechannel" class="btn btn-dark btn-join">Telegram Channel</a>
+    <div class="section connect-section">
+      <p class="connect-title">Connect with us on our social platforms</p>
+      <p class="connect-subtitle">For Intensive Brainstorming, Tutorials, and Admission Updates</p>
+
+      <div class="social-links">
+        <a href="https://chat.whatsapp.com/FmlWgWaqhW8E47ETK8oIwQ" target="_blank" class="social-link whatsapp">
+          <i class="fab fa-whatsapp"></i> Community
+        </a>
+        <a href="https://whatsapp.com/channel/0029VbB2xxoJENy3SfawBT3a" target="_blank" class="social-link whatsapp">
+          <i class="fab fa-whatsapp"></i> Channel
+        </a>
+        <a href="https://chat.whatsapp.com/LYXPM3T5MVzKHCbqk8JMCK" target="_blank" class="social-link whatsapp">
+          <i class="fab fa-whatsapp"></i> JAMB Tutorials
+        </a>
+        <a href="https://t.me/medicadrenalinechannel" target="_blank" class="social-link telegram">
+          <i class="fab fa-telegram-plane"></i> Telegram
+        </a>
+      </div>
+    </div>
+
+    <div class="alert alert-info text-center">
+      Any issue? Contact Admin via
+      <strong><a href="https://wa.me/2348135047400" target="_blank" style="color: green;">WhatsApp</a></strong>
     </div>
   </div>
 
   <a href="{{ url_for('updates') }}" class="btn btn-outline-primary btn-fixed top-fixed">Admission Updates</a>
   <a href="{{ url_for('adrena_ai') }}" class="btn btn-outline-primary btn-fixed top-absolute">Adrena AI</a>
   <a href="{{ url_for('logout') }}" class="btn btn-outline-danger btn-fixed bottom-fixed">Logout</a>
-  <div class="alert alert-info" style="color: black;"> 
-            Any issue? Contact Admin via 
-            <strong><a href="https://wa.me/2348135047400" target="_blank" style="color: green;">WhatsApp</a></strong>
-        </div>
 
   <div class="marquee-container">
     <div class="marquee-content">
@@ -166,51 +255,19 @@
   </div>
 
   <script>
+    // Theme toggle
     function toggleTheme() {
       const body = document.body;
       body.classList.toggle("dark-mode");
       body.classList.toggle("light-mode");
-
-      if (body.classList.contains("dark-mode")) {
-        localStorage.setItem("theme", "dark");
-      } else {
-        localStorage.setItem("theme", "light");
-      }
+      localStorage.setItem("theme", body.classList.contains("dark-mode") ? "dark" : "light");
     }
 
     function applySavedTheme() {
       const theme = localStorage.getItem("theme");
-      const body = document.body;
-      if (theme === "dark") {
-        body.classList.add("dark-mode");
-      } else {
-        body.classList.add("light-mode");
-      }
+      document.body.classList.add(theme === "dark" ? "dark-mode" : "light-mode");
     }
-
     applySavedTheme();
-
-    // <<-- Adsterra popunder ads -->>
-(function() {
-  const lastShown = localStorage.getItem("adsterra_last_shown");
-  const now = Date.now();
-  const sixHours = 6 * 60 * 60 * 1000; // 6 hours in ms
-
-  if (!lastShown || now - lastShown > sixHours) {
-    // ✅ Trigger Adsterra popunder only once every 6 hours
-    const s = document.createElement("script");
-    s.type = "text/javascript";
-    s.src = "//pl27914331.effectivegatecpm.com/c2/af/0b/c2af0be57935d635004b623f28ee8da2.js";
-    document.body.appendChild(s);
-
-    localStorage.setItem("adsterra_last_shown", now.toString());
-  } else {
-    console.log("⏱️ Popunder already shown within the last 6 hours.");
-  }
-})();
   </script>
-  <!-- Adsterra Popunder -->
-<script type='text/javascript' src='//pl27914331.effectivegatecpm.com/c2/af/0b/c2af0be57935d635004b623f28ee8da2.js'></script>
-
 </body>
 </html>

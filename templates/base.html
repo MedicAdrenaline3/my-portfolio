@@ -1,342 +1,256 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Exam Practice Platform{% endblock %}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    {% block styles %}{% endblock %}
-    <style>
-        body {
-  font-family: 'Segoe UI', sans-serif;
-  margin: 0;
-  padding: 0;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  overflow-x: hidden;
-  position: relative;
-  z-index: 1;
-}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>{% block title %}Exam Practice Platform{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  {% block styles %}{% endblock %}
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      position: relative;
+      z-index: 1;
+    }
 
-/* Background overlay */
-body::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: url("{{ url_for('static', filename='images/jamb_background.jpg') }}");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  opacity: 0.70;        /* faintness */
-  filter: blur(4px);    /* soft blur effect */
-  z-index: -1;          /* stays behind content */
-}
+    /* Background overlay */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url("{{ url_for('static', filename='images/jamb_background.jpg') }}");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      opacity: 0.65;
+      filter: blur(4px);
+      z-index: -1;
+    }
 
-        .container {
-            width: 100%;
-            max-width: 1200px;
-            margin: auto;
-            padding: 10px;
-            flex: 1;
-        }
+    .container {
+      width: 95%;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 10px 15px;
+      flex: 1;
+      box-sizing: border-box;
+    }
 
-        .header {
-            text-align: center;
-            padding: 5px 0;
-            background-color: rgba(0, 0, 0, 0.719);
-            animation: fadeInDown 1s ease;
-            font-size: 2rem;
-            width: 100%;
-        }
+    .header {
+      text-align: center;
+      padding: 8px 0;
+      background-color: rgba(0, 0, 0, 0.7);
+      animation: fadeInDown 1s ease;
+      font-size: 1.8rem;
+      color: white;
+    }
 
-        .moving-text {
-            display: inline-block;
-            white-space: nowrap;
-            animation: slideRightToLeft 15s linear infinite;
-            font-weight: bold;
-            font-size: 24px;
-            color: #fffffff1;
-        }
+    .moving-text {
+      display: inline-block;
+      white-space: nowrap;
+      animation: slideRightToLeft 15s linear infinite;
+      font-weight: bold;
+      color: #fff;
+    }
 
-        @keyframes slideRightToLeft {
-            0%   { transform: translateX(100%); }
-            100% { transform: translateX(-100%); }
-        }
+    @keyframes slideRightToLeft {
+      0% { transform: translateX(100%); }
+      100% { transform: translateX(-100%); }
+    }
 
-        .profile-img {
-            position: fixed;
-            top: 3%;
-            left: 0.5%;
-            height: 22%;
-            width: 14%;
-            background-color: rgb(255, 255, 255);
-            animation: fadeInDown 1s ease;
-            z-index: 1001;
-        }
+    .welcome-header, .form-container {
+      background-color: rgba(255, 255, 255, 0.25);
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      animation: fadeIn 0.8s ease;
+      width: 100%;
+      box-sizing: border-box;
+    }
 
-        .welcome-header {
-            background-color: #ffffff1e;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.137);
-            animation: fadeIn 0.8s ease;
-            width: 100%;
-        }
+    .form-group {
+      margin-bottom: 16px;
+    }
 
-        .header h1 {
-            margin: 0;
-            font-size: 2.5rem;
-        }
+    .form-group label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+      color: #222;
+      font-size: 1.1rem;
+    }
 
-        .sub-header {
-            text-align: center;
-            margin-top: 15px;
-            font-size: 1.3rem;
-            color: #3333331c;
-            font-weight: 500;
-        }
+    .form-group input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1rem;
+      box-sizing: border-box;
+    }
 
-        .flash-messages {
-            text-align: center;
-            margin: 20px 0;
-        }
+    .form-group input:focus {
+      border-color: #3a0c2e;
+      outline: none;
+    }
 
-        .flash-messages div {
-            padding: 12px 20px;
-            font-size: 16px;
-            margin: 8px auto;
-            max-width: 600px;
-            border-radius: 8px;
-            transition: opacity 0.5s ease-out;
-        }
+    .btn {
+      padding: 12px 20px;
+      background-color: #0004fffd;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      width: 20%;
+      box-sizing: border-box;
+      transition: 0.3s ease;
+    }
 
-        .flash-info    { background-color: #17a2b8; color: white; }
-        .flash-warning { background-color: #ffc107; color: black; }
-        .flash-error   { background-color: #dc3545; color: white; }
+    .btn:hover {
+      background-color: #202e3d;
+    }
 
-        .flash-messages div.fade-out {
-            opacity: 0;
-            visibility: hidden;
-            height: 0;
-            padding: 0;
-            margin: 0;
-            overflow: hidden;
-            transition: all 1s ease;
-        }
+    .switch-link {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 1rem;
+    }
 
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+    .switch-link a {
+      color: #1100ff;
+      font-weight: bold;
+      text-decoration: none;
+    }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+    .switch-link a:hover {
+      text-decoration: underline;
+    }
 
-        .form-container {
-            background-color: rgba(255, 255, 255, 0.288);
-            padding: 30px;
-            border-radius: 12px;
-            width: 100%;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.068);
-            animation: fadeIn 0.8s ease;
-        }
+    footer {
+      background-color: #333;
+      color: white;
+      text-align: center;
+      padding: 10px 8px;
+      width: 100%;
+      margin-top: 20px;
+    }
 
-        .form-group {
-            margin-bottom: 18px;
-        }
+    .footer-text {
+      font-weight: bold;
+      font-size: 0.9rem;
+      margin: 0;
+    }
 
-        .form-group label {
-            display: block;
-            margin-bottom: 6px;
-            font-weight: bold;
-            color: #333;
-            font-style: oblique;
-            font-size: x-large;
-        }
-        .form-group input {
-            width: 65%;
-            padding: 12px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            font-size: 20px;
-        }
+    .motivational-quote {
+      font-style: italic;
+      font-size: 0.85rem;
+      margin: 5px 0 0;
+    }
 
-        .form-group input:focus {
-            border-color: #3a0c2e;
-            outline: none;
-        }
+    .flash-messages {
+      text-align: center;
+      margin: 15px 0;
+    }
 
-        .btn {
-            padding: 12px 24px;
-            background-color: #0004fffd;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            cursor: pointer;
-        }
+    .flash-messages div {
+      padding: 10px 18px;
+      font-size: 0.95rem;
+      margin: 8px auto;
+      max-width: 600px;
+      border-radius: 8px;
+    }
 
-        .btn:hover {
-            background-color: #202e3d;
-        }
+    .flash-info    { background-color: #17a2b8; color: white; }
+    .flash-warning { background-color: #ffc107; color: black; }
+    .flash-error   { background-color: #dc3545; color: white; }
 
-        .switch-link {
-            text-align: center;
-            margin-top: 20px;
-            font-size: 22px;
-        }
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
 
-        .switch-link a {
-            color: #1100ff;
-            font-weight: bold;
-            text-decoration: none;
-            font-size: 22px;
-        }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
 
-        .switch-link a:hover {
-            text-decoration: underline;
-        }
+    @media (max-width: 768px) {
+      .header {
+        font-size: 1.4rem;
+      }
 
-        .forgot-password-link {
-            color: white;
-            font-weight: bold;
-            text-decoration: none;
-            font-size: 22px;
-        }
+      .welcome-header, .form-container {
+        padding: 15px;
+      }
 
-        footer {
-            background-color: #333333f3;
-            color: white;
-            text-align: center;
-            padding: 3px 0;
-            width: 100%;
-            margin-top: 10px;
-        }
+      .moving-text {
+        font-size: 1rem;
+      }
 
-        .footer-text {
-            font-weight: bold;
-            font-size: larger;
-        }
+      .footer-text {
+        font-size: 0.8rem;
+      }
 
-        .motivational-quote {
-            font-style: italic;
-            font-size: larger;
-            font-weight: bold;
-        }
+      .motivational-quote {
+        font-size: 0.75rem;
+      }
+    }
 
-        @media (max-width: 768px) {
-            .form-container {
-                padding: 20px;
-            }
-
-            .btn {
-                width: 100%;
-            }
-
-            .header h1 {
-                font-size: 2rem;
-            }
-        }
-
-        .small-input {
-            width: 300px;
-            position: relative;
-        }
-
-        .small-input input {
-            padding-right: 50px;
-        }
-
-        .input-container {
-            position: relative;
-            width: 67%;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            font-size: 20px;
-        }
-
-        .input-container input {
-            width: 100%;
-            padding-right: 40px;
-            font-size: large;
-            box-sizing: border-box;
-        }
-
-        .toggle-icon {
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            cursor: pointer;
-            font-size: 1.2rem;
-            user-select: none;
-        }
-    </style>
+  </style>
 </head>
 
 <body>
-    <header class="header">
-        <h1 class="moving-text">WELCOME TO ADRENA JAMB SIMULATOR APP</h1>
-        {% block subheader %}{% endblock %}
-    </header>
+  <header class="header">
+    <h1 class="moving-text">WELCOME TO ADRENA JAMB CBT PREP</h1>
+    {% block subheader %}{% endblock %}
+  </header>
 
-    <div class="container">
-        <!-- Flash Messages -->
-        {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-        <div class="flash-messages" id="flash-container">
-            {% for category, message in messages %}
-                <div class="flash-{{ category }}">{{ message }}</div>
-            {% endfor %}
-        </div>
-        {% endif %}
-        {% endwith %}
+  <div class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+      <div class="flash-messages" id="flash-container">
+        {% for category, message in messages %}
+          <div class="flash-{{ category }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+      {% endif %}
+    {% endwith %}
 
-        <!-- Main Content -->
-        {% block content %}{% endblock %}
-    </div>
+    {% block content %}{% endblock %}
+  </div>
 
-  <footer style="padding: 8px 0; margin-top: 10px; text-align: center;">
-    <p class="footer-text" style="margin: 0; font-size: 14px;">Developed by Medic Adrenaline</p>
-    <p class="motivational-quote" style="margin: 5px 0 0 0; font-size: 13px;">"Success doesn’t come from what you do occasionally, it comes from what you do consistently. — Medic Adrenaline"</p>
-</footer>
+  <footer>
+    <p class="footer-text">Developed by Medic Adrenaline</p>
+    <p class="motivational-quote">"Success doesn’t come from what you do occasionally, it comes from what you do consistently. — Medic Adrenaline"</p>
+  </footer>
 
-    <script>
-        // Auto-hide flash messages after 5 seconds
-        setTimeout(() => {
-            const flash = document.querySelector('#flash-container');
-            if (flash) {
-                flash.classList.add('fade-out');
-            }
-        }, 5000);
-
+  <script>
     // Auto-hide flash messages
     setTimeout(() => {
-        const flash = document.querySelector('#flash-container');
-        if (flash) {
-            flash.classList.add('fade-out');
-        }
-        const messages = document.querySelector('.flash-messages');
-        if (messages) messages.style.display = 'none';
+      const flash = document.querySelector('#flash-container');
+      if (flash) flash.classList.add('fade-out');
     }, 5000);
 
-    // Toggle visibility for any input with .visibility-toggle
     function toggleVisibility(toggleBtn) {
-        const input = toggleBtn.previousElementSibling;
-        if (input.type === "password") {
-            input.type = "text";
-            toggleBtn.textContent = "👁";
-        } else {
-            input.type = "password";
-            toggleBtn.textContent = "🙈";
-        }
+      const input = toggleBtn.previousElementSibling;
+      if (input.type === "password") {
+        input.type = "text";
+        toggleBtn.textContent = "👁";
+      } else {
+        input.type = "password";
+        toggleBtn.textContent = "🙈";
+      }
     }
-</script>
+  </script>
 </body>
 </html>
