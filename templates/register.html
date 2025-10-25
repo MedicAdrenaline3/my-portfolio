@@ -50,7 +50,7 @@
 }
 </style>
 
-<div class="form-container" style="color: black; font-size: x-large; font-weight: bolder;">
+<div class="form-container" style="color: black; font-size: large; font-weight: bolder;">
     <h2>CREATE AN ACCOUNT</h2>
 
     {% with messages = get_flashed_messages() %}
@@ -65,17 +65,17 @@
 
     <form method="POST">
         <div class="form-group">
-            <label for="username" style="color: black; font-size: x-large; font-weight: bold;">Username</label>
+            <label for="username" style="color: black; font-size: large; font-weight: bold;">Username</label>
             <input mode="text" id="username" name="username" required placeholder="Enter Username">
         </div>
 
         <div class="form-group">
-            <label for="email" style="color: black; font-size: x-large; font-weight: bold;">Email Address</label>
+            <label for="email" style="color: black; font-size: large; font-weight: bold;">Email Address</label>
             <input mode="email" id="email" name="email" required placeholder="Enter your Email Address">
         </div>
 
         <div class="form-group">
-            <label for="password" style="color: black; font-size: x-large; font-weight: bold;">Password</label>
+            <label for="password" style="color: black; font-size: large; font-weight: bold;">Password</label>
             <div class="input-container">
                 <input type="password" id="password" name="password" placeholder="Password must be at least 6 characters long" required>
                 <span class="toggle-icon" onclick="toggleVisibility(this)">👁️</span>
@@ -83,7 +83,7 @@
         </div>
 
         <div class="form-group">
-            <label for="confirm_password" style="color: black; font-size: x-large; font-weight: bold;">Confirm Password</label>
+            <label for="confirm_password" style="color: black; font-size: large; font-weight: bold;">Confirm Password</label>
             <div class="input-container">
                 <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm Password" required>
                 <span class="toggle-icon" onclick="toggleVisibility(this)">👁️</span>
@@ -93,9 +93,9 @@
         <button mode="submit" class="btn">Register</button>
     </form>
 
-    <p class="switch-link" style="color: darkblue; font-size: large; font-weight: bolder;">
+    <p class="switch-link" style="color: darkblue; font-size: small; font-weight: bolder;">
         Already have an account? 
-        <a href="{{ url_for('login') }}" style="color: black; font-size: large; text-decoration: underline; font-weight: bolder;">Login here</a>
+        <a href="{{ url_for('login') }}" style="color: black; font-size: small; text-decoration: underline; font-weight: bolder;">Login here</a>
     </p>
 </div>
 
