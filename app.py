@@ -259,6 +259,16 @@ def welcome():
 def ping():
     return jsonify({"status": "ok", "message": "Adrena CBT is live ✅"}), 200
 
+@app.route('/test_email')
+def test_email():
+    import yagmail, os
+    try:
+        yag = yagmail.SMTP(os.getenv("EMAIL_USER"), os.getenv("EMAIL_PASS"))
+        yag.send(to=os.getenv("EMAIL_USER"), subject="Render Test", contents="✅ SMTP works on Render")
+        return "✅ Email sent successfully!"
+    except Exception as e:
+        return str(e)
+
 @app.route('/app-instructions' , methods=['GET', 'POST'])
 def app_instructions():
     return render_template('app_instructions.html')
