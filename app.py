@@ -527,7 +527,7 @@ def initiate_paystack_payment(email, amount, reference):
         "amount": amount * 100,  # Paystack expects amount in kobo
         "reference": reference,
         "callback_url": "https://adrena-jamb-cbt.onrender.com/payment_callback"  # ✅ update this when deployed
-        }
+    }
 
     response = requests.post("https://api.paystack.co/transaction/initialize", json=data, headers=headers)
     print("Paystack Response:", response.json())  # ✅ helpful for debugging
@@ -537,7 +537,8 @@ def initiate_paystack_payment(email, amount, reference):
 def verify_paystack_transaction(reference):
     secret_key = os.getenv('PAYSTACK_SECRET_KEY')
     headers = {
-        "Authorization": f"Bearer {secret_key}"}
+        "Authorization": f"Bearer {secret_key}"
+    }
     response = requests.get(f"https://api.paystack.co/transaction/verify/{reference}", headers=headers)
     return response.json()
 
@@ -547,30 +548,38 @@ def generate_pin():
     if 'user_id' not in session:
         flash("Login first.")
         return redirect(url_for('login'))
+
     user = User.query.get(session['user_id'])
+
     if request.method == 'POST':
         selected_modes = request.form.getlist('exam_mode')
         payment_method = request.form['payment_method']
         email = user.email
+
         if not selected_modes:
             flash('Select the checkbox below to proceed.', 'error')
             return redirect(url_for('generate_pin'))
+
         amount = calculate_amount(selected_modes)
         session['selected_modes'] = selected_modes
         session['payment_method'] = payment_method
         session['expected_amount'] = amount
+
         if payment_method == 'paystack':
             reference = str(uuid.uuid4())
             session['payment_reference'] = reference
+
             payment_response = initiate_paystack_payment(email, amount, reference)
             if payment_response.get('status'):
                 return redirect(payment_response['data']['authorization_url'])
             else:
                 flash('Payment initiation failed. Try again.', 'error')
                 return redirect(url_for('generate_pin'))
+
         elif payment_method in ['whatsapp_proof', 'whatsapp_chat']:
             flash('Please contact admin via WhatsApp with payment proof for PIN activation.', 'info')
             return redirect(url_for('generate_pin'))
+
     return render_template('generate_pin.html')
 
 # Payment callback route
@@ -580,12 +589,16 @@ def payment_callback():
     if not reference:
         flash("Missing payment reference.")
         return redirect(url_for('dashboard'))
+
     user_id = session.get('user_id')
     selected_modes = session.get('selected_modes')
+
     if not user_id or not selected_modes:
         flash("Session expired or invalid.")
         return redirect(url_for('dashboard'))
+
     verification = verify_paystack_transaction(reference)
+
     if verification.get("data", {}).get("status") == "success":
         user = User.query.get(user_id)
         generated_pins = []
@@ -593,14 +606,17 @@ def payment_callback():
             new_pin = Pin(
                 user_id=user.id,
                 pin_code=generate_unique_pin(),
-                exam_mode=mode)
+                exam_mode=mode
+            )
             db.session.add(new_pin)
             db.session.commit()
             generated_pins.append(f"{mode.upper()}: {new_pin.pin_code}")
+
         send_exam_pins_email(user.email, generated_pins)
         flash("Payment successful. PIN(s) sent to your email.")
     else:
         flash("Payment verification failed.")
+
     return redirect(url_for('dashboard'))
 
 @app.route('/dashboard')

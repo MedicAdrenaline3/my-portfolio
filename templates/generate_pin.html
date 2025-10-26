@@ -273,8 +273,6 @@
             Note: Pay the exact amount you selected
         </div>
 
-        {% include "ads/ads_banner.html" %} 
-
         <h2>GENERATE PIN HERE</h2>
 
         <form method="POST" action="{{ url_for('generate_pin') }}">
@@ -337,6 +335,8 @@
        class="claim-btn" style="font-weight: bolder;">📩 Message Admin on WhatsApp</a>
   </div>
 </div>
+
+{% include "ads/ads_banner.html" %} 
 
 <div class="footer" style="text-align: center; font-style: italic; font-size: small;">
   &copy; 2025 <strong>Developed by Medic Adrenaline</strong> — All rights reserved.
@@ -426,5 +426,6 @@ function closeClaimModal() {
   document.getElementById("claimModal").style.display = "none";
 }
  </script>
+
 </body>
 </html>

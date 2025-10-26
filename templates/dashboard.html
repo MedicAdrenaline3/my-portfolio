@@ -194,8 +194,6 @@
       <a href="{{ url_for('generate_pin') }}" class="btn btn-success btn-lg">Generate PIN</a>
     </div>
 
-{% include "ads/ads_native_banner.html" %}
-
     <div class="section">
       <p>Already have a PIN?</p>
       <a href="{{ url_for('jamb_exam') }}" class="btn btn-warning btn-lg">Enter PIN</a>
@@ -226,6 +224,8 @@
       <strong><a href="https://wa.me/2348135047400" target="_blank" style="color: green;">WhatsApp</a></strong>
     </div>
   </div>
+
+{% include "ads/ads_native_banner.html" %}
 
   <a href="{{ url_for('updates') }}" class="btn btn-outline-primary btn-fixed top-fixed">Admission Updates</a>
   <a href="{{ url_for('adrena_ai') }}" class="btn btn-outline-primary btn-fixed top-absolute">Adrena AI</a>
