@@ -342,7 +342,7 @@ def register():
         existing_user = User.query.filter((User.username == username) | (User.email == email)).first()
         if existing_user:
             if existing_user.is_verified:
-                flash('Username or Email already exists and is verified.')
+                flash('Username or Email already exists.')
                 return redirect(url_for('register'))
             db.session.delete(existing_user)
             db.session.commit()
