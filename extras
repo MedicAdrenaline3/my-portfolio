@@ -20,3 +20,23 @@ NKYQNRFPO0
 })();
 
 <script type='text/javascript' src='//pl27914331.effectivegatecpm.com/c2/af/0b/c2af0be57935d635004b623f28ee8da2.js'></script>
+
+sendgrid recovery code: NTQRNL6DQVJRQAHPGUAE2CRB
+
+@app.route('/test_email')
+def test_email():
+    import yagmail, os
+    try:
+        yag = yagmail.SMTP(os.getenv("EMAIL_USER"), os.getenv("EMAIL_PASS"))
+        yag.send(to=os.getenv("EMAIL_USER"), subject="Render Test", contents="✅ SMTP works on Render")
+        return "✅ Email sent successfully!"
+    except Exception as e:
+        return str(e)
+
+@app.route('/test_otp')
+def test_otp(): 
+    try:
+        send_otp_email('feranmibakre4@gmail.com', '123456')
+        return "✅ Email sent successfully!"
+    except Exception as e:
+        return f"❌ Error: {e}"
