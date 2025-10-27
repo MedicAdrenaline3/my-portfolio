@@ -269,6 +269,15 @@ def test_email():
     except Exception as e:
         return str(e)
 
+@app.route('/test_otp')
+def test_otp():
+    try:
+        send_otp_email('feranmibakre4@gmail.com', '123456')
+        return "✅ Email sent successfully!"
+    except Exception as e:
+        return f"❌ Error: {e}"
+
+
 @app.route('/app-instructions' , methods=['GET', 'POST'])
 def app_instructions():
     return render_template('app_instructions.html')
