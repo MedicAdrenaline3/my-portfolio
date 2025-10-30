@@ -1,88 +1,144 @@
-import yagmail
-import os
+import requests
 from config import Config
 
-email_accounts = Config.EMAIL_ACCOUNTS
-email_index_file = 'email_index.txt'
+# === Email Provider Configuration ===
+PROVIDER = Config.EMAIL_PROVIDER.lower()
+RESEND_API_KEY = Config.RESEND_API_KEY
+MAILERSEND_API_KEY = Config.MAILERSEND_API_KEY
+RESEND_SENDER = Config.RESEND_SENDER
+MAILERSEND_SENDER = Config.MAILERSEND_SENDER
 
-# Initialize index file if it doesn't exist
-if not os.path.exists(email_index_file):
-    with open(email_index_file, 'w') as f:
-        f.write('0')
+# === API Endpoints ===
+RESEND_URL = "https://api.resend.com/emails"
+MAILERSEND_URL = "https://api.mailersend.com/v1/email"
 
-def get_email_index():
-    try:
-        with open(email_index_file, 'r') as f:
-            return int(f.read().strip())
-    except:
-        return 0
-
-def update_email_index(index):
-    with open(email_index_file, 'w') as f:
-        f.write(str(index))
-
-def send_bulk_email(to_emails, subject, content):
-    index = get_email_index()
-    creds = email_accounts[index]
-    email_user = creds["EMAIL_HOST_USER"]
-    email_password = creds["EMAIL_HOST_PASSWORD"]
-
-    try:
-        yag = yagmail.SMTP(user=email_user, password=email_password)
-        for to_email in to_emails:
-            try:
-                yag.send(to=to_email, subject=subject, contents=content)
-                print(f"[SUCCESS] Email sent to {to_email} from {email_user}")
-            except Exception as e:
-                print(f"[FAIL] Could not send to {to_email}: {e}")
-        update_email_index((index + 1) % len(email_accounts))
-    except Exception as e:
-        print(f"[ERROR] Email account {email_user} failed to connect: {e}")
 
 def send_email(to_email, subject, content):
-    send_bulk_email([to_email], subject, content)
+    """
+    Sends an email using the configured provider (Resend or MailerSend).
+    Automatically falls back to the secondary provider if the first fails.
+    """
+    to_list = [to_email] if isinstance(to_email, str) else to_email
+
+    if PROVIDER == "resend":
+        success = _send_via_resend(to_list, subject, content)
+        if not success:
+            print("[⚠️ Fallback] Resend failed — switching to MailerSend...")
+            return _send_via_mailersend(to_list, subject, content)
+        return True
+    else:
+        success = _send_via_mailersend(to_list, subject, content)
+        if not success:
+            print("[⚠️ Fallback] MailerSend failed — switching to Resend...")
+            return _send_via_resend(to_list, subject, content)
+        return True
+
+
+# === Provider Implementations ===
+
+def _send_via_resend(to_list, subject, content):
+    """Private: Send email via Resend API."""
+    headers = {
+        "Authorization": f"Bearer {RESEND_API_KEY}",
+        "Content-Type": "application/json",
+    }
+    data = {
+        "from": RESEND_SENDER,
+        "to": to_list,
+        "subject": subject,
+        "text": content,
+    }
+
+    try:
+        response = requests.post(RESEND_URL, headers=headers, json=data)
+        response.raise_for_status()
+        print(f"[✅ SUCCESS: Resend] Email sent to {to_list}")
+        return True
+    except Exception as e:
+        print(f"[❌ ERROR: Resend] {e}")
+        return False
+
+
+def _send_via_mailersend(to_list, subject, content):
+    """Private: Send email via MailerSend API (with detailed debug logging)."""
+    headers = {
+        "Authorization": f"Bearer {MAILERSEND_API_KEY}",
+        "Content-Type": "application/json",
+    }
+    data = {
+        "from": {"email": MAILERSEND_SENDER.split('<')[-1].strip('>')},
+        "to": [{"email": email} for email in to_list],
+        "subject": subject,
+        "text": content,
+    }
+
+    try:
+        response = requests.post(MAILERSEND_URL, headers=headers, json=data)
+
+        # --- Debug logging ---
+        if not response.ok:
+            print(f"[❌ ERROR: MailerSend] Status {response.status_code}")
+            try:
+                error_info = response.json()
+                print("[📨 MAILERSEND ERROR DETAILS]", error_info)
+            except Exception:
+                print("[📨 MAILERSEND RAW ERROR RESPONSE]", response.text)
+            response.raise_for_status()
+
+        print(f"[✅ SUCCESS: MailerSend] Email sent to {to_list}")
+        return True
+
+    except Exception as e:
+        print(f"[❌ EXCEPTION: MailerSend] {e}")
+        return False
+
+
+# === Predefined Email Templates ===
 
 def send_otp_email(to_email, otp):
-    content = f"Hi,\n\nYour OTP is: {otp}\n\nBest regards,\nMedic Adrenaline, \n👉 Tip: Mark our emails as 'Not Spam' by clicking in the 'Report not spam' to receive notifications faster"
-    send_email(to_email, "Verify your Exam Practice Account", content)
+    """Send OTP verification email."""
+    content = (
+        f"Hi,\n\n"
+        f"Your OTP is: {otp}\n\n"
+        f"Best regards,\nMedic Adrenaline"
+    )
+    send_email(to_email, "Verify Your Exam Practice Account", content)
+
 
 def send_reset_password_email(to_email, token):
+    """Send password reset email."""
     content = (
         f"Hi,\n\n"
         f"Your password reset token is: {token}\n\n"
         f"This token will expire in 1 hour.\n\n"
-        f"👉 Tip: Mark our emails as 'Not Spam' by clicking on the 'Report not spam' to receive notifications faster"
         f"Best regards,\nMedic Adrenaline"
     )
     send_email(to_email, "Password Reset Request", content)
 
+
 def send_exam_pins_email(to_email, pins_dict):
+    """Send PINs for a single recipient."""
     content = "Hi,\n\nHere are your PINs:\n\n"
     for mode, pin in pins_dict.items():
         content += f"- {mode}: {pin}\n"
-    
     content += (
-        "\nNote: Do not disclose your PIN. Once it is activated on your device only. "
-        "This PIN is tied to that specific device and cannot be accessed on another device. "
-        "Please contact the admin via the login page if you need to access your account on a new device.\n\n"
-        "👉 Tip: Mark our emails as 'Not Spam' by clicking the 'Report not spam' to receive notifications faster"
-        "Best regards,\nMedic Adrenaline Team"
+        "\nNote: Do not disclose your PIN. Once activated, it’s tied to your device.\n"
+        "Contact the admin via the login page if you need to access your account on another device.\n\n"
+        "Best regards,\nMedic Adrenaline"
     )
-    
     send_email(to_email, "Your Exam Practice PIN(s)", content)
 
+
 def send_exam_pins_email_bulk(recipient_emails, pins_dict):
-    content = "Dear Student,\n\nHere are your PIN(s) for the selected exam mode(s):\n\n"
-    
+    """Send the same PIN info to multiple recipients."""
+    content = "Dear Student,\n\nHere are your PIN(s):\n\n"
     for mode, pin in pins_dict.items():
         content += f"{mode.upper()} PIN: {pin}\n"
-    
     content += (
-        "\nNote: Do not disclose your PIN. Once it is activated on your device only. "
-        "This PIN is tied to that specific device and cannot be accessed on another device. "
-        "Please contact the admin via the login page if you need to access your account on a new device.\n\n"
-        "👉 Tip: Mark our emails as 'Not Spam' by clicking on 'Report not spam' to receive notifications faster"
-        "Best regards,\nMedic Adrenaline Team"
+        "\nNote: Do not disclose your PIN. Once activated, it’s tied to your device.\n"
+        "Contact the admin via the login page if you need to access your account on another device.\n\n"
+        "Best regards,\nMedic Adrenaline"
     )
-    
-    send_bulk_email(recipient_emails, "Your Exam PIN(s)", content)
+
+    for email in recipient_emails:
+        send_email(email, "Your Exam Practice PIN(s)", content)

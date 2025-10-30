@@ -5,20 +5,15 @@ NKYQNRFPO0
   const lastShown = localStorage.getItem("adsterra_last_shown");
   const now = Date.now();
   const sixHours = 1 * 60 * 60 * 1000; // 1 hour in ms
-
   if (!lastShown || now - lastShown > sixHours) {
     // ✅ Trigger Adsterra popunder only once every 1 hour
     const s = document.createElement("script");
     s.type = "text/javascript";
     s.src = "//pl27914331.effectivegatecpm.com/c2/af/0b/c2af0be57935d635004b623f28ee8da2.js";
     document.body.appendChild(s);
-
     localStorage.setItem("adsterra_last_shown", now.toString());
   } else {
-    console.log("⏱️ Popunder already shown within the last 1 hour.");
-  }
-})();
-
+    console.log("⏱️ Popunder already shown within the last 1 hour.");}})();
 <script type='text/javascript' src='//pl27914331.effectivegatecpm.com/c2/af/0b/c2af0be57935d635004b623f28ee8da2.js'></script>
 
 sendgrid recovery code: NTQRNL6DQVJRQAHPGUAE2CRB
@@ -40,3 +35,30 @@ def test_otp():
         return "✅ Email sent successfully!"
     except Exception as e:
         return f"❌ Error: {e}"
+
+@app.route("/test_email_diagnostic")
+def test_email_diagnostic():
+    """Send test emails through both Resend and MailerSend, and return the results."""
+
+    test_email = "medicadrenaline@gmail.com"  # ← change this to your test email address
+    subject = "Email Provider Diagnostic Test"
+    message = "This is a test message from Adrena JAMB CBT email diagnostic route."
+
+    results = {}
+
+    # --- Test Resend ---
+    try:
+        success_resend = _send_via_resend([test_email], subject, message)
+        results["Resend"] = "✅ Success" if success_resend else "❌ Failed"
+    except Exception as e:
+        results["Resend"] = f"❌ Error: {str(e)}"
+
+    # --- Test MailerSend ---
+    try:
+        success_mailersend = _send_via_mailersend([test_email], subject, message)
+        results["MailerSend"] = "✅ Success" if success_mailersend else "❌ Failed"
+    except Exception as e:
+        results["MailerSend"] = f"❌ Error: {str(e)}"
+
+    print("[🔍 EMAIL DIAGNOSTIC RESULTS]", results)
+    return jsonify(results)
