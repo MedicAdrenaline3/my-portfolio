@@ -3,7 +3,7 @@ from flask import Flask, render_template, request, redirect, url_for, session, f
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 import requests, secrets, os, uuid, string, random, time, threading
-from email_utils import send_otp_email, send_exam_pins_email, send_reset_password_email, send_email, _send_via_resend, _send_via_mailersend
+from email_utils import send_otp_email, send_exam_pins_email, send_reset_password_email, send_email, _send_via_resend, _send_via_mailersend, _send_via_sendgrid
 from functools import wraps
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from flask_migrate import Migrate

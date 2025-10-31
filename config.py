@@ -8,7 +8,7 @@ load_dotenv()
 class Config:
     # === General Configuration ===
     SECRET_KEY = os.getenv('SECRET_KEY')
-    
+
     # === Database Configuration ===
     DB_HOST = os.getenv('DB_HOST')
     DB_USER = os.getenv('DB_USER')
@@ -33,20 +33,44 @@ class Config:
     WOLFRAM_APP_ID = os.getenv("WOLFRAM_APP_ID")
 
     # === Email Configuration ===
-    # Primary: Resend
+    # 1️⃣ Primary: Resend
     RESEND_API_KEY = os.getenv("RESEND_API_KEY")
     RESEND_SENDER = os.getenv("RESEND_SENDER", "JAMB OTP <adrena-jamb-cbt@adrena-jamb-cbt.buzz>")
 
-    # Secondary: MailerSend
+    # 2️⃣ Secondary: SendGrid
+    SENDGRID_API_KEY = os.getenv("SENDGRID_API_KEY")
+    SENDGRID_SENDER = os.getenv("SENDGRID_SENDER", "JAMB OTP <adrena-jamb-cbt@adrena-jamb-cbt.buzz>")
+
+    # 3️⃣ Tertiary: MailerSend
     MAILERSEND_API_KEY = os.getenv("MAILERSEND_API_KEY")
     MAILERSEND_SENDER = os.getenv("MAILERSEND_SENDER", "JAMB OTP <adrena-jamb-cbt@adrena-jamb-cbt.buzz>")
+    
+    # === Default provider logic ===
+    # Options: "resend", "sendgrid", or "mailersend"
+    EMAIL_PROVIDER = os.getenv("EMAIL_PROVIDER", "resend")
 
-    # Default settings (Resend first)
-    EMAIL_PROVIDER = os.getenv("EMAIL_PROVIDER", "resend")  # "resend" or "mailersend"
+    # === Convenience (not required but helpful for debugging)
+    EMAIL_PROVIDERS = {
+        "resend": {
+            "api_key": RESEND_API_KEY,
+            "sender": RESEND_SENDER,
+            "base_url": "https://api.resend.com/emails"
+        },
+        "sendgrid": {
+            "api_key": SENDGRID_API_KEY,
+            "sender": SENDGRID_SENDER,
+            "base_url": "https://api.sendgrid.com/v3/mail/send"
+        },
+        "mailersend": {
+            "api_key": MAILERSEND_API_KEY,
+            "sender": MAILERSEND_SENDER,
+            "base_url": "https://api.mailersend.com/v1/email"
+        }
+    }
 
-    # Fallback SMTP-style values for compatibility
-    MAIL_SERVER = "api.resend.com" if EMAIL_PROVIDER == "resend" else "api.mailersend.com"
+    # Fallback values (mostly unused now but kept for legacy)
+    MAIL_SERVER = "api.resend.com"
     MAIL_PORT = 443
     MAIL_USE_TLS = True
-    MAIL_USERNAME = RESEND_SENDER if EMAIL_PROVIDER == "resend" else MAILERSEND_SENDER
-    MAIL_PASSWORD = RESEND_API_KEY if EMAIL_PROVIDER == "resend" else MAILERSEND_API_KEY
+    MAIL_USERNAME = RESEND_SENDER
+    MAIL_PASSWORD = RESEND_API_KEY
