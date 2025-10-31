@@ -1,32 +1,43 @@
-<!-- ✅ Adsterra Banner (2-hour limit, no countdown) -->
+<!-- ✅ Adsterra Banner (2-hour limit, fully functional) -->
 <div class="ad-banner-container">
-  <div id="ad-banner-slot"></div>
+  <div id="ad-banner-slot-160x300"></div>
 </div>
 
 <script>
-  const BANNER_AD_KEY = "banner_ad_last_shown";
+  const BANNER_AD_KEY_160x300 = "banner_ad_last_shown_160x300";
   const BANNER_INTERVAL = 2 * 60 * 60 * 1000; // 2 hours
 
-  function showBannerAd() {
-    const lastShown = localStorage.getItem(BANNER_AD_KEY);
+  function showBannerAd160x300() {
+    const lastShown = localStorage.getItem(BANNER_AD_KEY_160x300);
     if (!lastShown || Date.now() - lastShown > BANNER_INTERVAL) {
-      document.getElementById("ad-banner-slot").innerHTML = `
-        <script type="text/javascript">
-          atOptions = {
-            'key' : 'ebb6e721b6c7046c0b48f942f7b875e4',
-            'format' : 'iframe',
-            'height' : 300,
-            'width' : 160,
-            'params' : {}
-          };
-        <\/script>
-        <script type="text/javascript" src="//www.highperformanceformat.com/ebb6e721b6c7046c0b48f942f7b875e4/invoke.js"><\/script>
+      const container = document.getElementById("ad-banner-slot-160x300");
+
+      // ✅ Step 1: Create the Adsterra config script
+      const configScript = document.createElement("script");
+      configScript.type = "text/javascript";
+      configScript.text = `
+        atOptions = {
+          'key': 'ebb6e721b6c7046c0b48f942f7b875e4',
+          'format': 'iframe',
+          'height': 300,
+          'width': 160,
+          'params': {}
+        };
       `;
-      localStorage.setItem(BANNER_AD_KEY, Date.now());
+      container.appendChild(configScript);
+
+      // ✅ Step 2: Create the Adsterra invoke script
+      const invokeScript = document.createElement("script");
+      invokeScript.type = "text/javascript";
+      invokeScript.src = "//www.highperformanceformat.com/ebb6e721b6c7046c0b48f942f7b875e4/invoke.js";
+      container.appendChild(invokeScript);
+
+      // ✅ Step 3: Save timestamp
+      localStorage.setItem(BANNER_AD_KEY_160x300, Date.now());
     }
   }
 
-  showBannerAd();
+  showBannerAd160x300();
 </script>
 
 <style>

@@ -43,6 +43,45 @@
             margin-top: 10px;
             cursor: pointer;
         }
+        .purchase-btn {
+    display: inline-block;
+    background: linear-gradient(90deg, #007bff, #00c6ff);
+    color: white;
+    font-weight: 600;
+    font-size: 1rem;
+    text-decoration: none;
+    padding: 12px 25px;
+    border-radius: 30px;
+    text-align: center;
+    box-shadow: 0 0 15px rgba(0, 123, 255, 0.5);
+    animation: blink 1.2s infinite, glow 2s ease-in-out infinite alternate;
+    transition: transform 0.3s ease;
+  }
+
+  .purchase-btn:hover {
+    transform: scale(1.07);
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  @keyframes glow {
+    0% { box-shadow: 0 0 10px #007bff, 0 0 20px #00c6ff; }
+    100% { box-shadow: 0 0 25px #00c6ff, 0 0 50px #007bff; }
+  }
+
+  /* Responsive for smaller screens */
+  @media (max-width: 768px) {
+    .purchase-btn {
+      display: block;
+      width: 90%;
+      margin: 10px auto;
+      font-size: 0.95rem;
+      padding: 10px 15px;
+    }
+  }
     </style>
 </head>
 <body>
@@ -101,6 +140,11 @@
     <p>No past questions uploaded yet.</p>
     {% endfor %}
 </div>
+
+<!-- 🔥 Blinking Purchase Button -->
+<a href="https://wa.me/8135047400" target="_blank" class="purchase-btn">
+  📘 Purchase UTME Past Questions
+</a>
 
 <script>
 function toggleMode() {
