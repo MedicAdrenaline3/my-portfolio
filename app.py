@@ -258,34 +258,6 @@ def welcome():
 def ping():
     return jsonify({"status": "ok", "message": "Adrena CBT is live ✅"}), 200
 
-@app.route("/test_email_diagnostic")
-def test_email_diagnostic():
-    """
-    Send test emails through both Resend and SendGrid, and return the results.
-    """
-    test_email = "medicadrenaline2@gmail.com"  # ← your test email
-    subject = "Email Provider Diagnostic Test"
-    message = "This is a test message from Adrena JAMB CBT email diagnostic route."
-
-    results = {}
-
-    # --- Test Resend ---
-    try:
-        success_resend = _send_via_resend([test_email], subject, message)
-        results["Resend"] = "✅ Success" if success_resend else "❌ Failed"
-    except Exception as e:
-        results["Resend"] = f"❌ Error: {str(e)}"
-
-    # --- Test SendGrid ---
-    try:
-        success_sendgrid = _send_via_sendgrid([test_email], subject, message)
-        results["SendGrid"] = "✅ Success" if success_sendgrid else "❌ Failed"
-    except Exception as e:
-        results["SendGrid"] = f"❌ Error: {str(e)}"
-
-    print("[🔍 EMAIL DIAGNOSTIC RESULTS]", results)
-    return jsonify(results)
-
 @app.route('/app-instructions' , methods=['GET', 'POST'])
 def app_instructions():
     return render_template('app_instructions.html')
