@@ -265,7 +265,7 @@
 
         <div class="alert alert-info" style="color: black;">
             Contact Admin via 
-            <strong><a href="https://wa.me/2348135047400" target="_blank" style="color: green;">WhatsApp</a></strong> 
+            <strong><a href="https://wa.me/9112542492" target="_blank" style="color: green;">WhatsApp</a></strong> 
             to confirm payment and activate your PIN.
         </div>
 
@@ -279,7 +279,8 @@
             <div class="form-container">
                 <label>
                     <input type="checkbox" name="exam_mode" value="jamb">
-                    <span style="font-style: italic; font-family: monospace; font-weight: bold; font-size: x-large;">Click the checkbox to proceed with Paystack (₦2000)</span>
+                    <span style="font-style: italic; font-family: monospace; font-weight: bold; font-size: 
+                    x-large;">Click the checkbox to proceed with Paystack (₦2,000)</span>
                 </label>
             </div>
 <div class="form-container">
@@ -292,13 +293,8 @@
                 </select>
             </div>
 
-            <div id="bank-details" class="form-container" style="display: none;">
-                <h4 style="color: var(--primary);">Acct Details:</h4>
-                <p><strong>Bank:</strong> Opay</p>
-                <p><strong>Account Name:</strong> Bakre Feranmi David</p>
-                <p><strong>Account Number:</strong> 8135047400</p>
-                <hr>
-                <p><strong>After payment, send your proof with your username/email to WhatsApp above.</strong></p>
+            <div id="bank-details" class="form-container" style="display: none; font-style: italic;">
+                <p><strong>Option currently not available...</strong></p>
             </div>
 
             <button type="submit" class="btn">Proceed</button>
@@ -328,9 +324,9 @@
       <li>Share this CBT website link with friends and active jambite groups 👥</li>
       <li>Take a <strong>screenshot</strong> showing your post 📸</li>
       <li>Send the screenshot & your <strong>registered username</strong> to the admin below 👇 
-        for your pin (<strong>Note:</strong> Free pins are only valid for <strong>10days</strong>)</li>
+        for your pin (<strong>Note:</strong> Free pins are only valid for <strong>7days</strong>)</li>
     </ol>
-    <a href="https://wa.me/2348135047400?text=Hello%20Admin!%20I%20have%20shared%20the%20CBT%20link%20and%20would%20like%20to%20claim%20my%20Free%20PIN." 
+    <a href="https://wa.me/9112542492?text=Hello%20Admin!%20I%20have%20shared%20the%20CBT%20link%20and%20would%20like%20to%20claim%20my%20Free%20PIN." 
        target="_blank" 
        class="claim-btn" style="font-weight: bolder;">📩 Message Admin on WhatsApp</a>
   </div>
@@ -380,7 +376,7 @@ window.addEventListener("load", function () {
     localStorage.setItem(userKey, startDate);
   }
   const start = new Date(startDate);
-  const totalDuration = 15 * 24 * 60 * 60 * 1000; // 15 days
+  const totalDuration = 5 * 24 * 60 * 60 * 1000; // 5 days
   // Update countdown continuously
   function updateCountdown() {
     const now = new Date();

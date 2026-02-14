@@ -511,7 +511,7 @@ def calculate_amount(selected_modes):
         if mode == 'alevel':
             amount += 3000
         else:
-            amount += 2000
+            amount += 2230
     return amount
 
 # Initiate Paystack payment
@@ -1034,7 +1034,7 @@ def retake_jamb_exam():
     )
     db.session.add(new_attempt)
     db.session.commit()
-
+    
     # Prepare session
     session['jamb_subjects'] = previous_subjects
     session['jamb_attempt_id'] = new_attempt.id
