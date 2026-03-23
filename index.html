@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Medic Adrenaline — Developer Portfolio</title>
+
+  <!-- Google Fonts: Display + Body pairing -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ============================================================
+       NAVIGATION BAR — sticky, highlights active section
+  ============================================================ -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-inner">
+      <!-- Logo / Brand -->
+      <a href="#hero" class="nav-logo">
+        <span class="logo-bracket">&lt;</span>MA<span class="logo-bracket">/&gt;</span>
+      </a>
+
+      <!-- Desktop Links -->
+      <ul class="nav-links" id="nav-links">
+        <li><a href="#about"   class="nav-link">About</a></li>
+        <li><a href="#skills"  class="nav-link">Skills</a></li>
+        <li><a href="#projects" class="nav-link">Projects</a></li>
+        <li><a href="#contact" class="nav-link">Contact</a></li>
+      </ul>
+
+      <!-- Right controls: theme toggle + hamburger -->
+      <div class="nav-controls">
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark/light mode">
+          <i class="fa-solid fa-moon" id="themeIcon"></i>
+        </button>
+        <button class="hamburger" id="hamburger" aria-label="Open menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="#about"    class="mob-link">About</a>
+      <a href="#skills"   class="mob-link">Skills</a>
+      <a href="#projects" class="mob-link">Projects</a>
+      <a href="#contact"  class="mob-link">Contact</a>
+    </div>
+  </nav>
+
+
+  <!-- ============================================================
+       HERO SECTION — full-screen intro with typing effect
+  ============================================================ -->
+  <section class="hero" id="hero">
+    <!-- Animated mesh / grid background -->
+    <div class="hero-bg">
+      <canvas id="heroCanvas"></canvas>
+      <div class="hero-glow glow-1"></div>
+      <div class="hero-glow glow-2"></div>
+    </div>
+
+    <div class="hero-content">
+      <!-- Eyebrow label -->
+      <p class="hero-eyebrow">
+        <span class="dot-pulse"></span> Available for opportunities
+      </p>
+
+      <!-- Main heading -->
+      <h1 class="hero-name">
+        Medic<br/>
+        <span class="hero-name-accent">Adrenaline</span>
+      </h1>
+
+      <!-- Typing tagline -->
+      <p class="hero-tagline">
+        <span class="typing-prefix">I'm a </span>
+        <span class="typing-text" id="typingText"></span>
+        <span class="typing-cursor">|</span>
+      </p>
+
+      <!-- Sub bio line -->
+      <p class="hero-sub">
+        Bakre Feranmi David · 18 · Building at the intersection of medicine and technology
+      </p>
+
+      <!-- CTAs -->
+      <div class="hero-ctas">
+        <a href="#projects" class="btn btn-primary">
+          View Projects <i class="fa-solid fa-arrow-right"></i>
+        </a>
+        <a href="#contact" class="btn btn-ghost">
+          Let's Connect
+        </a>
+      </div>
+
+      <!-- Social quick links -->
+      <div class="hero-socials">
+        <a href="https://github.com/" target="_blank" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+        <a href="https://linkedin.com/" target="_blank" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
+        <a href="https://t.me/" target="_blank" aria-label="Telegram"><i class="fa-brands fa-telegram"></i></a>
+      </div>
+    </div>
+
+    <!-- Scroll indicator -->
+    <div class="scroll-hint">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       ABOUT SECTION
+  ============================================================ -->
+  <section class="section about" id="about">
+    <div class="container">
+      <!-- Section header -->
+      <div class="section-header reveal">
+        <span class="section-tag">01 / About</span>
+        <h2 class="section-title">Who I Am</h2>
+      </div>
+
+      <div class="about-grid">
+        <!-- Avatar / Visual -->
+        <div class="about-visual reveal">
+          <div class="avatar-frame">
+            <!-- Placeholder avatar initials -->
+            <div class="avatar-placeholder">
+              <span>MA</span>
+            </div>
+            <!-- Floating badges -->
+            <div class="badge badge-top">
+              <i class="fa-solid fa-stethoscope"></i> Med Student
+            </div>
+            <div class="badge badge-bottom">
+              <i class="fa-solid fa-robot"></i> AI Builder
+            </div>
+          </div>
+        </div>
+
+        <!-- Text -->
+        <div class="about-text reveal">
+          <p class="about-intro">
+            Hey! I'm <strong>Feranmi</strong> — an 18-year-old medical student who writes code between lectures.
+          </p>
+          <p>
+            I'm passionate about the unique crossroads of <em>medicine and technology</em>. By day I study anatomy,
+            physiology, and clinical sciences. By night (and sometimes during breaks) I build web applications,
+            automate tasks with Python, and experiment with AI systems.
+          </p>
+          <p>
+            My goal is to leverage software and artificial intelligence to solve real healthcare problems —
+            from patient education tools to diagnostic assistants. Every project I build is a step toward that future.
+          </p>
+
+          <!-- Quick stat chips -->
+          <div class="stat-chips">
+            <div class="chip"><i class="fa-solid fa-code"></i> 3+ years coding</div>
+            <div class="chip"><i class="fa-solid fa-flask"></i> Med student</div>
+            <div class="chip"><i class="fa-solid fa-brain"></i> AI enthusiast</div>
+            <div class="chip"><i class="fa-solid fa-globe"></i> Web developer</div>
+          </div>
+
+          <a href="#projects" class="btn btn-primary btn-sm">See My Work <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       SKILLS SECTION — animated progress bars
+  ============================================================ -->
+  <section class="section skills" id="skills">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag">02 / Skills</span>
+        <h2 class="section-title">What I Work With</h2>
+      </div>
+
+      <div class="skills-grid">
+
+        <!-- Category: Programming -->
+        <div class="skill-card reveal">
+          <div class="skill-card-header">
+            <i class="fa-solid fa-terminal skill-icon"></i>
+            <h3>Programming</h3>
+          </div>
+          <div class="skill-list">
+            <div class="skill-item" data-level="90">
+              <div class="skill-meta"><span>Python</span><span class="skill-pct">90%</span></div>
+              <div class="skill-bar"><div class="skill-fill"></div></div>
+            </div>
+            <div class="skill-item" data-level="72">
+              <div class="skill-meta"><span>C++</span><span class="skill-pct">72%</span></div>
+              <div class="skill-bar"><div class="skill-fill"></div></div>
+            </div>
+            <div class="skill-item" data-level="65">
+              <div class="skill-meta"><span>Java</span><span class="skill-pct">65%</span></div>
+              <div class="skill-bar"><div class="skill-fill"></div></div>
+            </div>
+            <div class="skill-item" data-level="55">
+              <div class="skill-meta"><span>Bash / Shell</span><span class="skill-pct">55%</span></div>
+              <div class="skill-bar"><div class="skill-fill"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Category: Web Dev -->
+        <div class="skill-card reveal">
+          <div class="skill-card-header">
+            <i class="fa-solid fa-layer-group skill-icon"></i>
+            <h3>Web Development</h3>
+          </div>
+          <div class="skill-list">
+            <div class="skill-item" data-level="85">
+              <div class="skill-meta"><span>HTML / CSS</span><span class="skill-pct">85%</span></div>
+              <div class="skill-bar"><div class="skill-fill"></div></div>
+            </div>
+            <div class="skill-item" data-level="78">
+              <div class="skill-meta"><span>JavaScript</span><span class="skill-pct">78%</span></div>
+              <div class="skill-bar"><div class="skill-fill"></div></div>
+            </div>
+            <div class="skill-item" data-level="80">
+              <div class="skill-meta"><span>Flask</span><span class="skill-pct">80%</span></div>
+              <div class="skill-bar"><div class="skill-fill"></div></div>
+            </div>
+            <div class="skill-item" data-level="60">
+              <div class="skill-meta"><span>MySQL</span><span class="skill-pct">60%</span></div>
+              <div class="skill-bar"><div class="skill-fill"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Category: AI / Other -->
+        <div class="skill-card reveal">
+          <div class="skill-card-header">
+            <i class="fa-solid fa-microchip skill-icon"></i>
+            <h3>AI / Other</h3>
+          </div>
+          <div class="skill-list">
+            <div class="skill-item" data-level="75">
+              <div class="skill-meta"><span>Machine Learning</span><span class="skill-pct">75%</span></div>
+              <div class="skill-bar"><div class="skill-fill"></div></div>
+            </div>
+            <div class="skill-item" data-level="70">
+              <div class="skill-meta"><span>LLM / Prompt Eng.</span><span class="skill-pct">70%</span></div>
+              <div class="skill-bar"><div class="skill-fill"></div></div>
+            </div>
+            <div class="skill-item" data-level="65">
+              <div class="skill-meta"><span>Telegram Bot API</span><span class="skill-pct">65%</span></div>
+              <div class="skill-bar"><div class="skill-fill"></div></div>
+            </div>
+            <div class="skill-item" data-level="60">
+              <div class="skill-meta"><span>Git / GitHub</span><span class="skill-pct">60%</span></div>
+              <div class="skill-bar"><div class="skill-fill"></div></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       PROJECTS SECTION — interactive cards with hover effects
+  ============================================================ -->
+  <section class="section projects" id="projects">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag">03 / Projects</span>
+        <h2 class="section-title">What I've Built</h2>
+      </div>
+
+      <div class="projects-grid">
+
+        <!-- Project 1: Exam Practice Platform -->
+        <article class="project-card reveal" tabindex="0">
+          <div class="project-img">
+            <div class="project-img-placeholder" style="--ph-color: #0ea5e9;">
+              <i class="fa-solid fa-graduation-cap"></i>
+            </div>
+            <div class="project-overlay">
+              <a href="https://github.com/" target="_blank" class="overlay-btn">
+                <i class="fa-brands fa-github"></i> View Code
+              </a>
+            </div>
+          </div>
+          <div class="project-body">
+            <div class="project-number">01</div>
+            <h3 class="project-name">Exam Practice Platform</h3>
+            <p class="project-desc">
+              A full-stack web app for medical students to practice past questions.
+              Features timed quizzes, answer explanations, progress tracking, and
+              a leaderboard to keep studying competitive.
+            </p>
+            <div class="project-tags">
+              <span>Python</span><span>Flask</span><span>MySQL</span><span>HTML/CSS</span>
+            </div>
+            <div class="project-links">
+              <a href="https://github.com/" target="_blank" class="proj-link">
+                <i class="fa-brands fa-github"></i> GitHub
+              </a>
+              <a href="#" class="proj-link proj-link-demo">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i> Live Demo
+              </a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Project 2: Telegram Airdrop Bot -->
+        <article class="project-card reveal" tabindex="0">
+          <div class="project-img">
+            <div class="project-img-placeholder" style="--ph-color: #22c55e;">
+              <i class="fa-brands fa-telegram"></i>
+            </div>
+            <div class="project-overlay">
+              <a href="https://github.com/" target="_blank" class="overlay-btn">
+                <i class="fa-brands fa-github"></i> View Code
+              </a>
+            </div>
+          </div>
+          <div class="project-body">
+            <div class="project-number">02</div>
+            <h3 class="project-name">Telegram Airdrop Bot</h3>
+            <p class="project-desc">
+              An automated Telegram bot that manages crypto airdrop campaigns —
+              handles user verification, referral tracking, task completion checks,
+              and reward distribution with a clean admin dashboard.
+            </p>
+            <div class="project-tags">
+              <span>Python</span><span>Telegram API</span><span>SQLite</span><span>asyncio</span>
+            </div>
+            <div class="project-links">
+              <a href="https://github.com/" target="_blank" class="proj-link">
+                <i class="fa-brands fa-github"></i> GitHub
+              </a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Project 3: C++ Football Game -->
+        <article class="project-card reveal" tabindex="0">
+          <div class="project-img">
+            <div class="project-img-placeholder" style="--ph-color: #f59e0b;">
+              <i class="fa-solid fa-futbol"></i>
+            </div>
+            <div class="project-overlay">
+              <a href="https://github.com/" target="_blank" class="overlay-btn">
+                <i class="fa-brands fa-github"></i> View Code
+              </a>
+            </div>
+          </div>
+          <div class="project-body">
+            <div class="project-number">03</div>
+            <h3 class="project-name">C++ Football Game</h3>
+            <p class="project-desc">
+              A console-based football simulation game written in C++. Features
+              team management, match simulation with randomized outcomes,
+              a league table, and player stats tracking using OOP principles.
+            </p>
+            <div class="project-tags">
+              <span>C++</span><span>OOP</span><span>Data Structures</span>
+            </div>
+            <div class="project-links">
+              <a href="https://github.com/" target="_blank" class="proj-link">
+                <i class="fa-brands fa-github"></i> GitHub
+              </a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Project 4: AI Chat Interface -->
+        <article class="project-card reveal" tabindex="0">
+          <div class="project-img">
+            <div class="project-img-placeholder" style="--ph-color: #a855f7;">
+              <i class="fa-solid fa-comments"></i>
+            </div>
+            <div class="project-overlay">
+              <a href="https://github.com/" target="_blank" class="overlay-btn">
+                <i class="fa-brands fa-github"></i> View Code
+              </a>
+            </div>
+          </div>
+          <div class="project-body">
+            <div class="project-number">04</div>
+            <h3 class="project-name">AI Chat Interface</h3>
+            <p class="project-desc">
+              A sleek, minimal web interface for conversational AI. Supports
+              streaming responses, conversation history, custom system prompts,
+              and multiple model switching — built for developers and researchers.
+            </p>
+            <div class="project-tags">
+              <span>Python</span><span>Flask</span><span>OpenAI API</span><span>JS</span>
+            </div>
+            <div class="project-links">
+              <a href="https://github.com/" target="_blank" class="proj-link">
+                <i class="fa-brands fa-github"></i> GitHub
+              </a>
+              <a href="#" class="proj-link proj-link-demo">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i> Live Demo
+              </a>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       CONTACT SECTION — links + optional form
+  ============================================================ -->
+  <section class="section contact" id="contact">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag">04 / Contact</span>
+        <h2 class="section-title">Get In Touch</h2>
+        <p class="section-sub">
+          Whether it's a project idea, a collaboration, or just a hello — my inbox is always open.
+        </p>
+      </div>
+
+      <div class="contact-grid">
+
+        <!-- Contact Links -->
+        <div class="contact-links reveal">
+          <a href="mailto:feranmi@example.com" class="contact-card">
+            <div class="cc-icon"><i class="fa-solid fa-envelope"></i></div>
+            <div class="cc-text">
+              <span class="cc-label">Email</span>
+              <span class="cc-value">feranmi@example.com</span>
+            </div>
+            <i class="fa-solid fa-arrow-right cc-arrow"></i>
+          </a>
+
+          <a href="https://github.com/" target="_blank" class="contact-card">
+            <div class="cc-icon"><i class="fa-brands fa-github"></i></div>
+            <div class="cc-text">
+              <span class="cc-label">GitHub</span>
+              <span class="cc-value">github.com/medicadrenaline</span>
+            </div>
+            <i class="fa-solid fa-arrow-right cc-arrow"></i>
+          </a>
+
+          <a href="https://linkedin.com/" target="_blank" class="contact-card">
+            <div class="cc-icon"><i class="fa-brands fa-linkedin"></i></div>
+            <div class="cc-text">
+              <span class="cc-label">LinkedIn</span>
+              <span class="cc-value">linkedin.com/in/feranmibakre</span>
+            </div>
+            <i class="fa-solid fa-arrow-right cc-arrow"></i>
+          </a>
+
+          <a href="https://t.me/" target="_blank" class="contact-card">
+            <div class="cc-icon"><i class="fa-brands fa-telegram"></i></div>
+            <div class="cc-text">
+              <span class="cc-label">Telegram</span>
+              <span class="cc-value">@medicadrenaline</span>
+            </div>
+            <i class="fa-solid fa-arrow-right cc-arrow"></i>
+          </a>
+        </div>
+
+        <!-- Contact Form -->
+        <div class="contact-form-wrap reveal">
+          <form class="contact-form" id="contactForm">
+            <h3>Send a Message</h3>
+
+            <div class="form-group">
+              <label for="fname">Your Name</label>
+              <input type="text" id="fname" name="name" placeholder="John Doe" required />
+            </div>
+
+            <div class="form-group">
+              <label for="femail">Email Address</label>
+              <input type="email" id="femail" name="email" placeholder="john@example.com" required />
+            </div>
+
+            <div class="form-group">
+              <label for="fmsg">Message</label>
+              <textarea id="fmsg" name="message" rows="5" placeholder="Tell me about your project…" required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-full">
+              Send Message <i class="fa-solid fa-paper-plane"></i>
+            </button>
+
+            <p class="form-success" id="formSuccess">
+              <i class="fa-solid fa-circle-check"></i> Message sent! I'll get back to you soon.
+            </p>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       FOOTER
+  ============================================================ -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <p class="footer-copy">
+        © 2025 <strong>Medic Adrenaline</strong> (Bakre Feranmi David) · Built with HTML, CSS &amp; JS
+      </p>
+      <div class="footer-socials">
+        <a href="https://github.com/" target="_blank" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+        <a href="https://linkedin.com/" target="_blank" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
+        <a href="https://t.me/" target="_blank" aria-label="Telegram"><i class="fa-brands fa-telegram"></i></a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
