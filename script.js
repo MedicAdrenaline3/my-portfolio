@@ -306,29 +306,49 @@ setTimeout(typeWriter, 1200);
 })();
 
 
-/* ── 9. CONTACT FORM ──────────────────────────────────────────── */
+/* ── 9. CONTACT FORM (Formspree) ──────────────────────────────── */
 
 /**
- * Prevent default submission, show a success message.
- * In production: replace with a real backend call or Formspree/EmailJS.
+ * Submits form data to Formspree via fetch.
  */
 if (contactForm) {
-  contactForm.addEventListener('submit', (e) => {
+  contactForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const btn = contactForm.querySelector('button[type="submit"]');
-    btn.textContent = 'Sending…';
-    btn.disabled    = true;
+    const btn  = contactForm.querySelector('button[type="submit"]');
+    const data = new FormData(contactForm);
 
-    // Simulate network delay
-    setTimeout(() => {
-      contactForm.reset();
-      btn.innerHTML = 'Send Message <i class="fa-solid fa-paper-plane"></i>';
+    // Update button to loading state
+    btn.innerHTML = 'Sending… <i class="fa-solid fa-spinner fa-spin"></i>';
+    btn.disabled  = true;
+
+    try {
+      const res = await fetch(contactForm.action, {
+        method:  'POST',
+        body:    data,
+        headers: { 'Accept': 'application/json' }
+      });
+
+      if (res.ok) {
+        // Success
+        contactForm.reset();
+        btn.innerHTML = 'Send Message <i class="fa-solid fa-paper-plane"></i>';
+        btn.disabled  = false;
+        formSuccess.classList.add('show');
+        setTimeout(() => formSuccess.classList.remove('show'), 5000);
+      } else {
+        // Formspree returned an error
+        const json = await res.json();
+        const msg  = json?.errors?.map(err => err.message).join(', ') || 'Submission failed.';
+        throw new Error(msg);
+      }
+
+    } catch (err) {
+      // Network error or Formspree error
+      btn.innerHTML = 'Failed — Try Again <i class="fa-solid fa-rotate-right"></i>';
       btn.disabled  = false;
-      formSuccess.classList.add('show');
-
-      setTimeout(() => formSuccess.classList.remove('show'), 5000);
-    }, 1200);
+      console.error('Form error:', err.message);
+    }
   });
 }
 /* ── 10. SMOOTH SCROLL FOR ALL ANCHOR LINKS ───────────────────── */
