@@ -29,10 +29,10 @@
 
       <!-- Desktop Links -->
       <ul class="nav-links" id="nav-links">
-        <li><a href="#about"   class="nav-link">About</a></li>
-        <li><a href="#skills"  class="nav-link">Skills</a></li>
+        <li><a href="#about"    class="nav-link">About</a></li>
+        <li><a href="#skills"   class="nav-link">Skills</a></li>
         <li><a href="#projects" class="nav-link">Projects</a></li>
-        <li><a href="#contact" class="nav-link">Contact</a></li>
+        <li><a href="#contact"  class="nav-link">Contact</a></li>
       </ul>
 
       <!-- Right controls: theme toggle + hamburger -->
@@ -88,10 +88,10 @@
 
       <!-- Sub bio line -->
       <p class="hero-sub">
-        Bakre Feranmi David  · Dev · Building at the intersection of medicine and technology
+        Bakre Feranmi David · Dev · Building at the intersection of medicine and technology
       </p>
 
-      <!-- CTAs -->
+      <!-- CTAs — View Projects, Connect, View CV, Download CV -->
       <div class="hero-ctas">
         <a href="#projects" class="btn btn-primary">
           View Projects <i class="fa-solid fa-arrow-right"></i>
@@ -99,14 +99,25 @@
         <a href="#contact" class="btn btn-ghost">
           Let's Connect
         </a>
+        <a href="assets/resume.pdf" target="_blank" class="btn btn-ghost">
+          <i class="fa-solid fa-file-pdf"></i> View CV
+        </a>
+        <a href="assets/resume.pdf" download="Bakre_Feranmi_David_CV.pdf" class="btn btn-primary">
+          <i class="fa-solid fa-download"></i> Download CV
+        </a>
       </div>
 
       <!-- Social quick links -->
       <div class="hero-socials">
-        <a href="https://github.com/MedicAdrenaline" target="_blank" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
-        <a href="https://www.linkedin.com/in/medic-adrenaline-31b9a63b2?utm_source=share&utm_
-        campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
-        <a href="https://t.me/MedicAdrenaline2" target="_blank" aria-label="Telegram"><i class="fa-brands fa-telegram"></i></a>
+        <a href="https://github.com/MedicAdrenaline" target="_blank" aria-label="GitHub">
+          <i class="fa-brands fa-github"></i>
+        </a>
+        <a href="https://www.linkedin.com/in/medic-adrenaline-31b9a63b2" target="_blank" aria-label="LinkedIn">
+          <i class="fa-brands fa-linkedin"></i>
+        </a>
+        <a href="https://t.me/MedicAdrenaline2" target="_blank" aria-label="Telegram">
+          <i class="fa-brands fa-telegram"></i>
+        </a>
       </div>
     </div>
 
@@ -130,20 +141,20 @@
       </div>
 
       <div class="about-grid">
-  <!-- Avatar / Visual -->
-  <div class="about-visual reveal">
-    <div class="avatar-frame">
-      <!-- Profile photo -->
-      <img src="assets/images/adrena_pic2.jpg" alt="Bakre Feranmi David" class="avatar-img" />
-      <!-- Floating badges -->
-      <div class="badge badge-top">
-        <i class="fa-solid fa-stethoscope"></i> Med Student
-      </div>
-      <div class="badge badge-bottom">
-        <i class="fa-solid fa-robot"></i> AI Builder
-      </div>
-    </div>
-  </div>
+        <!-- Avatar / Visual -->
+        <div class="about-visual reveal">
+          <div class="avatar-frame">
+            <!-- Profile photo -->
+            <img src="assets/images/adrena_pic2.jpg" alt="Bakre Feranmi David" class="avatar-img" />
+            <!-- Floating badges -->
+            <div class="badge badge-top">
+              <i class="fa-solid fa-stethoscope"></i> Med Student
+            </div>
+            <div class="badge badge-bottom">
+              <i class="fa-solid fa-robot"></i> AI Builder
+            </div>
+          </div>
+        </div>
 
         <!-- Text -->
         <div class="about-text reveal">
@@ -168,7 +179,9 @@
             <div class="chip"><i class="fa-solid fa-globe"></i> Web developer</div>
           </div>
 
-          <a href="#projects" class="btn btn-primary btn-sm">See My Work <i class="fa-solid fa-arrow-right"></i></a>
+          <a href="#projects" class="btn btn-primary btn-sm">
+            See My Work <i class="fa-solid fa-arrow-right"></i>
+          </a>
         </div>
       </div>
     </div>
@@ -282,238 +295,216 @@
 
       <div class="projects-grid">
 
-      <!-- Project 1: Exam Practice Platform -->
-<article class="project-card reveal" tabindex="0">
-  <div class="project-img">
-
-    <!-- Animated CBT placeholder -->
-    <div class="project-img-placeholder cbt-placeholder" style="--ph-color: #0ea5e9;">
-      <div class="cbt-visual">
-
-        <!-- Question card -->
-        <div class="cbt-card">
-          <div class="cbt-question">
-            <span class="cbt-qnum">Q12.</span>
-            <span class="cbt-qtext">What is the powerhouse of the cell?</span>
+        <!-- Project 1: Exam Practice Platform -->
+        <article class="project-card reveal" tabindex="0">
+          <div class="project-img">
+            <!-- Animated CBT placeholder -->
+            <div class="project-img-placeholder cbt-placeholder" style="--ph-color: #0ea5e9;">
+              <div class="cbt-visual">
+                <div class="cbt-card">
+                  <div class="cbt-question">
+                    <span class="cbt-qnum">Q12.</span>
+                    <span class="cbt-qtext">What is the powerhouse of the cell?</span>
+                  </div>
+                  <div class="cbt-options">
+                    <div class="cbt-option">A. Nucleus</div>
+                    <div class="cbt-option cbt-option-correct">B. Mitochondria ✓</div>
+                    <div class="cbt-option">C. Ribosome</div>
+                  </div>
+                </div>
+                <div class="cbt-footer">
+                  <div class="cbt-timer">
+                    <i class="fa-solid fa-clock"></i>
+                    <span class="cbt-time-text">01:24</span>
+                  </div>
+                  <div class="cbt-score-wrap">
+                    <span class="cbt-score-label">Score</span>
+                    <div class="cbt-score-bar"><div class="cbt-score-fill"></div></div>
+                    <span class="cbt-score-pct">78%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="project-overlay">
+              <div class="overlay-exam-links">
+                <a href="https://adrena-jamb-cbt.onrender.com" target="_blank" class="overlay-btn overlay-btn-jamb">
+                  <i class="fa-solid fa-arrow-up-right-from-square"></i> JAMB
+                </a>
+                <a href="https://adrena-ui-postutme-cbt.onrender.com" target="_blank" class="overlay-btn overlay-btn-waec">
+                  <i class="fa-solid fa-arrow-up-right-from-square"></i> WAEC
+                </a>
+                <a href="https://adrena-ui-postutme-cbt.onrender.com" target="_blank" class="overlay-btn overlay-btn-putme">
+                  <i class="fa-solid fa-arrow-up-right-from-square"></i> Post-UTME
+                </a>
+              </div>
+            </div>
           </div>
-          <div class="cbt-options">
-            <div class="cbt-option">A. Nucleus</div>
-            <div class="cbt-option cbt-option-correct">B. Mitochondria ✓</div>
-            <div class="cbt-option">C. Ribosome</div>
+          <div class="project-body">
+            <div class="project-number">Click 👉 01</div>
+            <h3 class="project-name">Exam Practice Platform</h3>
+            <p class="project-desc">
+              A full-stack web app that allows students to have JAMB, Post-UTME real CBT experience,
+              as well as a WAEC O'level exam simulator to practice past questions.
+              Features timed quizzes, answer explanations, progress tracking, and
+              a leaderboard to keep studying competitive.
+            </p>
+            <div class="project-tags">
+              <span>Python</span><span>Flask</span><span>MySQL</span><span>HTML/CSS</span>
+            </div>
+            <div class="project-links">
+              <a href="https://github.com/MedicAdrenaline" target="_blank" class="proj-link">
+                <i class="fa-brands fa-github"></i> GitHub
+              </a>
+              <a href="https://adrena-jamb-cbt.onrender.com" target="_blank" class="proj-link proj-link-demo">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i> Live Demo
+              </a>
+            </div>
           </div>
-        </div>
+        </article>
 
-        <!-- Timer + score bar -->
-        <div class="cbt-footer">
-          <div class="cbt-timer">
-            <i class="fa-solid fa-clock"></i>
-            <span class="cbt-time-text">01:24</span>
+        <!-- Project 2: Telegram Bot -->
+        <article class="project-card reveal" tabindex="0">
+          <div class="project-img">
+            <!-- Animated bot placeholder -->
+            <div class="project-img-placeholder bot-placeholder" style="--ph-color: #22c55e;">
+              <div class="bot-visual">
+                <div class="bot-head">
+                  <div class="bot-eye left"></div>
+                  <div class="bot-eye right"></div>
+                  <div class="bot-mouth"></div>
+                </div>
+                <div class="bot-bubbles">
+                  <div class="bot-bubble b1">Hello! 👋</div>
+                  <div class="bot-bubble b2">Task verified ✅</div>
+                  <div class="bot-bubble b3">Reward sent 🎉</div>
+                </div>
+              </div>
+            </div>
+            <div class="project-overlay">
+              <a href="https://t.me/Adrena_bot/" target="_blank" class="overlay-btn">
+                <i class="fa-brands fa-telegram"></i> Open in Telegram
+              </a>
+            </div>
           </div>
-          <div class="cbt-score-wrap">
-            <span class="cbt-score-label">Score</span>
-            <div class="cbt-score-bar"><div class="cbt-score-fill"></div></div>
-            <span class="cbt-score-pct">78%</span>
+          <div class="project-body">
+            <div class="project-number">Click 👉 02</div>
+            <h3 class="project-name">Telegram Bot</h3>
+            <p class="project-desc">
+              An automated Telegram bot that welcomes, responds to common inquiries, and
+              efficiently redirects conversations to the appropriate contact when needed.
+              Designed for quick, consistent, and professional communication.
+              Also manages crypto airdrop campaigns — user verification, referral tracking,
+              task completion checks, and reward distribution (admin dashboard under development).
+            </p>
+            <div class="project-tags">
+              <span>Python</span><span>Telegram API</span><span>SQLite</span><span>asyncio</span>
+            </div>
+            <div class="project-links">
+              <a href="https://github.com/MedicAdrenaline" target="_blank" class="proj-link">
+                <i class="fa-brands fa-github"></i> GitHub
+              </a>
+            </div>
           </div>
-        </div>
+        </article>
 
-      </div>
-    </div>
-
-    <div class="project-overlay">
-      <div class="overlay-exam-links">
-        <a href="https://adrena-jamb-cbt.onrender.com" target="_blank" class="overlay-btn overlay-btn-jamb">
-          <i class="fa-solid fa-arrow-up-right-from-square"></i> JAMB
-        </a>
-        <a href="https://adrena-ui-postutme-cbt.onrender.com" target="_blank" class="overlay-btn overlay-btn-waec">
-          <i class="fa-solid fa-arrow-up-right-from-square"></i> WAEC
-        </a>
-        <a href="https://adrena-ui-postutme-cbt.onrender.com" target="_blank" class="overlay-btn overlay-btn-putme">
-          <i class="fa-solid fa-arrow-up-right-from-square"></i> Post-UTME
-        </a>
-      </div>
-    </div>
-  </div>
-
-  <div class="project-body">
-    <div class="project-number">Click 👉 01</div>
-    <h3 class="project-name">Exam Practice Platform</h3>
-    <p class="project-desc">
-      A full-stack web app that allows students to have JAMB, Post-UTME real CBT experience,
-      as well as a WAEC O'level exam simulator to practice past questions.
-      Features timed quizzes, answer explanations, progress tracking, and
-      a leaderboard to keep studying competitive.
-    </p>
-    <div class="project-tags">
-      <span>Python</span><span>Flask</span><span>MySQL</span><span>HTML/CSS</span>
-    </div>
-    <div class="project-links">
-      <a href="https://github.com/MedicAdrenaline" target="_blank" class="proj-link">
-        <i class="fa-brands fa-github"></i> GitHub
-      </a>
-      <a href="https://adrena-jamb-cbt.onrender.com" target="_blank" class="proj-link proj-link-demo">
-        <i class="fa-solid fa-arrow-up-right-from-square"></i> Live Demo
-      </a>
-    </div>
-  </div>
-</article>
-
-       <!-- Project 2: Telegram Airdrop Bot -->
-<article class="project-card reveal" tabindex="0">
-  <div class="project-img">
-
-    <!-- Animated bot placeholder -->
-    <div class="project-img-placeholder bot-placeholder" style="--ph-color: #22c55e;">
-      <div class="bot-visual">
-        <!-- Bot head -->
-        <div class="bot-head">
-          <div class="bot-eye left"></div>
-          <div class="bot-eye right"></div>
-          <div class="bot-mouth"></div>
-        </div>
-        <!-- Chat bubbles -->
-        <div class="bot-bubbles">
-          <div class="bot-bubble b1">Hello! 👋</div>
-          <div class="bot-bubble b2">Task verified ✅</div>
-          <div class="bot-bubble b3">Reward sent 🎉</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="project-overlay">
-      <a href="https://t.me/Adrena_bot/" target="_blank" class="overlay-btn">
-        <i class="fa-brands fa-telegram"></i> Open in Telegram
-      </a>
-    </div>
-  </div>
-
-  <div class="project-body">
-    <div class="project-number">Click 👉 02</div>
-    <h3 class="project-name">Telegram Bot</h3>
-    <p class="project-desc">
-      An automated Telegram bot that welcomes, responds to common inquiries, and
-      efficiently redirects conversations to the appropriate contact when needed.
-      It is designed to ensure quick, consistent, and professional communication
-      while improving user experience and response time.
-      It also manages crypto airdrop campaigns —
-      handles user verification, referral tracking, task completion checks,
-      and reward distribution with a clean admin dashboard (Currently under development!).
-    </p>
-    <div class="project-tags">
-      <span>Python</span><span>Telegram API</span><span>SQLite</span><span>asyncio</span>
-    </div>
-    <div class="project-links">
-      <a href="https://github.com/MedicAdrenaline" target="_blank" class="proj-link">
-        <i class="fa-brands fa-github"></i> GitHub
-      </a>
-    </div>
-  </div>
-</article>
-
-       <!-- Project 3: C++ Football Game -->
-<article class="project-card reveal" tabindex="0">
-  <div class="project-img">
-
-    <!-- Animated football placeholder -->
-    <div class="project-img-placeholder football-placeholder" style="--ph-color: #f59e0b;">
-      <div class="football-visual">
-
-        <!-- Scoreboard -->
-        <div class="football-scoreboard">
-          <div class="football-team">
-            <span class="team-name">HOME</span>
-            <span class="team-score" id="scoreHome">2</span>
+        <!-- Project 3: C++ Football Game -->
+        <article class="project-card reveal" tabindex="0">
+          <div class="project-img">
+            <!-- Animated football placeholder -->
+            <div class="project-img-placeholder football-placeholder" style="--ph-color: #f59e0b;">
+              <div class="football-visual">
+                <div class="football-scoreboard">
+                  <div class="football-team">
+                    <span class="team-name">HOME</span>
+                    <span class="team-score" id="scoreHome">2</span>
+                  </div>
+                  <div class="football-vs">
+                    <span class="football-half">45'</span>
+                    <span class="vs-divider">:</span>
+                  </div>
+                  <div class="football-team">
+                    <span class="team-score" id="scoreAway">1</span>
+                    <span class="team-name">AWAY</span>
+                  </div>
+                </div>
+                <div class="football-pitch">
+                  <div class="pitch-line center-line"></div>
+                  <div class="pitch-circle"></div>
+                  <div class="football-ball"></div>
+                </div>
+                <div class="football-ticker">
+                  <div class="ticker-event e1"><i class="fa-solid fa-futbol"></i> GOAL! — Striker #9 · 38'</div>
+                  <div class="ticker-event e2"><i class="fa-solid fa-square" style="color:#f59e0b"></i> Yellow · #4 · 41'</div>
+                  <div class="ticker-event e3"><i class="fa-solid fa-futbol"></i> GOAL! — Midfielder #8 · 44'</div>
+                </div>
+              </div>
+            </div>
+            <div class="project-overlay">
+              <div class="overlay-wip">
+                <i class="fa-solid fa-code-branch"></i>
+                <span class="wip-title">Under Development</span>
+                <span class="wip-sub">Coming soon — stay tuned</span>
+              </div>
+            </div>
           </div>
-          <div class="football-vs">
-            <span class="football-half">45'</span>
-            <span class="vs-divider">:</span>
+          <div class="project-body">
+            <div class="project-number">Click 👉 03</div>
+            <h3 class="project-name">C++ Football Game</h3>
+            <p class="project-desc">
+              A console-based football simulation game written in C++. Features
+              team management, match simulation with randomized outcomes,
+              a league table, and player stats tracking using OOP principles.
+            </p>
+            <div class="project-tags">
+              <span>C++</span><span>OOP</span><span>Data Structures</span>
+            </div>
+            <div class="project-links">
+              <a href="https://github.com/MedicAdrenaline" target="_blank" class="proj-link">
+                <i class="fa-brands fa-github"></i> GitHub
+              </a>
+            </div>
           </div>
-          <div class="football-team">
-            <span class="team-score" id="scoreAway">1</span>
-            <span class="team-name">AWAY</span>
+        </article>
+
+        <!-- Project 4: AI Chat Interface -->
+        <article class="project-card reveal" tabindex="0">
+          <div class="project-img">
+            <img src="assets/images/adrena_ai_pic.png" alt="AdrenaAI Chat Interface" class="project-img-real" />
+            <div class="project-overlay">
+              <a href="https://adrena-ai.onrender.com" target="_blank" class="overlay-btn">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i> View Here
+              </a>
+            </div>
           </div>
-        </div>
+          <div class="project-body">
+            <div class="project-number">Click 👉 04</div>
+            <h3 class="project-name">AI Chat Interface</h3>
+            <p class="project-desc">
+              A sleek, minimal web interface for conversational AI. Supports
+              streaming responses, conversation history, custom system prompts,
+              and multiple model switching — built for developers and researchers.
+            </p>
+            <div class="project-tags">
+              <span>Python</span><span>Flask</span><span>OpenAI API</span><span>JS</span>
+            </div>
+            <div class="project-links">
+              <a href="https://github.com/MedicAdrenaline" target="_blank" class="proj-link">
+                <i class="fa-brands fa-github"></i> GitHub
+              </a>
+              <a href="https://adrena-ai.onrender.com" target="_blank" class="proj-link proj-link-demo">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i> Live Demo
+              </a>
+            </div>
+          </div>
+        </article>
 
-        <!-- Mini pitch -->
-        <div class="football-pitch">
-          <div class="pitch-line center-line"></div>
-          <div class="pitch-circle"></div>
-          <div class="football-ball"></div>
-        </div>
-
-        <!-- Match events ticker -->
-        <div class="football-ticker">
-          <div class="ticker-event e1"><i class="fa-solid fa-futbol"></i> GOAL! — Striker #9 · 38'</div>
-          <div class="ticker-event e2"><i class="fa-solid fa-square" style="color:#f59e0b"></i> Yellow · #4 · 41'</div>
-          <div class="ticker-event e3"><i class="fa-solid fa-futbol"></i> GOAL! — Midfielder #8 · 44'</div>
-        </div>
-
-      </div>
-    </div>
-
-    <div class="project-overlay">
-      <div class="overlay-wip">
-        <i class="fa-solid fa-code-branch"></i>
-        <span class="wip-title">Under Development</span>
-        <span class="wip-sub">Coming soon — stay tuned</span>
-      </div>
-    </div>
-  </div>
-
-  <div class="project-body">
-    <div class="project-number">Click 👉 03</div>
-    <h3 class="project-name">C++ Football Game</h3>
-    <p class="project-desc">
-      A console-based football simulation game written in C++. Features
-      team management, match simulation with randomized outcomes,
-      a league table, and player stats tracking using OOP principles.
-    </p>
-    <div class="project-tags">
-      <span>C++</span><span>OOP</span><span>Data Structures</span>
-    </div>
-    <div class="project-links">
-      <a href="https://github.com/MedicAdrenaline" target="_blank" class="proj-link">
-        <i class="fa-brands fa-github"></i> GitHub
-      </a>
-    </div>
-  </div>
-</article>
-
-       <!-- Project 4: AI Chat Interface -->
-<article class="project-card reveal" tabindex="0">
-  <div class="project-img">
-    <img src="assets/images/adrena_ai_pic.png" alt="AdrenaAI Chat Interface" class="project-img-real" />
-    <div class="project-overlay">
-      <a href="https://adrena-ai.onrender.com" target="_blank" class="overlay-btn">
-        <i class="fa-solid fa-arrow-up-right-from-square"></i> View Here
-      </a>
-    </div>
-  </div>
-
-  <div class="project-body">
-    <div class="project-number">Click 👉 04</div>
-    <h3 class="project-name">AI Chat Interface</h3>
-    <p class="project-desc">
-      A sleek, minimal web interface for conversational AI. Supports
-      streaming responses, conversation history, custom system prompts,
-      and multiple model switching — built for developers and researchers.
-    </p>
-    <div class="project-tags">
-      <span>Python</span><span>Flask</span><span>OpenAI API</span><span>JS</span>
-    </div>
-    <div class="project-links">
-      <a href="https://github.com/MedicAdrenaline" target="_blank" class="proj-link">
-        <i class="fa-brands fa-github"></i> GitHub
-      </a>
-      <a href="https://adrena-ai.onrender.com" target="_blank" class="proj-link proj-link-demo">
-        <i class="fa-solid fa-arrow-up-right-from-square"></i> Live Demo
-      </a>
-    </div>
-  </div>
-</article>
+      </div><!-- end .projects-grid -->
+    </div><!-- end .container -->
+  </section><!-- end #projects -->
 
 
   <!-- ============================================================
-       CONTACT SECTION — links + optional form
+       CONTACT SECTION — links + form
   ============================================================ -->
   <section class="section contact" id="contact">
     <div class="container">
@@ -547,12 +538,11 @@
             <i class="fa-solid fa-arrow-right cc-arrow"></i>
           </a>
 
-          <a href="https://www.linkedin.com/in/medic-adrenaline-31b9a63b2?utm_source=share&utm_
-        campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank" class="contact-card">
+          <a href="https://www.linkedin.com/in/medic-adrenaline-31b9a63b2" target="_blank" class="contact-card">
             <div class="cc-icon"><i class="fa-brands fa-linkedin"></i></div>
             <div class="cc-text">
               <span class="cc-label">LinkedIn</span>
-              <span class="cc-value">Medic on linkedin</span>
+              <span class="cc-value">Medic on LinkedIn</span>
             </div>
             <i class="fa-solid fa-arrow-right cc-arrow"></i>
           </a>
@@ -567,35 +557,39 @@
           </a>
         </div>
 
-       <!-- Contact Form -->
-<div class="contact-form-wrap reveal">
-  <form class="contact-form" id="contactForm" action="https://formspree.io/f/myknrjnj" method="POST">
-    <h3>Send a Message</h3>
+        <!-- Contact Form -->
+        <div class="contact-form-wrap reveal">
+          <form class="contact-form" id="contactForm" action="https://formspree.io/f/myknrjnj" method="POST">
+            <h3>Send a Message</h3>
 
-    <div class="form-group">
-      <label for="fname">Your Name</label>
-      <input type="text" id="fname" name="name" placeholder="John Doe" required />
-    </div>
+            <div class="form-group">
+              <label for="fname">Your Name</label>
+              <input type="text" id="fname" name="name" placeholder="John Doe" required />
+            </div>
 
-    <div class="form-group">
-      <label for="femail">Email Address</label>
-      <input type="email" id="femail" name="email" placeholder="john@example.com" required />
-    </div>
+            <div class="form-group">
+              <label for="femail">Email Address</label>
+              <input type="email" id="femail" name="email" placeholder="john@example.com" required />
+            </div>
 
-    <div class="form-group">
-      <label for="fmsg">Message</label>
-      <textarea id="fmsg" name="message" rows="5" placeholder="Tell me about your project…" required></textarea>
-    </div>
+            <div class="form-group">
+              <label for="fmsg">Message</label>
+              <textarea id="fmsg" name="message" rows="5" placeholder="Tell me about your project…" required></textarea>
+            </div>
 
-    <button type="submit" class="btn btn-primary btn-full">
-      Send Message <i class="fa-solid fa-paper-plane"></i>
-    </button>
+            <button type="submit" class="btn btn-primary btn-full">
+              Send Message <i class="fa-solid fa-paper-plane"></i>
+            </button>
 
-    <p class="form-success" id="formSuccess">
-      <i class="fa-solid fa-circle-check"></i> Message sent! I'll get back to you soon.
-    </p>
-  </form>
-</div>
+            <p class="form-success" id="formSuccess">
+              <i class="fa-solid fa-circle-check"></i> Message sent! I'll get back to you soon.
+            </p>
+          </form>
+        </div>
+
+      </div><!-- end .contact-grid -->
+    </div><!-- end .container -->
+  </section><!-- end #contact -->
 
 
   <!-- ============================================================
@@ -607,10 +601,15 @@
         © 2026 <strong>Medic Adrenaline</strong> (Bakre Feranmi David) · Built with HTML, CSS &amp; JS
       </p>
       <div class="footer-socials">
-        <a href="https://github.com/MedicAdrenaline" target="_blank" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
-        <a href="https://www.linkedin.com/in/medic-adrenaline-31b9a63b2?utm_source=share&utm_
-        campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
-        <a href="https://t.me/MedicAdrenaline2" target="_blank" aria-label="Telegram"><i class="fa-brands fa-telegram"></i></a>
+        <a href="https://github.com/MedicAdrenaline" target="_blank" aria-label="GitHub">
+          <i class="fa-brands fa-github"></i>
+        </a>
+        <a href="https://www.linkedin.com/in/medic-adrenaline-31b9a63b2" target="_blank" aria-label="LinkedIn">
+          <i class="fa-brands fa-linkedin"></i>
+        </a>
+        <a href="https://t.me/MedicAdrenaline2" target="_blank" aria-label="Telegram">
+          <i class="fa-brands fa-telegram"></i>
+        </a>
       </div>
     </div>
   </footer>
