@@ -506,41 +506,13 @@
         ============================================================ -->
         <article class="project-card reveal" tabindex="0">
           <div class="project-img">
-            <!-- Animated NEXRA marketplace placeholder -->
-            <div class="project-img-placeholder nexra-placeholder" style="--ph-color: #6366f1;">
-              <div class="nexra-visual">
-                <!-- Top bar -->
-                <div class="nexra-topbar">
-                  <span class="nexra-logo-text">NEXRA</span>
-                  <span class="nexra-tag">Campus Marketplace</span>
-                </div>
-                <!-- Product cards row -->
-                <div class="nexra-cards">
-                  <div class="nexra-card nc1">
-                    <div class="nexra-card-img"></div>
-                    <div class="nexra-card-name">Jollof Rice 🍛</div>
-                    <div class="nexra-card-price">₦800</div>
-                  </div>
-                  <div class="nexra-card nc2">
-                    <div class="nexra-card-img"></div>
-                    <div class="nexra-card-name">Lecture Notes 📚</div>
-                    <div class="nexra-card-price">₦500</div>
-                  </div>
-                  <div class="nexra-card nc3">
-                    <div class="nexra-card-img"></div>
-                    <div class="nexra-card-name">Laundry ✨</div>
-                    <div class="nexra-card-price">₦1,200</div>
-                  </div>
-                </div>
-                <!-- SWYFT event ticket strip -->
-                <div class="nexra-swyft">
-                  <div class="swyft-label"><i class="fa-solid fa-ticket"></i> SWYFT — Event Ticketing</div>
-                  <div class="swyft-event">
-                    <span class="swyft-event-name">OOU Faculty Night 🎉</span>
-                    <span class="swyft-event-price">₦1,500</span>
-                    <span class="swyft-qr"><i class="fa-solid fa-qrcode"></i></span>
-                  </div>
-                </div>
+            <!-- Real NEXRA screenshots — side-by-side sliding layout -->
+            <div class="nexra-screens">
+              <div class="nexra-screen-slide">
+                <img src="assets/images/nexra_screen1.png" alt="NEXRA Marketplace Homepage" />
+              </div>
+              <div class="nexra-screen-slide">
+                <img src="assets/images/nexra_screen2.png" alt="NEXRA Product Listings" />
               </div>
             </div>
             <div class="project-overlay">
@@ -639,7 +611,7 @@
             </div>
             <h3 class="project-name">RENDUX — School Automation System</h3>
             <p class="project-desc">
-              RENDUX is a full-stack school automation platform built around a single RFID/smart card.
+              RENDUX is a full-stack school automation platform built around a single NFC/smart card.
               One tap on a scanner marks attendance, processes canteen and school fee payments, and
               logs access — eliminating manual registers and cash handling. The platform connects
               schools, teachers, parents and students in one unified system. Teachers can build
@@ -652,8 +624,96 @@
               <span>MySQL</span><span>SQLAlchemy</span><span>Tailwind CSS</span><span>REST APIs</span>
             </div>
             <div class="project-links">
-              <a href="https://github.com/Rendux-git" target="_blank" class="proj-link">
+              <a href="https://github.com/Rendux-git/Rendux_Frontend" target="_blank" class="proj-link">
                 <i class="fa-brands fa-github"></i> GitHub
+              </a>
+            </div>
+          </div>
+        </article>
+
+        <!-- ============================================================
+             Project 7: Let's Code — Coding Bootcamp Platform (Builder)
+        ============================================================ -->
+        <article class="project-card reveal" tabindex="0">
+          <div class="project-img">
+            <div class="project-img-placeholder letscode-placeholder" style="--ph-color: #f97316;">
+              <div class="letscode-visual">
+                <!-- Top bar -->
+                <div class="letscode-topbar">
+                  <span class="letscode-logo">Let's<span>Code</span><em>_</em></span>
+                  <span class="letscode-tag">Coding Bootcamp</span>
+                </div>
+                <!-- Phase roadmap strip -->
+                <div class="letscode-phases">
+                  <div class="lc-phase lc-unlocked">
+                    <span class="lc-phase-num">01</span>
+                    <span class="lc-phase-name">Setup</span>
+                    <span class="lc-lock">🔓</span>
+                  </div>
+                  <div class="lc-phase lc-unlocked">
+                    <span class="lc-phase-num">02</span>
+                    <span class="lc-phase-name">HTML/CSS</span>
+                    <span class="lc-lock">🔓</span>
+                  </div>
+                  <div class="lc-phase lc-locked">
+                    <span class="lc-phase-num">03</span>
+                    <span class="lc-phase-name">JavaScript</span>
+                    <span class="lc-lock">🔒</span>
+                  </div>
+                  <div class="lc-phase lc-locked">
+                    <span class="lc-phase-num">04</span>
+                    <span class="lc-phase-name">Flask</span>
+                    <span class="lc-lock">🔒</span>
+                  </div>
+                </div>
+                <!-- Code window snippet -->
+                <div class="letscode-code">
+                  <div class="lc-code-bar">
+                    <span class="lc-dot" style="background:#ff5f57"></span>
+                    <span class="lc-dot" style="background:#febc2e"></span>
+                    <span class="lc-dot" style="background:#28c840"></span>
+                    <span class="lc-fname">phase_04/hello_flask.py</span>
+                  </div>
+                  <div class="lc-code-body">
+                    <span class="lc-kw">from</span> flask <span class="lc-kw">import</span> Flask<br/>
+                    app = Flask(__name__)<br/>
+                    <span class="lc-cm"># 🔥 your first API</span><br/>
+                    <span class="lc-kw">@app</span>.route(<span class="lc-str">'/api/xp'</span>)<br/>
+                    <span class="lc-kw">def</span> <span class="lc-fn">get_xp</span>(): ...
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="project-overlay">
+              <a href="https://letscode-with-medic.onrender.com/" target="_blank" class="overlay-btn">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i> Visit Let's Code
+              </a>
+            </div>
+          </div>
+          <div class="project-body">
+            <div class="project-number">Click 👉 07</div>
+            <div class="founder-badge" style="color:#f97316;background:rgba(249,115,22,0.1);border-color:rgba(249,115,22,0.3);">
+              <i class="fa-solid fa-chalkboard-user"></i> Builder &amp; Instructor
+            </div>
+            <h3 class="project-name">Let's Code — Coding Bootcamp</h3>
+            <p class="project-desc">
+              A structured, phase-locked coding bootcamp platform built for serious beginners in Nigeria.
+              Students unlock each phase only after completing quizzes — no skipping, no faking it.
+              The curriculum covers Python, HTML/CSS, JavaScript, Flask, MySQL, REST APIs and deployment,
+              ending with a live project students can ship. Features role-based dashboards for students,
+              teachers and admins, mentor-curated video resources per phase, payment verification,
+              announcements, and progress tracking.
+            </p>
+            <div class="project-tags">
+              <span>Python</span><span>Flask</span><span>MySQL</span><span>SQLAlchemy</span>
+              <span>JavaScript</span><span>HTML/CSS</span><span>React</span><span>TypeScript</span>
+            </div>
+            <div class="project-links">
+              <a href="https://github.com/MedicAdrenaline" target="_blank" class="proj-link">
+                <i class="fa-brands fa-github"></i> GitHub
+              </a>
+              <a href="https://letscode-with-medic.onrender.com/" target="_blank" class="proj-link proj-link-demo">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i> Live Platform
               </a>
             </div>
           </div>

@@ -1237,3 +1237,468 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   .hero-name         { font-size: 2.6rem; }
   .contact-form-wrap { padding: 24px; }
 }
+
+/* ============================================================
+   NEW PROJECT CARD STYLES — paste into your style.css
+   Covers: .founder-badge, NEXRA screenshots, RENDUX placeholder
+============================================================ */
+
+/* --- NEXRA screenshot carousel --- */
+.nexra-screens {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 220px;
+  overflow: hidden;
+  background: #0a0a14;
+  display: flex;
+}
+
+.nexra-screen-slide {
+  min-width: 100%;
+  height: 100%;
+  flex-shrink: 0;
+  transition: transform 0.6s ease;
+}
+
+.nexra-screen-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+}
+
+/* Auto-slide via CSS animation — alternates between the two screenshots */
+.nexra-screens {
+  animation: nexraSlide 6s ease-in-out infinite;
+}
+
+@keyframes nexraSlide {
+  0%, 40%   { transform: translateX(0); }
+  50%, 90%  { transform: translateX(-100%); }
+  100%      { transform: translateX(0); }
+}
+
+/* Pause on hover so user can inspect */
+.project-card:hover .nexra-screens {
+  animation-play-state: paused;
+}
+
+/* --- Founder / Role Badge --- */
+.founder-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #6366f1;
+  background: rgba(99, 102, 241, 0.12);
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  border-radius: 20px;
+  padding: 0.25rem 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.founder-badge-cto {
+  color: #00c96b;
+  background: rgba(0, 201, 107, 0.10);
+  border-color: rgba(0, 201, 107, 0.3);
+}
+
+/* ============================================================
+   NEXRA PLACEHOLDER
+============================================================ */
+.nexra-placeholder {
+  background: linear-gradient(135deg, #0f0f1a 0%, #1a1440 100%);
+  padding: 1rem;
+  display: flex;
+  align-items: stretch;
+}
+
+.nexra-visual {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  width: 100%;
+}
+
+.nexra-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(99, 102, 241, 0.15);
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  border-radius: 8px;
+  padding: 0.4rem 0.75rem;
+}
+
+.nexra-logo-text {
+  font-weight: 800;
+  font-size: 0.85rem;
+  letter-spacing: 0.12em;
+  color: #818cf8;
+}
+
+.nexra-tag {
+  font-size: 0.65rem;
+  color: rgba(255,255,255,0.5);
+  letter-spacing: 0.05em;
+}
+
+/* Product cards row */
+.nexra-cards {
+  display: flex;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.nexra-card {
+  flex: 1;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 8px;
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  animation: nexraCardFloat 3s ease-in-out infinite;
+}
+.nexra-card.nc2 { animation-delay: 0.4s; }
+.nexra-card.nc3 { animation-delay: 0.8s; }
+
+@keyframes nexraCardFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+.nexra-card-img {
+  height: 36px;
+  border-radius: 5px;
+  background: linear-gradient(135deg, rgba(99,102,241,0.3), rgba(99,102,241,0.1));
+}
+
+.nexra-card-name {
+  font-size: 0.6rem;
+  color: rgba(255,255,255,0.8);
+  line-height: 1.2;
+}
+
+.nexra-card-price {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #818cf8;
+}
+
+/* SWYFT strip */
+.nexra-swyft {
+  background: rgba(99, 102, 241, 0.1);
+  border: 1px solid rgba(99, 102, 241, 0.25);
+  border-radius: 8px;
+  padding: 0.5rem 0.75rem;
+}
+
+.swyft-label {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #818cf8;
+  text-transform: uppercase;
+  margin-bottom: 0.3rem;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.swyft-event {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.swyft-event-name {
+  font-size: 0.65rem;
+  color: rgba(255,255,255,0.85);
+  flex: 1;
+}
+
+.swyft-event-price {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #a5b4fc;
+}
+
+.swyft-qr {
+  color: rgba(255,255,255,0.4);
+  font-size: 0.9rem;
+}
+
+/* ============================================================
+   RENDUX PLACEHOLDER
+============================================================ */
+.rendux-placeholder {
+  background: linear-gradient(135deg, #071a10 0%, #0d2a1a 100%);
+  padding: 1rem;
+  display: flex;
+  align-items: stretch;
+}
+
+.rendux-visual {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  width: 100%;
+  align-items: center;
+}
+
+.rendux-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background: rgba(0, 201, 107, 0.10);
+  border: 1px solid rgba(0, 201, 107, 0.25);
+  border-radius: 8px;
+  padding: 0.4rem 0.75rem;
+}
+
+.rendux-logo-text {
+  font-weight: 800;
+  font-size: 0.85rem;
+  letter-spacing: 0.12em;
+  color: #00c96b;
+}
+
+.rendux-tag {
+  font-size: 0.65rem;
+  color: rgba(255,255,255,0.5);
+  letter-spacing: 0.05em;
+}
+
+/* Tap zone */
+.rendux-tap-zone {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.5rem 0;
+  flex: 1;
+}
+
+.rendux-card-chip {
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #00c96b, #009e52);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  color: #fff;
+  position: relative;
+  z-index: 2;
+  box-shadow: 0 0 20px rgba(0, 201, 107, 0.4);
+  animation: renduxPulse 2s ease-in-out infinite;
+}
+
+@keyframes renduxPulse {
+  0%, 100% { box-shadow: 0 0 15px rgba(0,201,107,0.3); transform: scale(1); }
+  50% { box-shadow: 0 0 35px rgba(0,201,107,0.6); transform: scale(1.05); }
+}
+
+.rendux-tap-rings {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.tap-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1.5px solid rgba(0, 201, 107, 0.4);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  animation: tapRingExpand 2s ease-out infinite;
+}
+.tap-ring.r1 { width: 70px; height: 70px; animation-delay: 0s; }
+.tap-ring.r2 { width: 100px; height: 100px; animation-delay: 0.4s; }
+.tap-ring.r3 { width: 130px; height: 130px; animation-delay: 0.8s; }
+
+@keyframes tapRingExpand {
+  0% { transform: translate(-50%, -50%) scale(0); opacity: 0.8; }
+  100% { transform: translate(-50%, -50%) scale(1); opacity: 0; }
+}
+
+.rendux-tap-label {
+  font-size: 0.65rem;
+  color: rgba(255,255,255,0.5);
+  letter-spacing: 0.06em;
+  position: relative;
+  z-index: 2;
+}
+
+/* Status strip */
+.rendux-status-strip {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  width: 100%;
+  background: rgba(0,0,0,0.2);
+  border-radius: 8px;
+  padding: 0.5rem 0.75rem;
+}
+
+.rendux-status-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.62rem;
+  color: rgba(255,255,255,0.75);
+}
+
+/* ============================================================
+   LET'S CODE PLACEHOLDER
+============================================================ */
+.letscode-placeholder {
+  background: linear-gradient(135deg, #0f0a00 0%, #1a0e00 100%);
+  padding: 1rem;
+  display: flex;
+  align-items: stretch;
+}
+
+.letscode-visual {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  width: 100%;
+}
+
+.letscode-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(249, 115, 22, 0.12);
+  border: 1px solid rgba(249, 115, 22, 0.3);
+  border-radius: 8px;
+  padding: 0.4rem 0.75rem;
+}
+
+.letscode-logo {
+  font-weight: 800;
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  color: #e8e8e8;
+  font-family: 'Syne', sans-serif;
+}
+
+.letscode-logo span { color: #f97316; }
+.letscode-logo em {
+  color: #f97316;
+  font-style: normal;
+  animation: lcBlink 1s step-end infinite;
+}
+@keyframes lcBlink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+.letscode-tag {
+  font-size: 0.62rem;
+  color: rgba(255,255,255,0.45);
+  letter-spacing: 0.05em;
+}
+
+/* Phase roadmap strip */
+.letscode-phases {
+  display: flex;
+  gap: 0.35rem;
+}
+
+.lc-phase {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  padding: 0.4rem 0.2rem;
+  border-radius: 7px;
+  border: 1px solid rgba(255,255,255,0.07);
+  background: rgba(255,255,255,0.04);
+  transition: transform 0.3s;
+}
+
+.lc-phase:hover { transform: translateY(-3px); }
+
+.lc-unlocked {
+  background: rgba(249,115,22,0.1);
+  border-color: rgba(249,115,22,0.3);
+}
+
+.lc-phase-num {
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: #f97316;
+  font-family: 'DM Mono', monospace;
+  letter-spacing: 0.05em;
+}
+
+.lc-locked .lc-phase-num { color: rgba(255,255,255,0.3); }
+
+.lc-phase-name {
+  font-size: 0.55rem;
+  color: rgba(255,255,255,0.65);
+  text-align: center;
+  line-height: 1.2;
+}
+
+.lc-lock { font-size: 0.65rem; }
+
+/* Code snippet window */
+.letscode-code {
+  flex: 1;
+  background: #0d0d0d;
+  border: 1px solid #2a2a2a;
+  border-radius: 8px;
+  overflow: hidden;
+  min-height: 0;
+}
+
+.lc-code-bar {
+  background: #161616;
+  border-bottom: 1px solid #2a2a2a;
+  padding: 0.3rem 0.6rem;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.lc-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.lc-fname {
+  font-size: 0.55rem;
+  color: #666;
+  margin-left: 4px;
+  font-family: 'DM Mono', monospace;
+}
+
+.lc-code-body {
+  padding: 0.6rem 0.75rem;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.58rem;
+  line-height: 1.8;
+  color: #ccc;
+}
+
+.lc-kw  { color: #a78bfa; }
+.lc-str { color: #a3e635; }
+.lc-cm  { color: #555; }
+.lc-fn  { color: #22d3ee; }
