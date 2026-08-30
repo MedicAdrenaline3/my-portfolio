@@ -506,14 +506,20 @@
         ============================================================ -->
         <article class="project-card reveal" tabindex="0">
           <div class="project-img">
-            <!-- Real NEXRA screenshots — side-by-side sliding layout -->
-            <div class="nexra-screens">
-              <div class="nexra-screen-slide">
-                <img src="assets/images/nexra_screen1.png" alt="NEXRA Marketplace Homepage" />
+            <!-- NEXRA image slider — add up to 5 images here -->
+            <div class="proj-slider" id="nexraSlider">
+              <div class="proj-slider-track">
+                <div class="proj-slide"><img src="assets/images/nexra_screen1.png" alt="NEXRA Homepage" /></div>
+                <div class="proj-slide"><img src="assets/images/nexra_screen2.png" alt="NEXRA Products" /></div>
+                <div class="proj-slide"><img src="assets/images/nexra_screen3.png" alt="..." /></div>
+                <div class="proj-slide"><img src="assets/images/nexra_screen4.png" alt="..." /></div>
+                <div class="proj-slide"><img src="assets/images/nexra_screen5.png" alt="..." /></div>
               </div>
-              <div class="nexra-screen-slide">
-                <img src="assets/images/nexra_screen2.png" alt="NEXRA Product Listings" />
-              </div>
+              <!-- Prev / Next arrows -->
+              <button class="proj-slider-btn proj-slider-prev" aria-label="Previous">&#8249;</button>
+              <button class="proj-slider-btn proj-slider-next" aria-label="Next">&#8250;</button>
+              <!-- Dot indicators -->
+              <div class="proj-slider-dots"></div>
             </div>
             <div class="project-overlay">
               <a href="https://nexra.name.ng" target="_blank" class="overlay-btn">
@@ -836,5 +842,75 @@
   </footer>
 
   <script src="script.js"></script>
+
+  <!-- ============================================================
+       PROJECT IMAGE SLIDER — works for any .proj-slider on the page
+  ============================================================ -->
+  <script>
+  (function () {
+    function initSlider(slider) {
+      const track  = slider.querySelector('.proj-slider-track');
+      const slides = slider.querySelectorAll('.proj-slide');
+      const prev   = slider.querySelector('.proj-slider-prev');
+      const next   = slider.querySelector('.proj-slider-next');
+      const dotsWrap = slider.querySelector('.proj-slider-dots');
+
+      if (!slides.length) return;
+
+      let current = 0;
+      let timer   = null;
+      const INTERVAL = 3500; // ms between auto-slides
+
+      // Build dots
+      slides.forEach((_, i) => {
+        const dot = document.createElement('span');
+        dot.className = 'proj-slider-dot' + (i === 0 ? ' active' : '');
+        dot.addEventListener('click', () => goTo(i));
+        dotsWrap.appendChild(dot);
+      });
+
+      function updateDots() {
+        dotsWrap.querySelectorAll('.proj-slider-dot').forEach((d, i) => {
+          d.classList.toggle('active', i === current);
+        });
+      }
+
+      function goTo(idx) {
+        current = (idx + slides.length) % slides.length;
+        track.style.transform = `translateX(-${current * 100}%)`;
+        updateDots();
+      }
+
+      function startAuto() {
+        timer = setInterval(() => goTo(current + 1), INTERVAL);
+      }
+
+      function stopAuto() {
+        clearInterval(timer);
+      }
+
+      prev.addEventListener('click', (e) => { e.stopPropagation(); stopAuto(); goTo(current - 1); startAuto(); });
+      next.addEventListener('click', (e) => { e.stopPropagation(); stopAuto(); goTo(current + 1); startAuto(); });
+
+      // Pause auto-slide on hover
+      slider.addEventListener('mouseenter', stopAuto);
+      slider.addEventListener('mouseleave', startAuto);
+
+      // Touch / swipe support
+      let touchStartX = 0;
+      slider.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; stopAuto(); }, { passive: true });
+      slider.addEventListener('touchend', e => {
+        const diff = touchStartX - e.changedTouches[0].clientX;
+        if (Math.abs(diff) > 40) goTo(current + (diff > 0 ? 1 : -1));
+        startAuto();
+      });
+
+      startAuto();
+    }
+
+    // Init all sliders on the page
+    document.querySelectorAll('.proj-slider').forEach(initSlider);
+  })();
+  </script>
 </body>
 </html>
